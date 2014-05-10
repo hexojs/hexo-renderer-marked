@@ -31,5 +31,5 @@ marked:
 - **smartLists** - Use smarter list behavior than the original markdown.
 - **smartypants** - Use "smart" typograhic punctuation for things like quotes and dashes.
 
-[Markdown]: http://learnboost.github.io/stylus/
+[Markdown]: http://daringfireball.net/projects/markdown/
 [marked]: https://github.com/chjj/marked

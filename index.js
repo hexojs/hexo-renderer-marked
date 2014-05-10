@@ -1,4 +1,5 @@
 var marked = require('marked'),
+  _ = require('lodash'),
   util = hexo.util,
   highlight = util.highlight,
   htmlTag = util.html_tag,
@@ -31,13 +32,6 @@ r.heading = function(text, level){
 };
 
 marked.setOptions({
-  gfm: true,
-  pedantic: false,
-  sanitize: false,
-  tables: true,
-  breaks: true,
-  smartLists: true,
-  smartypants: true,
   renderer: r,
   langPrefix: '',
   highlight: function(code, lang){
@@ -48,7 +42,15 @@ marked.setOptions({
 var renderer = function(data, options){
   headingId = {};
 
-  return marked(data.text, options);
+  return marked(data.text, _.extend({
+    gfm: true,
+    pedantic: false,
+    sanitize: false,
+    tables: true,
+    breaks: true,
+    smartLists: true,
+    smartypants: true
+  }, hexo.config.marked, options));
 };
 
 hexo.extend.renderer.register('md', 'html', renderer, true);
