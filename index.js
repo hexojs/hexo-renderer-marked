@@ -42,7 +42,7 @@ marked.setOptions({
 var renderer = function(data, options){
   headingId = {};
 
-  return marked(data.text, _.extend({
+  return marked(data.text, _.defaults(options, hexo.config.marked, {
     gfm: true,
     pedantic: false,
     sanitize: false,
@@ -50,7 +50,7 @@ var renderer = function(data, options){
     breaks: true,
     smartLists: true,
     smartypants: true
-  }, hexo.config.marked, options));
+  }));
 };
 
 hexo.extend.renderer.register('md', 'html', renderer, true);
