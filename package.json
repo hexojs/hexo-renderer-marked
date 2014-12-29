@@ -17,12 +17,11 @@
     "renderer"
   ],
   "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
-  "license": {
-    "type": "MIT",
-    "url": "https://raw.github.com/tommy351/hexo/master/LICENSE"
-  },
+  "license": "MIT",
   "dependencies": {
+    "hexo-util": "0.0.2",
+    "lodash": "^2.4.1",
     "marked": "^0.3.2",
-    "lodash": "^2.4.1"
+    "strip-indent": "^1.0.0"
   }
 }

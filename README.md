@@ -1,8 +1,10 @@
-# [Markdown] renderer
+# hexo-renderer-marked
+
+[![NPM version](https://badge.fury.io/js/hexo-renderer-marked.svg)](http://badge.fury.io/js/hexo-renderer-marked)
 
 Add support for [Markdown]. This plugin uses [marked] as render engine.
 
-## Install
+## Installation
 
 ``` bash
 $ npm install hexo-renderer-marked --save
