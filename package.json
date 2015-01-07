@@ -3,13 +3,16 @@
   "version": "0.1.0",
   "description": "Markdown renderer plugin for Hexo",
   "main": "index",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/hexojs/hexo-renderer-marked.git"
+  "scripts": {
+    "test": "gulp test"
   },
-  "bugs": {
-    "url": "https://github.com/hexojs/hexo-renderer-marked/issues"
+  "directories": {
+    "lib": "./lib"
   },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "repository": "hexojs/hexo-renderer-marked",
   "keywords": [
     "hexo",
     "markdown",
@@ -23,5 +26,17 @@
     "lodash": "^2.4.1",
     "marked": "^0.3.2",
     "strip-indent": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "coveralls": "^2.11.2",
+    "gulp": "^3.8.9",
+    "gulp-istanbul": "^0.5.0",
+    "gulp-jshint": "^1.8.6",
+    "gulp-load-plugins": "^0.8.0",
+    "gulp-mocha": "^2.0.0",
+    "jshint-stylish": "^1.0.0",
+    "mocha": "^2.0.1",
+    "rimraf": "^2.2.8"
   }
 }
