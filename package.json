@@ -23,7 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "hexo-util": "^0.1.0",
-    "marked": "^0.3.2",
+    "marked": "^0.3.3",
     "object-assign": "^2.0.0",
     "strip-indent": "^1.0.0"
   },
