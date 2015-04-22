@@ -30,9 +30,9 @@ describe('Marked renderer', function(){
     var result = r({text: body});
 
     result.should.eql([
-      '<h1 id="Hello_world">Hello world</h1>',
+      '<h1 id="__Hello_world">Hello world</h1>',
       '<pre><code>' + util.highlight(code, {gutter: false, wrap: false}) + '\n</code></pre>',
-      '<h2 id="Hello_world-1">Hello world</h2>',
+      '<h2 id="__Hello_world-1">Hello world</h2>',
       '<p>hello</p>'
     ].join('') + '\n');
   });
