@@ -9,6 +9,7 @@
   "unused": "vars",
   "strict": true,
   "globals": {
-    "Promise": true
+    "Promise": true,
+    "escape": true
   }
 }
