@@ -4,13 +4,13 @@
   "description": "Markdown renderer plugin for Hexo",
   "main": "index",
   "scripts": {
-    "test": "gulp test"
+    "eslint": "eslint .",
+    "jscs": "jscs .",
+    "test": "mocha test/index.js",
+    "test-cov": "istanbul cover --print both _mocha -- test/index.js"
   },
   "directories": {
     "lib": "./lib"
-  },
-  "engines": {
-    "node": ">= 0.10.0"
   },
   "repository": "hexojs/hexo-renderer-marked",
   "keywords": [
@@ -22,21 +22,18 @@
   "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
   "license": "MIT",
   "dependencies": {
-    "hexo-util": "^0.2.1",
+    "hexo-util": "^0.3.0",
     "marked": "^0.3.5",
     "object-assign": "^4.0.1",
     "strip-indent": "^1.0.1"
   },
   "devDependencies": {
     "chai": "^3.4.1",
-    "coveralls": "^2.11.2",
-    "gulp": "^3.8.9",
-    "gulp-istanbul": "^0.10.2",
-    "gulp-jshint": "^1.12.0",
-    "gulp-load-plugins": "^1.1.0",
-    "gulp-mocha": "^2.0.0",
-    "jshint-stylish": "^2.0.1",
-    "mocha": "^2.0.1",
-    "rimraf": "^2.2.8"
+    "eslint": "^1.10.3",
+    "eslint-config-hexo": "^1.0.2",
+    "istanbul": "^0.4.1",
+    "jscs": "^2.6.0",
+    "jscs-preset-hexo": "^1.0.1",
+    "mocha": "^2.3.4"
   }
 }

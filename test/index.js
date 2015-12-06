@@ -1,9 +1,9 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 var util = require('hexo-util');
 
-describe('Marked renderer', function(){
+describe('Marked renderer', function() {
   var ctx = {
     config: {
       marked: {}
@@ -12,7 +12,7 @@ describe('Marked renderer', function(){
 
   var r = require('../lib/renderer').bind(ctx);
 
-  it('default', function(){
+  it('default', function() {
     var code = 'console.log("Hello world");';
 
     var body = [
