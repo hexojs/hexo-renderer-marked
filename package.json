@@ -1,6 +1,6 @@
 {
   "name": "hexo-renderer-marked",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Markdown renderer plugin for Hexo",
   "main": "index",
   "scripts": {
@@ -22,7 +22,7 @@
   "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
   "license": "MIT",
   "dependencies": {
-    "hexo-util": "^0.3.0",
+    "hexo-util": "^0.5.1",
     "marked": "^0.3.5",
     "object-assign": "^4.0.1",
     "strip-indent": "^1.0.1"
@@ -32,7 +32,7 @@
     "eslint": "^1.10.3",
     "eslint-config-hexo": "^1.0.2",
     "istanbul": "^0.4.1",
-    "jscs": "^2.6.0",
+    "jscs": "^2.7.0",
     "jscs-preset-hexo": "^1.0.1",
     "mocha": "^2.3.4"
   }

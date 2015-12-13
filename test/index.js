@@ -38,7 +38,6 @@ describe('Marked renderer', function() {
   });
 
   it('should render headings with links', function() {
-
     var body = [
       '## [hexo-server]',
       '',
@@ -48,8 +47,8 @@ describe('Marked renderer', function() {
     var result = r({text: body});
 
     result.should.eql([
-        '<h2 id="hexo-server"><a href="#hexo-server" class="headerlink" title="hexo-server"></a>',
-        '<a href="https://github.com/hexojs/hexo-server">hexo-server</a></h2>'
-      ].join(''));
+      '<h2 id="hexo-server"><a href="#hexo-server" class="headerlink" title="hexo-server"></a>',
+      '<a href="https://github.com/hexojs/hexo-server">hexo-server</a></h2>'
+    ].join(''));
   });
 });
