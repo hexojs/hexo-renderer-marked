@@ -56,6 +56,8 @@ describe('Marked renderer', function() {
       '',
       '[link text](/path/to/link)',
       '',
+      '[link to anchor](#Hello_world)',
+      '',
       '![img](/path/to/img)'
     ].join('\n');
 
@@ -67,6 +69,7 @@ describe('Marked renderer', function() {
         '<h2 id="Hello_world-1"><a href="#Hello_world-1" class="headerlink" title="Hello world"></a>Hello world</h2>',
         '<p>hello</p>\n',
         '<p><a href="/path/to/link">link text</a></p>\n',
+        '<p><a href="#Hello_world">link to anchor</a></p>\n',
         '<p><img src="/path/to/img" alt="img"></p>'
       ].join('') + '\n');
 
@@ -78,6 +81,7 @@ describe('Marked renderer', function() {
         '<h2 id="Hello_world-1"><a href="#Hello_world-1" class="headerlink" title="Hello world"></a>Hello world</h2>',
         '<p>hello</p>\n',
         '<p><a href="/root/path/to/link">link text</a></p>\n',
+        '<p><a href="#Hello_world">link to anchor</a></p>\n',
         '<p><img src="/root/path/to/img" alt="img"></p>'
       ].join('') + '\n');
   });
