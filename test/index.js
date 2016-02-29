@@ -59,7 +59,7 @@ describe('Marked renderer', function() {
     result.should.eql('<h1 id="中文"><a href="#中文" class="headerlink" title="中文"></a>中文</h1>');
   });
 
-  describe('modifyAnchors option tests', function () {
+  describe('modifyAnchors option tests', function() {
     var body = [
       '- [Example](#example)',
       '',
@@ -76,7 +76,7 @@ describe('Marked renderer', function() {
       }
     };
 
-    it('should not modify anchors with default options', function () {
+    it('should not modify anchors with default options', function() {
       var r = renderer.bind(ctx);
       var result = r({text: body});
 
@@ -88,7 +88,7 @@ describe('Marked renderer', function() {
       ].join('\n'));
     });
 
-    it('should set anchors to upperCase in case of modifyAnchors option is 2', function () {
+    it('should set anchors to upperCase in case of modifyAnchors option is 2', function() {
       ctx.config.marked.modifyAnchors = 2;
       var r = renderer.bind(ctx);
       var result = r({text: body});
@@ -101,7 +101,7 @@ describe('Marked renderer', function() {
       ].join('\n'));
     });
 
-    it('should set anchors to lowerCase in case of modifyAnchors option is 1', function () {
+    it('should set anchors to lowerCase in case of modifyAnchors option is 1', function() {
       ctx.config.marked.modifyAnchors = 1;
       var r = renderer.bind(ctx);
       var result = r({text: body});
