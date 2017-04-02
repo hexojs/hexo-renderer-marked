@@ -58,4 +58,60 @@ describe('Marked renderer', function() {
 
     result.should.eql('<h1 id="中文"><a href="#中文" class="headerlink" title="中文"></a>中文</h1>');
   });
+
+  describe('modifyAnchors option tests', function() {
+    var body = [
+      '- [Example](#example)',
+      '',
+      '# Example'
+    ].join('\n');
+
+    var renderer = require('../lib/renderer');
+
+    var ctx = {
+      config: {
+        marked: {
+          modifyAnchors: ''
+        }
+      }
+    };
+
+    it('should not modify anchors with default options', function() {
+      var r = renderer.bind(ctx);
+      var result = r({text: body});
+
+      result.should.eql([
+        '<ul>',
+        '<li><a href=\"#example\">Example</a></li>',
+        '</ul>',
+        '<h1 id=\"Example\"><a href=\"#Example\" class=\"headerlink\" title=\"Example\"></a>Example</h1>'
+      ].join('\n'));
+    });
+
+    it('should set anchors to upperCase in case of modifyAnchors option is 2', function() {
+      ctx.config.marked.modifyAnchors = 2;
+      var r = renderer.bind(ctx);
+      var result = r({text: body});
+
+      result.should.eql([
+        '<ul>',
+        '<li><a href=\"#example\">Example</a></li>',
+        '</ul>',
+        '<h1 id=\"EXAMPLE\"><a href=\"#EXAMPLE\" class=\"headerlink\" title=\"Example\"></a>Example</h1>'
+      ].join('\n'));
+    });
+
+    it('should set anchors to lowerCase in case of modifyAnchors option is 1', function() {
+      ctx.config.marked.modifyAnchors = 1;
+      var r = renderer.bind(ctx);
+      var result = r({text: body});
+
+      result.should.eql([
+        '<ul>',
+        '<li><a href=\"#example\">Example</a></li>',
+        '</ul>',
+        '<h1 id=\"example\"><a href=\"#example\" class=\"headerlink\" title=\"Example\"></a>Example</h1>'
+      ].join('\n'));
+    });
+  });
 });

@@ -26,6 +26,7 @@ marked:
   breaks: true
   smartLists: true
   smartypants: true
+  modifyAnchors: ''
 ```
 
 - **gfm** - Enables [GitHub flavored markdown](https://help.github.com/articles/github-flavored-markdown)
@@ -35,6 +36,7 @@ marked:
 - **breaks** - Enable GFM [line breaks](https://help.github.com/articles/github-flavored-markdown#newlines). This option requires the `gfm` option to be true.
 - **smartLists** - Use smarter list behavior than the original markdown.
 - **smartypants** - Use "smart" typograhic punctuation for things like quotes and dashes.
+- **modifyAnchors** - Use for transform anchorIds. if 1 to lowerCase and if 2 to upperCase.
 
 [Markdown]: http://daringfireball.net/projects/markdown/
 [marked]: https://github.com/chjj/marked
