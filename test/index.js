@@ -65,10 +65,8 @@ describe('Marked renderer', function() {
       '- [x] test checked',
       '- normal list [x] [ ]',
       '',
-      'normal text [x] [ ]',
-      '',
-      '[x] [ ] normal text'
-      ].join('\n') + '\n';
+      'normal text [x] [ ]'
+      ].join('\n');
 
     var result = r({text: body});
 
@@ -78,8 +76,7 @@ describe('Marked renderer', function() {
       '<li style="list-style: none"><input type="checkbox" checked></input> test checked</li>',
       '<li>normal list [x] [ ]</li>',
       '</ul>',
-      '<p>normal text [x] [ ]</p>',
-      '<p>[x] [ ] normal text</p>'
+      '<p>normal text [x] [ ]</p>'
       ].join('\n'));
   });
 
