@@ -65,7 +65,9 @@ describe('Marked renderer', function() {
       '- [x] test checked',
       '- normal list [x] [ ]',
       '',
-      'normal text [x] [ ]'
+      'normal text [x] [ ]',
+      '',
+      '[x] [ ] normal text'
       ].join('\n');
 
     var result = r({text: body});
