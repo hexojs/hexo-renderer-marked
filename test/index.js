@@ -67,9 +67,9 @@ describe('Marked renderer', function() {
       '',
       'normal text [x] [ ]',
       '',
-      '[x] [ ] normal text',
-      ''
-      ].join('\n');
+      '[x] [ ] normal text'
+      ].join('\n') + '\n';
+
     var result = r({text: body});
 
     result.should.eql([
