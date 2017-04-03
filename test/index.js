@@ -59,6 +59,30 @@ describe('Marked renderer', function() {
     result.should.eql('<h1 id="中文"><a href="#中文" class="headerlink" title="中文"></a>中文</h1>');
   });
 
+  it('to-do list testing', function() {
+    var body = [
+      '- [ ] test unchecked',
+      '- [x] test checked',
+      '- normal list [x] [ ]',
+      '',
+      'normal text [x] [ ]',
+      '',
+      '[x] [ ] normal text'
+      ].join('\n');
+
+    var result = r({text: body});
+
+    result.should.eql([
+      '<ul>',
+      '<li style="list-style: none"><input type="checkbox"></input> test unchecked</li>',
+      '<li style="list-style: none"><input type="checkbox" checked></input> test checked</li>',
+      '<li>normal list [x] [ ]</li>',
+      '</ul>',
+      '<p>normal text [x] [ ]</p>',
+      '<p>[x] [ ] normal text</p>'
+      ].join('\n') + '\n');
+  });
+
   describe('modifyAnchors option tests', function() {
     var body = [
       '- [Example](#example)',
