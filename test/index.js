@@ -78,8 +78,9 @@ describe('Marked renderer', function() {
       '<li style="list-style: none"><input type="checkbox" checked></input> test checked</li>',
       '<li>normal list [x] [ ]</li>',
       '</ul>',
-      '<p>normal text [x] [ ]</p>'
-      ].join('\n'));
+      '<p>normal text [x] [ ]</p>',
+      '<p>[x] [ ] normal text</p>'
+      ].join('\n') + '\n');
   });
 
   describe('modifyAnchors option tests', function() {
