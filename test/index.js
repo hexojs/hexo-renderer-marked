@@ -105,8 +105,8 @@ describe('Marked renderer', function() {
       var result = r({text: body});
 
       result.should.eql([
-        '<p>Great website <a href="http://hexo.io">http://hexo.io</a>',
-        '<p><a href="http://hexo.io">Hexo</a>'
+        '<p>Great website <a href="http://hexo.io">http://hexo.io</a></p>',
+        '<p><a href="http://hexo.io">Hexo</a></p>'
       ].join('\n'));
     });
 
@@ -116,8 +116,8 @@ describe('Marked renderer', function() {
       var result = r({text: body});
 
       result.should.eql([
-        '<p>Great website http://hexo.io',
-        '<p><a href="http://hexo.io">Hexo</a>'
+        '<p>Great website http://hexo.io</p>',
+        '<p><a href="http://hexo.io">Hexo</a></p>'
       ].join('\n'));
     });
   });
