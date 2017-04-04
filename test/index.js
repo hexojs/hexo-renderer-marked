@@ -83,6 +83,45 @@ describe('Marked renderer', function() {
       ].join('\n') + '\n');
   });
 
+  describe('autolink option tests', function() {
+    var ctx = {
+      config: {
+        marked: {
+          autolink: true
+        }
+      }
+    };
+
+    var renderer = require('../lib/renderer');
+
+    var body = [
+      'Great website http://hexo.io',
+      '',
+      '[Hexo](http://hexo.io)'
+    ].join('\n');
+
+    it('autolink enabled', function() {
+      var r = renderer.bind(ctx);
+      var result = r({text: body});
+
+      result.should.eql([
+        '<p>Great website <a href="http://hexo.io">http://hexo.io</a>',
+        '<p><a href="http://hexo.io">Hexo</a>
+      ].join('\n'));
+    });
+
+    it('autolink disabled', function() {
+      ctx.config.marked.autolink = false;
+      var r = renderer.bind(ctx);
+      var result = r({text: body});
+
+      result.should.eql([
+        '<p>Great website http://hexo.io',
+        '<p><a href="http://hexo.io">Hexo</a>
+      ].join('\n'));
+    });
+  });
+
   describe('modifyAnchors option tests', function() {
     var body = [
       '- [Example](#example)',
