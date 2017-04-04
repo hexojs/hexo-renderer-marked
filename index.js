@@ -13,7 +13,8 @@ hexo.config.marked = assign({
   breaks: true,
   smartLists: true,
   smartypants: true,
-  modifyAnchors: ''
+  modifyAnchors: '',
+  autolink: true
 }, hexo.config.marked);
 
 hexo.extend.renderer.register('md', 'html', renderer, true);
