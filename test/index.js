@@ -73,14 +73,14 @@ describe('Marked renderer', function() {
     var result = r({text: body});
 
     result.should.eql([
-      '<ul>',
-      '<li style="list-style: none"><input type="checkbox"></input> test unchecked</li>',
-      '<li style="list-style: none"><input type="checkbox" checked></input> test checked</li>',
-      '<li>normal list [x] [ ]</li>',
-      '</ul>',
-      '<p>normal text [x] [ ]</p>',
-      '<p>[x] [ ] normal text</p>'
-      ].join('\n') + '\n');
+      '<ul>\n',
+      '<li style="list-style: none"><input type="checkbox"></input> test unchecked</li>\n',
+      '<li style="list-style: none"><input type="checkbox" checked></input> test checked</li>\n',
+      '<li>normal list [x] [ ]</li>\n',
+      '</ul>\n',
+      '<p>normal text [x] [ ]</p>\n',
+      '<p>[x] [ ] normal text</p>\n'
+      ].join(''));
   });
 
   describe('autolink option tests', function() {
@@ -105,9 +105,9 @@ describe('Marked renderer', function() {
       var result = r({text: body});
 
       result.should.eql([
-        '<p>Great website <a href="http://hexo.io">http://hexo.io</a></p>',
-        '<p><a href="http://hexo.io">Hexo</a></p>'
-      ].join('\n'));
+        '<p>Great website <a href="http://hexo.io">http://hexo.io</a></p>\n',
+        '<p><a href="http://hexo.io">Hexo</a></p>\n'
+      ].join(''));
     });
 
     it('autolink disabled', function() {
@@ -116,9 +116,9 @@ describe('Marked renderer', function() {
       var result = r({text: body});
 
       result.should.eql([
-        '<p>Great website http://hexo.io</p>',
-        '<p><a href="http://hexo.io">Hexo</a></p>'
-      ].join('\n'));
+        '<p>Great website http://hexo.io</p>\n',
+        '<p><a href="http://hexo.io">Hexo</a></p>\n'
+      ].join(''));
     });
   });
 
