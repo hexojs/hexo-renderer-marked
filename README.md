@@ -38,7 +38,7 @@ marked:
 - **smartLists** - Use smarter list behavior than the original markdown.
 - **smartypants** - Use "smart" typograhic punctuation for things like quotes and dashes.
 - **modifyAnchors** - Use for transform anchorIds. if 1 to lowerCase and if 2 to upperCase.
-- **autolink** - Enable autolink for URLs. E.g. `http://hexo.io` will become `<a herf="http://hexo.io">http://hexo.io</a>`.
+- **autolink** - Enable autolink for URLs. E.g. `http://hexo.io` will become `<a href="http://hexo.io">http://hexo.io</a>`.
 
 [Markdown]: http://daringfireball.net/projects/markdown/
 [marked]: https://github.com/chjj/marked
