@@ -27,7 +27,8 @@ marked:
   smartLists: true
   smartypants: true
   modifyAnchors: ''
-  autolink: true
+  autolink: true,
+  swigRaw: false
 ```
 
 - **gfm** - Enables [GitHub flavored markdown](https://help.github.com/articles/github-flavored-markdown)
@@ -39,6 +40,7 @@ marked:
 - **smartypants** - Use "smart" typograhic punctuation for things like quotes and dashes.
 - **modifyAnchors** - Use for transform anchorIds. if 1 to lowerCase and if 2 to upperCase.
 - **autolink** - Enable autolink for URLs. E.g. `http://hexo.io` will become `<a href="http://hexo.io">http://hexo.io</a>`.
+- **swigRaw** - Escape the output in a swig `{% raw %}` tag. This will keep your template from being parse by the default hexo swig renderer.
 
 [Markdown]: http://daringfireball.net/projects/markdown/
 [marked]: https://github.com/chjj/marked

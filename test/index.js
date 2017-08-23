@@ -177,4 +177,28 @@ describe('Marked renderer', function() {
       ].join('\n'));
     });
   });
+
+  describe('swigRaw option true', function() {
+    var ctx = {
+      config: {
+        marked: {
+          swigRaw: true
+        }
+      }
+    };
+
+    var renderer = require('../lib/renderer');
+
+    var body = '{{foo}}';
+
+    it('returnd values are escaped', function() {
+      var r = renderer.bind(ctx);
+      var result = r({text: body});
+
+      result.should.eql([
+        '{% raw %}<p>{{foo}}</p>',
+        '{% endraw %}'
+      ].join('\n'));
+    });
+  });
 });
