@@ -1,6 +1,8 @@
 # hexo-renderer-marked
 
-[![Build Status](https://travis-ci.org/hexojs/hexo-renderer-marked.svg?branch=master)](https://travis-ci.org/hexojs/hexo-renderer-marked)  [![NPM version](https://badge.fury.io/js/hexo-renderer-marked.svg)](http://badge.fury.io/js/hexo-renderer-marked) [![Coverage Status](https://img.shields.io/coveralls/hexojs/hexo-renderer-marked.svg)](https://coveralls.io/r/hexojs/hexo-renderer-marked?branch=master)
+[![Build Status](https://travis-ci.org/hexojs/hexo-renderer-marked.svg?branch=master)](https://travis-ci.org/hexojs/hexo-renderer-marked)  [![NPM version](https://badge.fury.io/js/hexo-renderer-marked.svg)](https://www.npmjs.com/package/hexo-renderer-marked) [![Coverage Status](https://img.shields.io/coveralls/hexojs/hexo-renderer-marked.svg)](https://coveralls.io/r/hexojs/hexo-renderer-marked?branch=master)
+[![NPM Dependencies](https://david-dm.org/hexojs/hexo-renderer-marked.svg)](https://david-dm.org/hexojs/hexo-renderer-marked)
+[![NPM DevDependencies](https://david-dm.org/hexojs/hexo-renderer-marked/dev-status.svg)](https://david-dm.org/mamboer/hexojs/hexo-renderer-marked?type=dev)
 
 Add support for [Markdown]. This plugin uses [marked] as render engine.
 
@@ -38,7 +40,7 @@ marked:
 - **smartLists** - Use smarter list behavior than the original markdown.
 - **smartypants** - Use "smart" typograhic punctuation for things like quotes and dashes.
 - **modifyAnchors** - Use for transform anchorIds. if 1 to lowerCase and if 2 to upperCase.
-- **autolink** - Enable autolink for URLs. E.g. `http://hexo.io` will become `<a href="http://hexo.io">http://hexo.io</a>`.
+- **autolink** - Enable autolink for URLs. E.g. `https://hexo.io` will become `<a href="https://hexo.io">https://hexo.io</a>`.
 
-[Markdown]: http://daringfireball.net/projects/markdown/
+[Markdown]: https://daringfireball.net/projects/markdown/
 [marked]: https://github.com/chjj/marked
