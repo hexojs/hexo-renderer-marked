@@ -30,11 +30,11 @@ describe('Marked renderer', function() {
     var result = r({text: body});
 
     result.should.eql([
-        '<h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1>',
-        '<pre><code>' + util.highlight(code, {gutter: false, wrap: false}) + '\n</code></pre>',
-        '<h2 id="Hello-world-1"><a href="#Hello-world-1" class="headerlink" title="Hello world"></a>Hello world</h2>',
-        '<p>hello</p>'
-      ].join('') + '\n');
+      '<h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1>',
+      '<pre><code>' + util.highlight(code, {gutter: false, wrap: false}) + '\n</code></pre>',
+      '<h2 id="Hello-world-1"><a href="#Hello-world-1" class="headerlink" title="Hello world"></a>Hello world</h2>',
+      '<p>hello</p>'
+    ].join('') + '\n');
   });
 
   it('should render headings with links', function() {
@@ -68,7 +68,7 @@ describe('Marked renderer', function() {
       'normal text [x] [ ]',
       '',
       '[x] [ ] normal text'
-      ].join('\n');
+    ].join('\n');
 
     var result = r({text: body});
 
@@ -80,7 +80,7 @@ describe('Marked renderer', function() {
       '</ul>\n',
       '<p>normal text [x] [ ]</p>\n',
       '<p>[x] [ ] normal text</p>\n'
-      ].join(''));
+    ].join(''));
   });
 
   describe('autolink option tests', function() {
