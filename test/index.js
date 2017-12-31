@@ -83,6 +83,33 @@ describe('Marked renderer', function() {
     ].join(''));
   });
 
+  // Description List tests
+
+  it('should render description lists with a single space after the colon', function() {
+    var result = r({text: 'Description Term<br>: This is the Description'});
+    result.should.eql('<dl><dt>Description Term</dt><dd>This is the Description</dd></dl>');
+  });
+
+  it('should render description lists with multiple spaces after the colon', function() {
+    var result = r({text: 'Description Term<br>:    This is the Description'});
+    result.should.eql('<dl><dt>Description Term</dt><dd>This is the Description</dd></dl>');
+  });
+
+  it('should render description lists with a tab after the colon', function() {
+    var result = r({text: 'Description Term<br>:	This is the Description'});
+    result.should.eql('<dl><dt>Description Term</dt><dd>This is the Description</dd></dl>');
+  });
+
+  it('should render description lists with a carriage return after the colon', function() {
+    var result = r({text: 'Description Term<br>:\nThis is the Description'});
+    result.should.eql('<dl><dt>Description Term</dt><dd>This is the Description</dd></dl>');
+  });
+
+  it('should not render regular paragraphs as description lists', function() {
+    var result = r({text: 'Description Term<br>:This is the Description'});
+    result.should.eql('<p>Description Term<br>:This is the Description</p>\n');
+  });
+
   describe('autolink option tests', function() {
     var ctx = {
       config: {
