@@ -14,6 +14,7 @@ hexo.config.marked = assign({
   smartLists: true,
   smartypants: true,
   modifyAnchors: '',
+  anchorAlias: false,
   autolink: true
 }, hexo.config.marked);
 

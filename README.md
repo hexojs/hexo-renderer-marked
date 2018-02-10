@@ -29,6 +29,7 @@ marked:
   smartLists: true
   smartypants: true
   modifyAnchors: ''
+  anchorAlias: false
   autolink: true
 ```
 
@@ -40,6 +41,7 @@ marked:
 - **smartLists** - Use smarter list behavior than the original markdown.
 - **smartypants** - Use "smart" typograhic punctuation for things like quotes and dashes.
 - **modifyAnchors** - Use for transform anchorIds. if 1 to lowerCase and if 2 to upperCase.
+- **anchorAlias** - For link in headings, use href as anchor ID alias. E.g. `## [Anchor](#alias)` will become `<h2><a href="#alias">Anchor</a></h2>`
 - **autolink** - Enable autolink for URLs. E.g. `https://hexo.io` will become `<a href="https://hexo.io">https://hexo.io</a>`.
 
 ## Extras
