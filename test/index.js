@@ -74,8 +74,8 @@ describe('Marked renderer', function() {
 
     result.should.eql([
       '<ul>\n',
-      '<li style="list-style: none"><input type="checkbox"></input> test unchecked</li>\n',
-      '<li style="list-style: none"><input type="checkbox" checked></input> test checked</li>\n',
+      '<li style="list-style: none"><input type="checkbox" disabled></input> test unchecked</li>\n',
+      '<li style="list-style: none"><input type="checkbox" disabled checked></input> test checked</li>\n',
       '<li>normal list [x] [ ]</li>\n',
       '</ul>\n',
       '<p>normal text [x] [ ]</p>\n',
