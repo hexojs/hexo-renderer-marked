@@ -2,6 +2,7 @@
 
 var should = require('chai').should(); // eslint-disable-line
 var util = require('hexo-util');
+var katex = require('katex');
 
 describe('Marked renderer', function() {
   var ctx = {
@@ -34,6 +35,22 @@ describe('Marked renderer', function() {
       '<pre><code>' + util.highlight(code, {gutter: false, wrap: false}) + '\n</code></pre>',
       '<h2 id="Hello-world-1"><a href="#Hello-world-1" class="headerlink" title="Hello world"></a>Hello world</h2>',
       '<p>hello</p>'
+    ].join('') + '\n');
+  });
+
+  it('KaTeX code', function() {
+    var code = '2.6 \\times 10 ^ {-5}';
+
+    var body = [
+      '```math',
+      code,
+      '```'
+    ].join('\n');
+
+    var result = r({text: body});
+
+    result.should.eql([
+      '<pre><code class="math">' + katex.renderToString(code, {throwOnError: false}) + '\n</code></pre>'
     ].join('') + '\n');
   });
 
