@@ -34,7 +34,7 @@
     "chai": "^4.1.2",
     "eslint": "^4.13.1",
     "babel-eslint": "^8.0.3",
-    "eslint-config-hexo": "^2.0.0",
+    "eslint-config-hexo": "^3.0.0",
     "istanbul": "^0.4.5",
     "jscs": "^3.0.7",
     "jscs-preset-hexo": "^1.0.1",
