@@ -35,6 +35,6 @@
     "babel-eslint": "^10.0.1",
     "eslint-config-hexo": "^3.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^5.2.0"
+    "mocha": "^6.0.0"
   }
 }
