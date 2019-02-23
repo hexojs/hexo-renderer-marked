@@ -12,7 +12,9 @@ hexo.config.marked = assign({
   tables: true,
   breaks: true,
   smartLists: true,
-  smartypants: true
+  smartypants: true,
+  modifyAnchors: '',
+  autolink: true
 }, hexo.config.marked);
 
 hexo.extend.renderer.register('md', 'html', renderer, true);
