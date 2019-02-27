@@ -59,30 +59,6 @@ describe('Marked renderer', function() {
     result.should.eql('<h1 id="中文"><a href="#中文" class="headerlink" title="中文"></a>中文</h1>');
   });
 
-  it('to-do list testing', function() {
-    var body = [
-      '- [ ] test unchecked',
-      '- [x] test checked',
-      '- normal list [x] [ ]',
-      '',
-      'normal text [x] [ ]',
-      '',
-      '[x] [ ] normal text'
-    ].join('\n');
-
-    var result = r({text: body});
-
-    result.should.eql([
-      '<ul>\n',
-      '<li><input disabled="" type="checkbox"> test unchecked</li>\n',
-      '<li><input checked="" disabled="" type="checkbox"> test checked</li>\n',
-      '<li>normal list [x] [ ]</li>\n',
-      '</ul>\n',
-      '<p>normal text [x] [ ]</p>\n',
-      '<p>[x] [ ] normal text</p>\n'
-    ].join(''));
-  });
-
   // Description List tests
 
   it('should render description lists with a single space after the colon', function() {
