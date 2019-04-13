@@ -36,5 +36,8 @@
     "eslint-config-hexo": "^3.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=6.9.0"
   }
 }
