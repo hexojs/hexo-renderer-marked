@@ -32,7 +32,7 @@ describe('Marked renderer', function() {
 
     result.should.eql([
       '<h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1>',
-      '<pre><code>' + util.highlight(code, {gutter: false, wrap: false}) + '\n</code></pre>',
+      '<pre><code>' + util.highlight(code, {gutter: false, wrap: false}) + '</code></pre>',
       '<h2 id="Hello-world-1"><a href="#Hello-world-1" class="headerlink" title="Hello world"></a>Hello world</h2>',
       '<p>hello</p>'
     ].join('') + '\n');
@@ -74,30 +74,6 @@ describe('Marked renderer', function() {
     var result = r({text: body});
 
     result.should.eql('<h1 id="中文"><a href="#中文" class="headerlink" title="中文"></a>中文</h1>');
-  });
-
-  it('to-do list testing', function() {
-    var body = [
-      '- [ ] test unchecked',
-      '- [x] test checked',
-      '- normal list [x] [ ]',
-      '',
-      'normal text [x] [ ]',
-      '',
-      '[x] [ ] normal text'
-    ].join('\n');
-
-    var result = r({text: body});
-
-    result.should.eql([
-      '<ul>\n',
-      '<li style="list-style: none"><input type="checkbox"></input> test unchecked</li>\n',
-      '<li style="list-style: none"><input type="checkbox" checked></input> test checked</li>\n',
-      '<li>normal list [x] [ ]</li>\n',
-      '</ul>\n',
-      '<p>normal text [x] [ ]</p>\n',
-      '<p>[x] [ ] normal text</p>\n'
-    ].join(''));
   });
 
   // Description List tests
