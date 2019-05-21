@@ -1,17 +1,20 @@
 {
   "name": "hexo-renderer-marked",
-  "version": "0.3.2",
+  "version": "1.0.1",
   "description": "Markdown renderer plugin for Hexo",
   "main": "index",
   "scripts": {
     "eslint": "eslint .",
-    "jscs": "jscs .",
     "test": "mocha test/index.js",
     "test-cov": "istanbul cover --print both _mocha -- test/index.js"
   },
   "directories": {
     "lib": "./lib"
   },
+  "files": [
+    "lib",
+    "index.js"
+  ],
   "repository": "hexojs/hexo-renderer-marked",
   "keywords": [
     "hexo",
@@ -26,18 +29,18 @@
   "license": "MIT",
   "dependencies": {
     "hexo-util": "^0.6.2",
-    "marked": "^0.3.9",
-    "object-assign": "^4.1.1",
+    "marked": "^0.6.1",
     "strip-indent": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "eslint": "^4.13.1",
-    "babel-eslint": "^8.0.3",
-    "eslint-config-hexo": "^2.0.0",
+    "eslint": "^5.9.0",
+    "babel-eslint": "^10.0.1",
+    "eslint-config-hexo": "^3.0.0",
     "istanbul": "^0.4.5",
-    "jscs": "^3.0.7",
-    "jscs-preset-hexo": "^1.0.1",
-    "mocha": "^4.0.1"
+    "mocha": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=6.9.0"
   }
 }
