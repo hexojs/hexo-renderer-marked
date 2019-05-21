@@ -3,9 +3,8 @@
 'use strict';
 
 var renderer = require('./lib/renderer');
-var assign = require('object-assign');
 
-hexo.config.marked = assign({
+hexo.config.marked = Object.assign({
   gfm: true,
   pedantic: false,
   sanitize: false,
