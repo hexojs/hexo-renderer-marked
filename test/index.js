@@ -30,11 +30,11 @@ describe('Marked renderer', function() {
     var result = r({text: body});
 
     result.should.eql([
-        '<h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1>',
-        '<pre><code>' + util.highlight(code, {gutter: false, wrap: false}) + '\n</code></pre>',
-        '<h2 id="Hello-world-1"><a href="#Hello-world-1" class="headerlink" title="Hello world"></a>Hello world</h2>',
-        '<p>hello</p>'
-      ].join('') + '\n');
+      '<h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1>',
+      '<pre><code>' + util.highlight(code, {gutter: false, wrap: false}) + '</code></pre>',
+      '<h2 id="Hello-world-1"><a href="#Hello-world-1" class="headerlink" title="Hello world"></a>Hello world</h2>',
+      '<p>hello</p>'
+    ].join('') + '\n');
   });
 
   it('should render headings with links', function() {
@@ -59,28 +59,31 @@ describe('Marked renderer', function() {
     result.should.eql('<h1 id="中文"><a href="#中文" class="headerlink" title="中文"></a>中文</h1>');
   });
 
-  it('to-do list testing', function() {
-    var body = [
-      '- [ ] test unchecked',
-      '- [x] test checked',
-      '- normal list [x] [ ]',
-      '',
-      'normal text [x] [ ]',
-      '',
-      '[x] [ ] normal text'
-      ].join('\n');
+  // Description List tests
 
-    var result = r({text: body});
+  it('should render description lists with a single space after the colon', function() {
+    var result = r({text: 'Description Term<br>: This is the Description'});
+    result.should.eql('<dl><dt>Description Term</dt><dd>This is the Description</dd></dl>');
+  });
 
-    result.should.eql([
-      '<ul>\n',
-      '<li style="list-style: none"><input type="checkbox"></input> test unchecked</li>\n',
-      '<li style="list-style: none"><input type="checkbox" checked></input> test checked</li>\n',
-      '<li>normal list [x] [ ]</li>\n',
-      '</ul>\n',
-      '<p>normal text [x] [ ]</p>\n',
-      '<p>[x] [ ] normal text</p>\n'
-      ].join(''));
+  it('should render description lists with multiple spaces after the colon', function() {
+    var result = r({text: 'Description Term<br>:    This is the Description'});
+    result.should.eql('<dl><dt>Description Term</dt><dd>This is the Description</dd></dl>');
+  });
+
+  it('should render description lists with a tab after the colon', function() {
+    var result = r({text: 'Description Term<br>:	This is the Description'});
+    result.should.eql('<dl><dt>Description Term</dt><dd>This is the Description</dd></dl>');
+  });
+
+  it('should render description lists with a carriage return after the colon', function() {
+    var result = r({text: 'Description Term<br>:\nThis is the Description'});
+    result.should.eql('<dl><dt>Description Term</dt><dd>This is the Description</dd></dl>');
+  });
+
+  it('should not render regular paragraphs as description lists', function() {
+    var result = r({text: 'Description Term<br>:This is the Description'});
+    result.should.eql('<p>Description Term<br>:This is the Description</p>\n');
   });
 
   describe('autolink option tests', function() {
