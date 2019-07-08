@@ -7,8 +7,6 @@ var renderer = require('./lib/renderer');
 hexo.config.marked = Object.assign({
   gfm: true,
   pedantic: false,
-  sanitize: false,
-  tables: true,
   breaks: true,
   smartLists: true,
   smartypants: true,
