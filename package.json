@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^5.16.0",
+    "eslint": "^6.0.1",
     "babel-eslint": "^10.0.1",
     "eslint-config-hexo": "^3.0.0",
     "istanbul": "^0.4.5",
