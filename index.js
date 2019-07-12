@@ -11,7 +11,8 @@ hexo.config.marked = Object.assign({
   smartLists: true,
   smartypants: true,
   modifyAnchors: '',
-  autolink: true
+  autolink: true,
+  sanitizeUrl: false
 }, hexo.config.marked);
 
 hexo.extend.renderer.register('md', 'html', renderer, true);

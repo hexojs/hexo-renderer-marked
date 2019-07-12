@@ -28,6 +28,7 @@ marked:
   smartypants: true
   modifyAnchors: ''
   autolink: true
+  sanitizeUrl: false
 ```
 
 - **gfm** - Enables [GitHub flavored markdown](https://help.github.com/articles/github-flavored-markdown)
@@ -37,6 +38,7 @@ marked:
 - **smartypants** - Use "smart" typograhic punctuation for things like quotes and dashes.
 - **modifyAnchors** - Use for transform anchorIds. if `1` to lowerCase and if `2` to upperCase. **Must be integer**.
 - **autolink** - Enable autolink for URLs. E.g. `https://hexo.io` will become `<a href="https://hexo.io">https://hexo.io</a>`.
+- **sanitizeUrl** - Remove URLs that start with `javascript:`, `vbscript:` and `data:`.
 
 ## Extras
 
