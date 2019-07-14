@@ -1,21 +1,21 @@
 'use strict';
 
-var should = require('chai').should(); // eslint-disable-line
-var util = require('hexo-util');
+const should = require('chai').should(); // eslint-disable-line
+const util = require('hexo-util');
 
-describe('Marked renderer', function() {
-  var ctx = {
+describe('Marked renderer', () => {
+  const ctx = {
     config: {
       marked: {}
     }
   };
 
-  var r = require('../lib/renderer').bind(ctx);
+  const r = require('../lib/renderer').bind(ctx);
 
-  it('default', function() {
-    var code = 'console.log("Hello world");';
+  it('default', () => {
+    const code = 'console.log("Hello world");';
 
-    var body = [
+    const body = [
       '# Hello world',
       '',
       '```',
@@ -27,7 +27,7 @@ describe('Marked renderer', function() {
       'hello'
     ].join('\n');
 
-    var result = r({text: body});
+    const result = r({text: body});
 
     result.should.eql([
       '<h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1>',
@@ -37,14 +37,14 @@ describe('Marked renderer', function() {
     ].join('') + '\n');
   });
 
-  it('should render headings with links', function() {
-    var body = [
+  it('should render headings with links', () => {
+    const body = [
       '## [hexo-server]',
       '',
       '[hexo-server]: https://github.com/hexojs/hexo-server'
     ].join('\n');
 
-    var result = r({text: body});
+    const result = r({text: body});
 
     result.should.eql([
       '<h2 id="hexo-server"><a href="#hexo-server" class="headerlink" title="hexo-server"></a>',
@@ -52,42 +52,42 @@ describe('Marked renderer', function() {
     ].join(''));
   });
 
-  it('should handle chinese headers properly', function() {
-    var body = '# 中文';
-    var result = r({text: body});
+  it('should handle chinese headers properly', () => {
+    const body = '# 中文';
+    const result = r({text: body});
 
     result.should.eql('<h1 id="中文"><a href="#中文" class="headerlink" title="中文"></a>中文</h1>');
   });
 
   // Description List tests
 
-  it('should render description lists with a single space after the colon', function() {
-    var result = r({text: 'Description Term<br>: This is the Description'});
+  it('should render description lists with a single space after the colon', () => {
+    const result = r({text: 'Description Term<br>: This is the Description'});
     result.should.eql('<dl><dt>Description Term</dt><dd>This is the Description</dd></dl>');
   });
 
-  it('should render description lists with multiple spaces after the colon', function() {
-    var result = r({text: 'Description Term<br>:    This is the Description'});
+  it('should render description lists with multiple spaces after the colon', () => {
+    const result = r({text: 'Description Term<br>:    This is the Description'});
     result.should.eql('<dl><dt>Description Term</dt><dd>This is the Description</dd></dl>');
   });
 
-  it('should render description lists with a tab after the colon', function() {
-    var result = r({text: 'Description Term<br>:	This is the Description'});
+  it('should render description lists with a tab after the colon', () => {
+    const result = r({text: 'Description Term<br>:	This is the Description'});
     result.should.eql('<dl><dt>Description Term</dt><dd>This is the Description</dd></dl>');
   });
 
-  it('should render description lists with a carriage return after the colon', function() {
-    var result = r({text: 'Description Term<br>:\nThis is the Description'});
+  it('should render description lists with a carriage return after the colon', () => {
+    const result = r({text: 'Description Term<br>:\nThis is the Description'});
     result.should.eql('<dl><dt>Description Term</dt><dd>This is the Description</dd></dl>');
   });
 
-  it('should not render regular paragraphs as description lists', function() {
-    var result = r({text: 'Description Term<br>:This is the Description'});
+  it('should not render regular paragraphs as description lists', () => {
+    const result = r({text: 'Description Term<br>:This is the Description'});
     result.should.eql('<p>Description Term<br>:This is the Description</p>\n');
   });
 
-  describe('autolink option tests', function() {
-    var ctx = {
+  describe('autolink option tests', () => {
+    const ctx = {
       config: {
         marked: {
           autolink: true
@@ -95,17 +95,17 @@ describe('Marked renderer', function() {
       }
     };
 
-    var renderer = require('../lib/renderer');
+    const renderer = require('../lib/renderer');
 
-    var body = [
+    const body = [
       'Great website http://hexo.io',
       '',
       '[Hexo](http://hexo.io)'
     ].join('\n');
 
-    it('autolink enabled', function() {
-      var r = renderer.bind(ctx);
-      var result = r({text: body});
+    it('autolink enabled', () => {
+      const r = renderer.bind(ctx);
+      const result = r({text: body});
 
       result.should.eql([
         '<p>Great website <a href="http://hexo.io">http://hexo.io</a></p>\n',
@@ -113,10 +113,10 @@ describe('Marked renderer', function() {
       ].join(''));
     });
 
-    it('autolink disabled', function() {
+    it('autolink disabled', () => {
       ctx.config.marked.autolink = false;
-      var r = renderer.bind(ctx);
-      var result = r({text: body});
+      const r = renderer.bind(ctx);
+      const result = r({text: body});
 
       result.should.eql([
         '<p>Great website http://hexo.io</p>\n',
@@ -125,16 +125,16 @@ describe('Marked renderer', function() {
     });
   });
 
-  describe('modifyAnchors option tests', function() {
-    var body = [
+  describe('modifyAnchors option tests', () => {
+    const body = [
       '- [Example](#example)',
       '',
       '# Example'
     ].join('\n');
 
-    var renderer = require('../lib/renderer');
+    const renderer = require('../lib/renderer');
 
-    var ctx = {
+    const ctx = {
       config: {
         marked: {
           modifyAnchors: ''
@@ -142,9 +142,9 @@ describe('Marked renderer', function() {
       }
     };
 
-    it('should not modify anchors with default options', function() {
-      var r = renderer.bind(ctx);
-      var result = r({text: body});
+    it('should not modify anchors with default options', () => {
+      const r = renderer.bind(ctx);
+      const result = r({text: body});
 
       result.should.eql([
         '<ul>',
@@ -154,10 +154,10 @@ describe('Marked renderer', function() {
       ].join('\n'));
     });
 
-    it('should set anchors to upperCase in case of modifyAnchors option is 2', function() {
+    it('should set anchors to upperCase in case of modifyAnchors option is 2', () => {
       ctx.config.marked.modifyAnchors = 2;
-      var r = renderer.bind(ctx);
-      var result = r({text: body});
+      const r = renderer.bind(ctx);
+      const result = r({text: body});
 
       result.should.eql([
         '<ul>',
@@ -167,10 +167,10 @@ describe('Marked renderer', function() {
       ].join('\n'));
     });
 
-    it('should set anchors to lowerCase in case of modifyAnchors option is 1', function() {
+    it('should set anchors to lowerCase in case of modifyAnchors option is 1', () => {
       ctx.config.marked.modifyAnchors = 1;
-      var r = renderer.bind(ctx);
-      var result = r({text: body});
+      const r = renderer.bind(ctx);
+      const result = r({text: body});
 
       result.should.eql([
         '<ul>',
