@@ -7,13 +7,12 @@ var renderer = require('./lib/renderer');
 hexo.config.marked = Object.assign({
   gfm: true,
   pedantic: false,
-  sanitize: false,
-  tables: true,
   breaks: true,
   smartLists: true,
   smartypants: true,
   modifyAnchors: '',
-  autolink: true
+  autolink: true,
+  sanitizeUrl: false
 }, hexo.config.marked);
 
 hexo.extend.renderer.register('md', 'html', renderer, true);
