@@ -59,6 +59,17 @@ describe('Marked renderer', () => {
     result.should.eql('<h1 id="中文"><a href="#中文" class="headerlink" title="中文"></a>中文</h1>');
   });
 
+  it('should render headings without headerIds when disabled', () => {
+    const body = '## hexo-server';
+    ctx.config.marked.headerIds = false;
+
+    const result = r({text: body});
+
+    result.should.eql([
+      '<h2>hexo-server</h2>'
+    ].join(''));
+  });
+
   // Description List tests
 
   it('should render description lists with a single space after the colon', () => {
