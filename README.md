@@ -29,6 +29,7 @@ marked:
   modifyAnchors: ''
   autolink: true
   sanitizeUrl: false
+  headerIds: true
 ```
 
 - **gfm** - Enables [GitHub flavored markdown](https://help.github.com/articles/github-flavored-markdown)
@@ -39,6 +40,7 @@ marked:
 - **modifyAnchors** - Use for transform anchorIds. if `1` to lowerCase and if `2` to upperCase. **Must be integer**.
 - **autolink** - Enable autolink for URLs. E.g. `https://hexo.io` will become `<a href="https://hexo.io">https://hexo.io</a>`.
 - **sanitizeUrl** - Remove URLs that start with `javascript:`, `vbscript:` and `data:`.
+- **headerIds** - Insert header id, e.g. `<h1 id="value">text</h1>`. Useful for inserting anchor link to each paragraph with a heading.
 
 ## Extras
 
