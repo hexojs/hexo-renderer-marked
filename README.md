@@ -12,6 +12,7 @@ Add support for [Markdown]. This plugin uses [marked] as its render engine.
 $ npm install hexo-renderer-marked --save
 ```
 
+- Hexo 4: >= 2.0
 - Hexo 3: >= 0.2
 - Hexo 2: 0.1.x
 
