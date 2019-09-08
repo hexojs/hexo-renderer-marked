@@ -31,6 +31,7 @@ marked:
   autolink: true
   sanitizeUrl: false
   headerIds: true
+  prependRoot: false
 ```
 
 - **gfm** - Enables [GitHub flavored markdown](https://help.github.com/articles/github-flavored-markdown)
@@ -42,6 +43,13 @@ marked:
 - **autolink** - Enable autolink for URLs. E.g. `https://hexo.io` will become `<a href="https://hexo.io">https://hexo.io</a>`.
 - **sanitizeUrl** - Remove URLs that start with `javascript:`, `vbscript:` and `data:`.
 - **headerIds** - Insert header id, e.g. `<h1 id="value">text</h1>`. Useful for inserting anchor link to each paragraph with a heading.
+- **headerIds** - Insert header id, e.g. `<h1 id="value">text</h1>`. Useful for inserting anchor link to each paragraph with a heading.
+- **prependRoot** - Prepend root value to (internal) image path.
+  * Example `_config.yml`:
+  ``` yml
+  root: /blog/
+  ```
+  * `![text](/path/to/image.jpg)` becomes `<img src="/blog/path/to/image.jpg" alt="text">`
 
 ## Extras
 

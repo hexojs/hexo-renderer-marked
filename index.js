@@ -13,7 +13,9 @@ hexo.config.marked = Object.assign({
   modifyAnchors: '',
   autolink: true,
   sanitizeUrl: false,
-  headerIds: true
+  headerIds: true,
+  // TODO: enable prependRoot by default in v3
+  prependRoot: false
 }, hexo.config.marked);
 
 hexo.extend.renderer.register('md', 'html', renderer, true);
