@@ -97,6 +97,20 @@ describe('Marked renderer', () => {
     result.should.eql('<p>Description Term<br>:This is the Description</p>\n');
   });
 
+  it('should encode URL properly', () => {
+    const body = [
+      '[foo](http://foo.com/bár)',
+      '[bar](http://bár.com/baz)'
+    ].join('\n');
+
+    const result = r({text: body});
+
+    result.should.eql([
+      '<p><a href="http://foo.com/b%C3%A1r">foo</a>',
+      '<a href="http://xn--br-mia.com/baz">bar</a></p>\n'
+    ].join('\n'));
+  });
+
   describe('autolink option tests', () => {
     const ctx = {
       config: {
@@ -119,8 +133,8 @@ describe('Marked renderer', () => {
       const result = r({text: body});
 
       result.should.eql([
-        '<p>Great website <a href="http://hexo.io">http://hexo.io</a></p>\n',
-        '<p><a href="http://hexo.io">Hexo</a></p>\n'
+        '<p>Great website <a href="http://hexo.io/">http://hexo.io</a></p>\n',
+        '<p><a href="http://hexo.io/">Hexo</a></p>\n'
       ].join(''));
     });
 
@@ -131,7 +145,7 @@ describe('Marked renderer', () => {
 
       result.should.eql([
         '<p>Great website http://hexo.io</p>\n',
-        '<p><a href="http://hexo.io">Hexo</a></p>\n'
+        '<p><a href="http://hexo.io/">Hexo</a></p>\n'
       ].join(''));
     });
   });
