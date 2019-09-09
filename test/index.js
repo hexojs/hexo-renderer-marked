@@ -211,6 +211,16 @@ describe('Marked renderer', () => {
     };
 
     it('should not modify image path with default option', () => {
+      const r = renderer.bind(ctx);
+      const result = r({text: body});
+
+      result.should.eql([
+        '<p><img src="/bar/baz.jpg" alt="">',
+        '<img src="/aaa/bbb.jpg" alt="foo"></p>\n'
+      ].join('\n'));
+    });
+
+    it('should not modify image path when enable relative_link', () => {
       ctx.config.relative_link = true;
       const r = renderer.bind(ctx);
       const result = r({text: body});
@@ -219,6 +229,7 @@ describe('Marked renderer', () => {
         '<p><img src="/bar/baz.jpg" alt="">',
         '<img src="/aaa/bbb.jpg" alt="foo"></p>\n'
       ].join('\n'));
+
       ctx.config.relative_link = false;
     });
 
@@ -231,6 +242,7 @@ describe('Marked renderer', () => {
         '<p><img src="/blog/bar/baz.jpg" alt="">',
         '<img src="/blog/aaa/bbb.jpg" alt="foo"></p>\n'
       ].join('\n'));
+      ctx.config.marked.prependRoot = false;
     });
   });
 });
