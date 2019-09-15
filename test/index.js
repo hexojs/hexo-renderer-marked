@@ -245,4 +245,21 @@ describe('Marked renderer', () => {
       ctx.config.marked.prependRoot = false;
     });
   });
+
+  it('should encode image url', () => {
+    const body = [
+      '![](/foo/bár.jpg)',
+      '![](http://fóo.com/bar.jpg)'
+    ].join('\n');
+
+    const renderer = require('../lib/renderer');
+    const r = renderer.bind(ctx);
+
+    const result = r({text: body});
+
+    result.should.eql([
+      '<p><img src="/foo/b%C3%A1r.jpg" alt="">',
+      '<img src="http://xn--fo-5ja.com/bar.jpg" alt=""></p>\n'
+    ].join('\n'));
+  });
 });
