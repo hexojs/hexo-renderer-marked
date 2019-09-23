@@ -191,4 +191,75 @@ describe('Marked renderer', () => {
       ].join('\n'));
     });
   });
+
+  describe('prependRoot option tests', () => {
+    const body = [
+      '![](/bar/baz.jpg)',
+      '![foo](/aaa/bbb.jpg)'
+    ].join('\n');
+
+    const renderer = require('../lib/renderer');
+
+    const ctx = {
+      config: {
+        marked: {
+          prependRoot: false
+        },
+        root: '/blog/',
+        relative_link: false
+      }
+    };
+
+    it('should not modify image path with default option', () => {
+      const r = renderer.bind(ctx);
+      const result = r({text: body});
+
+      result.should.eql([
+        '<p><img src="/bar/baz.jpg" alt="">',
+        '<img src="/aaa/bbb.jpg" alt="foo"></p>\n'
+      ].join('\n'));
+    });
+
+    it('should not modify image path when enable relative_link', () => {
+      ctx.config.relative_link = true;
+      const r = renderer.bind(ctx);
+      const result = r({text: body});
+
+      result.should.eql([
+        '<p><img src="/bar/baz.jpg" alt="">',
+        '<img src="/aaa/bbb.jpg" alt="foo"></p>\n'
+      ].join('\n'));
+
+      ctx.config.relative_link = false;
+    });
+
+    it('should prepend image path with root', () => {
+      ctx.config.marked.prependRoot = true;
+      const r = renderer.bind(ctx);
+      const result = r({text: body});
+
+      result.should.eql([
+        '<p><img src="/blog/bar/baz.jpg" alt="">',
+        '<img src="/blog/aaa/bbb.jpg" alt="foo"></p>\n'
+      ].join('\n'));
+      ctx.config.marked.prependRoot = false;
+    });
+  });
+
+  it('should encode image url', () => {
+    const body = [
+      '![](/foo/bár.jpg)',
+      '![](http://fóo.com/bar.jpg)'
+    ].join('\n');
+
+    const renderer = require('../lib/renderer');
+    const r = renderer.bind(ctx);
+
+    const result = r({text: body});
+
+    result.should.eql([
+      '<p><img src="/foo/b%C3%A1r.jpg" alt="">',
+      '<img src="http://xn--fo-5ja.com/bar.jpg" alt=""></p>\n'
+    ].join('\n'));
+  });
 });
