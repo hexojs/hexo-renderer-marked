@@ -15,7 +15,11 @@ hexo.config.marked = Object.assign({
   sanitizeUrl: false,
   headerIds: true,
   // TODO: enable prependRoot by default in v3
-  prependRoot: false
+  prependRoot: false,
+  external_link: {
+    enable: false,
+    exclude: []
+  }
 }, hexo.config.marked);
 
 hexo.extend.renderer.register('md', 'html', renderer, true);
