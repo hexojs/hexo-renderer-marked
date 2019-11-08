@@ -32,6 +32,9 @@ marked:
   sanitizeUrl: false
   headerIds: true
   prependRoot: false
+  external_link:
+    enable: false
+    exclude: []
 ```
 
 - **gfm** - Enables [GitHub flavored markdown](https://help.github.com/articles/github-flavored-markdown)
@@ -50,6 +53,10 @@ marked:
   root: /blog/
   ```
   * `![text](/path/to/image.jpg)` becomes `<img src="/blog/path/to/image.jpg" alt="text">`
+- **external_link**
+  * **enable** - Open external links in a new tab.
+  * **exclude** - Exclude hostname. Specify subdomain when applicable, including `www`.
+  * Example: `[foo](http://bar.com)` becomes `<a href="http://bar.com" target="_blank" rel="noopener">foo</a>`
 
 ## Extras
 
