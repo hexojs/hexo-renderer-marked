@@ -278,19 +278,19 @@ describe('Marked renderer', () => {
     };
 
     it('disable', () => {
-      const body = '[foo](http://bar.com)';
+      const body = '[foo](http://bar.com/)';
 
       const r = renderer.bind(ctx);
       const result = r({text: body});
 
-      result.should.eql('<p><a href="http://bar.com">foo</a></p>\n');
+      result.should.eql('<p><a href="http://bar.com/">foo</a></p>\n');
     });
 
     it('enable', () => {
       ctx.config.marked.external_link.enable = true;
       const body = [
-        '[foo](http://bar.com)',
-        '[text](http://example.com)',
+        '[foo](http://bar.com/)',
+        '[text](http://example.com/)',
         '[baz](/foo/bar)'
       ].join('\n');
 
@@ -298,8 +298,8 @@ describe('Marked renderer', () => {
       const result = r({text: body});
 
       result.should.eql([
-        '<p><a href="http://bar.com" target="_blank" rel="noopener">foo</a>',
-        '<a href="http://example.com">text</a>',
+        '<p><a href="http://bar.com/" target="_blank" rel="noopener">foo</a>',
+        '<a href="http://example.com/">text</a>',
         '<a href="/foo/bar">baz</a></p>\n'
       ].join('\n'));
     });
@@ -307,36 +307,36 @@ describe('Marked renderer', () => {
     it('exclude - string', () => {
       ctx.config.marked.external_link.exclude = 'bar.com';
       const body = [
-        '[foo](http://foo.com)',
-        '[bar](http://bar.com)',
-        '[baz](http://baz.com)'
+        '[foo](http://foo.com/)',
+        '[bar](http://bar.com/)',
+        '[baz](http://baz.com/)'
       ].join('\n');
 
       const r = renderer.bind(ctx);
       const result = r({text: body});
 
       result.should.eql([
-        '<p><a href="http://foo.com" target="_blank" rel="noopener">foo</a>',
-        '<a href="http://bar.com">bar</a>',
-        '<a href="http://baz.com" target="_blank" rel="noopener">baz</a></p>\n'
+        '<p><a href="http://foo.com/" target="_blank" rel="noopener">foo</a>',
+        '<a href="http://bar.com/">bar</a>',
+        '<a href="http://baz.com/" target="_blank" rel="noopener">baz</a></p>\n'
       ].join('\n'));
     });
 
     it('exclude - array', () => {
       ctx.config.marked.external_link.exclude = ['bar.com', 'baz.com'];
       const body = [
-        '[foo](http://foo.com)',
-        '[bar](http://bar.com)',
-        '[baz](http://baz.com)'
+        '[foo](http://foo.com/)',
+        '[bar](http://bar.com/)',
+        '[baz](http://baz.com/)'
       ].join('\n');
 
       const r = renderer.bind(ctx);
       const result = r({text: body});
 
       result.should.eql([
-        '<p><a href="http://foo.com" target="_blank" rel="noopener">foo</a>',
-        '<a href="http://bar.com">bar</a>',
-        '<a href="http://baz.com">baz</a></p>\n'
+        '<p><a href="http://foo.com/" target="_blank" rel="noopener">foo</a>',
+        '<a href="http://bar.com/">bar</a>',
+        '<a href="http://baz.com/">baz</a></p>\n'
       ].join('\n'));
     });
   });
