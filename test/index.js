@@ -1,7 +1,7 @@
 'use strict';
 
-const should = require('chai').should(); // eslint-disable-line
-const util = require('hexo-util');
+require('chai').should();
+const { highlight, encodeURL } = require('hexo-util');
 
 describe('Marked renderer', () => {
   const ctx = {
@@ -31,7 +31,7 @@ describe('Marked renderer', () => {
 
     result.should.eql([
       '<h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1>',
-      '<pre><code>' + util.highlight(code, {gutter: false, wrap: false}) + '</code></pre>',
+      '<pre><code>' + highlight(code, {gutter: false, wrap: false}) + '</code></pre>',
       '<h2 id="Hello-world-1"><a href="#Hello-world-1" class="headerlink" title="Hello world"></a>Hello world</h2>',
       '<p>hello</p>'
     ].join('') + '\n');
@@ -98,16 +98,19 @@ describe('Marked renderer', () => {
   });
 
   it('should encode URL properly', () => {
+    const urlA = '/foo/bár.jpg';
+    const urlB = 'http://fóo.com/bar.jpg';
+
     const body = [
-      '[foo](http://foo.com/bár)',
-      '[bar](http://bár.com/baz)'
+      `[foo](${urlA})`,
+      `[bar](${urlB})`
     ].join('\n');
 
     const result = r({text: body});
 
     result.should.eql([
-      '<p><a href="http://foo.com/b%C3%A1r">foo</a>',
-      '<a href="http://xn--br-mia.com/baz">bar</a></p>\n'
+      `<p><a href="${encodeURL(urlA)}">foo</a>`,
+      `<a href="${encodeURL(urlB)}">bar</a></p>\n`
     ].join('\n'));
   });
 
@@ -261,9 +264,12 @@ describe('Marked renderer', () => {
   });
 
   it('should encode image url', () => {
+    const urlA = '/foo/bár.jpg';
+    const urlB = 'http://fóo.com/bar.jpg';
+
     const body = [
-      '![](/foo/bár.jpg)',
-      '![](http://fóo.com/bar.jpg)'
+      `![](${urlA})`,
+      `![](${urlB})`
     ].join('\n');
 
     const renderer = require('../lib/renderer');
@@ -272,8 +278,8 @@ describe('Marked renderer', () => {
     const result = r({text: body});
 
     result.should.eql([
-      '<p><img src="/foo/b%C3%A1r.jpg" alt="">',
-      '<img src="http://xn--fo-5ja.com/bar.jpg" alt=""></p>\n'
+      `<p><img src="${encodeURL(urlA)}" alt="">`,
+      `<img src="${encodeURL(urlB)}" alt=""></p>\n`
     ].join('\n'));
   });
 });
