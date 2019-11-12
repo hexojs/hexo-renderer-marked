@@ -35,6 +35,9 @@ marked:
   external_link:
     enable: false
     exclude: []
+  nofollow:
+    enable: false
+    exclude: []
 ```
 
 - **gfm** - Enables [GitHub flavored markdown](https://help.github.com/articles/github-flavored-markdown)
@@ -46,7 +49,6 @@ marked:
 - **autolink** - Enable autolink for URLs. E.g. `https://hexo.io` will become `<a href="https://hexo.io">https://hexo.io</a>`.
 - **sanitizeUrl** - Remove URLs that start with `javascript:`, `vbscript:` and `data:`.
 - **headerIds** - Insert header id, e.g. `<h1 id="value">text</h1>`. Useful for inserting anchor link to each paragraph with a heading.
-- **headerIds** - Insert header id, e.g. `<h1 id="value">text</h1>`. Useful for inserting anchor link to each paragraph with a heading.
 - **prependRoot** - Prepend root value to (internal) image path.
   * Example `_config.yml`:
   ``` yml
@@ -57,6 +59,10 @@ marked:
   * **enable** - Open external links in a new tab.
   * **exclude** - Exclude hostname. Specify subdomain when applicable, including `www`.
   * Example: `[foo](http://bar.com)` becomes `<a href="http://bar.com" target="_blank" rel="noopener">foo</a>`
+- **nofollow**
+  * **enable** - Add `rel="noopener external nofollow noreferrer"` to all external links for security, privacy and SEO. [Read more](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types).
+  * **exclude** - Exclude hostname. Specify subdomain when applicable, including `www`.
+  * Example: `[foo](http://bar.com)` becomes `<a href="http://bar.com" rel="noopener external nofollow noreferrer">foo</a>`
 
 ## Extras
 
