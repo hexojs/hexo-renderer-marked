@@ -19,6 +19,10 @@ hexo.config.marked = Object.assign({
   external_link: {
     enable: false,
     exclude: []
+  },
+  nofollow: {
+    enable: false,
+    exclude: []
   }
 }, hexo.config.marked);
 
