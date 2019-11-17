@@ -153,6 +153,50 @@ describe('Marked renderer', () => {
     });
   });
 
+  it('should render link with title', () => {
+    const result = r({text: '[text](http://link.com/ "a-title")'});
+    result.should.eql('<p><a href="http://link.com/" title="a-title">text</a></p>\n');
+  });
+
+  describe('sanitizeUrl option tests', () => {
+    const ctx = {
+      config: {
+        marked: {
+          sanitizeUrl: true
+        }
+      }
+    };
+
+    const renderer = require('../lib/renderer');
+
+    const body = [
+      '[script](javascript:foo)',
+      '',
+      '[Hexo](http://hexo.io)'
+    ].join('\n');
+
+    it('sanitizeUrl enabled', () => {
+      const r = renderer.bind(ctx);
+      const result = r({text: body});
+
+      result.should.eql([
+        '<p><a href="">script</a></p>\n',
+        '<p><a href="http://hexo.io/">Hexo</a></p>\n'
+      ].join(''));
+    });
+
+    it('sanitizeUrl disabled', () => {
+      ctx.config.marked.sanitizeUrl = false;
+      const r = renderer.bind(ctx);
+      const result = r({text: body});
+
+      result.should.eql([
+        '<p><a href="javascript:foo">script</a></p>\n',
+        '<p><a href="http://hexo.io/">Hexo</a></p>\n'
+      ].join(''));
+    });
+  });
+
   describe('modifyAnchors option tests', () => {
     const body = [
       '- [Example](#example)',
