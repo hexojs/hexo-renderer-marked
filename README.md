@@ -46,7 +46,6 @@ marked:
 - **autolink** - Enable autolink for URLs. E.g. `https://hexo.io` will become `<a href="https://hexo.io">https://hexo.io</a>`.
 - **sanitizeUrl** - Remove URLs that start with `javascript:`, `vbscript:` and `data:`.
 - **headerIds** - Insert header id, e.g. `<h1 id="value">text</h1>`. Useful for inserting anchor link to each paragraph with a heading.
-- **headerIds** - Insert header id, e.g. `<h1 id="value">text</h1>`. Useful for inserting anchor link to each paragraph with a heading.
 - **prependRoot** - Prepend root value to (internal) image path.
   * Example `_config.yml`:
   ``` yml
@@ -71,7 +70,7 @@ Definition Term
 :    This is the definition for the term
 ```
 
-will generate this html:
+will generate this HTML:
 
 ```html
 <dl>
