@@ -347,49 +347,54 @@ describe('Marked renderer', () => {
     const ctx = {
       config: {
         marked: {
-          nofollow: {
-            enable: false
-          },
-          external_link: {}
+          external_link: {
+            enable: false,
+            exclude: [],
+            nofollow: false
+          }
         },
         url: 'http://example.com'
       }
     };
 
-    it('disable', () => {
-      const body = '[foo](http://bar.com/)';
+    const body = [
+      '[foo](http://foo.com/)',
+      '[bar](http://bar.com/)',
+      '[baz](http://baz.com/)',
+      '[internal](http://example.com/)',
+      '[relative](/foo/bar)'
+    ].join('\n');
 
+    it('disable', () => {
       const r = renderer.bind(ctx);
       const result = r({text: body});
 
-      result.should.eql('<p><a href="http://bar.com/">foo</a></p>\n');
+      result.should.eql([
+        '<p><a href="http://foo.com/">foo</a>',
+        '<a href="http://bar.com/">bar</a>',
+        '<a href="http://baz.com/">baz</a>',
+        '<a href="http://example.com/">internal</a>',
+        '<a href="/foo/bar">relative</a></p>\n'
+      ].join('\n'));
     });
 
     it('enable', () => {
-      ctx.config.marked.nofollow.enable = true;
-      const body = [
-        '[foo](http://bar.com/)',
-        '[text](http://example.com/)',
-        '[baz](/foo/bar)'
-      ].join('\n');
+      ctx.config.marked.external_link.nofollow = true;
 
       const r = renderer.bind(ctx);
       const result = r({text: body});
 
       result.should.eql([
-        '<p><a href="http://bar.com/" rel="noopener external nofollow noreferrer">foo</a>',
-        '<a href="http://example.com/">text</a>',
-        '<a href="/foo/bar">baz</a></p>\n'
+        '<p><a href="http://foo.com/" rel="noopener external nofollow noreferrer">foo</a>',
+        '<a href="http://bar.com/" rel="noopener external nofollow noreferrer">bar</a>',
+        '<a href="http://baz.com/" rel="noopener external nofollow noreferrer">baz</a>',
+        '<a href="http://example.com/">internal</a>',
+        '<a href="/foo/bar">relative</a></p>\n'
       ].join('\n'));
     });
 
     it('exclude - string', () => {
-      ctx.config.marked.nofollow.exclude = 'bar.com';
-      const body = [
-        '[foo](http://foo.com/)',
-        '[bar](http://bar.com/)',
-        '[baz](http://baz.com/)'
-      ].join('\n');
+      ctx.config.marked.external_link.exclude = 'bar.com';
 
       const r = renderer.bind(ctx);
       const result = r({text: body});
@@ -397,19 +402,16 @@ describe('Marked renderer', () => {
       result.should.eql([
         '<p><a href="http://foo.com/" rel="noopener external nofollow noreferrer">foo</a>',
         '<a href="http://bar.com/">bar</a>',
-        '<a href="http://baz.com/" rel="noopener external nofollow noreferrer">baz</a></p>\n'
+        '<a href="http://baz.com/" rel="noopener external nofollow noreferrer">baz</a>',
+        '<a href="http://example.com/">internal</a>',
+        '<a href="/foo/bar">relative</a></p>\n'
       ].join('\n'));
 
-      ctx.config.marked.nofollow.exclude = [];
+      ctx.config.marked.external_link.exclude = [];
     });
 
     it('exclude - array', () => {
-      ctx.config.marked.nofollow.exclude = ['bar.com', 'baz.com'];
-      const body = [
-        '[foo](http://foo.com/)',
-        '[bar](http://bar.com/)',
-        '[baz](http://baz.com/)'
-      ].join('\n');
+      ctx.config.marked.external_link.exclude = ['bar.com', 'baz.com'];
 
       const r = renderer.bind(ctx);
       const result = r({text: body});
@@ -417,71 +419,28 @@ describe('Marked renderer', () => {
       result.should.eql([
         '<p><a href="http://foo.com/" rel="noopener external nofollow noreferrer">foo</a>',
         '<a href="http://bar.com/">bar</a>',
-        '<a href="http://baz.com/">baz</a></p>\n'
+        '<a href="http://baz.com/">baz</a>',
+        '<a href="http://example.com/">internal</a>',
+        '<a href="/foo/bar">relative</a></p>\n'
       ].join('\n'));
 
-      ctx.config.marked.nofollow.exclude = [];
+      ctx.config.marked.external_link.exclude = [];
     });
 
     it('nofollow + external_link', () => {
-      ctx.config.marked.nofollow.enable = true;
+      ctx.config.marked.external_link.nofollow = true;
       ctx.config.marked.external_link.enable = true;
-      const body = [
-        '[foo](http://bar.com/)',
-        '[text](http://example.com/)',
-        '[baz](/foo/bar)'
-      ].join('\n');
 
       const r = renderer.bind(ctx);
       const result = r({text: body});
 
       result.should.eql([
-        '<p><a href="http://bar.com/" target="_blank" rel="noopener external nofollow noreferrer">foo</a>',
-        '<a href="http://example.com/">text</a>',
-        '<a href="/foo/bar">baz</a></p>\n'
+        '<p><a href="http://foo.com/" target="_blank" rel="noopener external nofollow noreferrer">foo</a>',
+        '<a href="http://bar.com/" target="_blank" rel="noopener external nofollow noreferrer">bar</a>',
+        '<a href="http://baz.com/" target="_blank" rel="noopener external nofollow noreferrer">baz</a>',
+        '<a href="http://example.com/">internal</a>',
+        '<a href="/foo/bar">relative</a></p>\n'
       ].join('\n'));
-    });
-
-    it('nofollow should not follow external_link.exclude', () => {
-      ctx.config.marked.external_link.exclude = 'bar.com';
-
-      const body = [
-        '[foo](http://bar.com/)',
-        '[text](http://example.com/)',
-        '[baz](/foo/bar)'
-      ].join('\n');
-
-      const r = renderer.bind(ctx);
-      const result = r({text: body});
-
-      result.should.eql([
-        '<p><a href="http://bar.com/" rel="noopener external nofollow noreferrer">foo</a>',
-        '<a href="http://example.com/">text</a>',
-        '<a href="/foo/bar">baz</a></p>\n'
-      ].join('\n'));
-
-      ctx.config.marked.external_link.exclude = [];
-    });
-
-    it('external_link should not follow nofollow.exclude', () => {
-      ctx.config.marked.nofollow.exclude = 'bar.com';
-
-      const body = [
-        '[foo](http://bar.com/)',
-        '[text](http://example.com/)',
-        '[baz](/foo/bar)'
-      ].join('\n');
-
-      const r = renderer.bind(ctx);
-      const result = r({text: body});
-
-      result.should.eql([
-        '<p><a href="http://bar.com/" target="_blank" rel="noopener">foo</a>',
-        '<a href="http://example.com/">text</a>',
-        '<a href="/foo/bar">baz</a></p>\n'
-      ].join('\n'));
-
-      ctx.config.marked.external_link.exclude = [];
     });
   });
 
