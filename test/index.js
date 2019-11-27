@@ -154,8 +154,16 @@ describe('Marked renderer', () => {
   });
 
   it('should render link with title', () => {
-    const result = r({text: '[text](http://link.com/ "a-title")'});
-    result.should.eql('<p><a href="http://link.com/" title="a-title">text</a></p>\n');
+    const body = [
+      '[text](http://link.com/ "a-title")',
+      '[a<b](http://link.com/ "b>a")'
+    ].join('\n');
+    const result = r({ text: body });
+
+    result.should.eql([
+      '<p><a href="http://link.com/" title="a-title">text</a>',
+      '<a href="http://link.com/" title="b&gt;a">a&lt;b</a></p>\n'
+    ].join('\n'));
   });
 
   describe('sanitizeUrl option tests', () => {
