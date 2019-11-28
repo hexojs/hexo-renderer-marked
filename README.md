@@ -35,6 +35,7 @@ marked:
   external_link:
     enable: false
     exclude: []
+    nofollow: false
 ```
 
 - **gfm** - Enables [GitHub flavored markdown](https://help.github.com/articles/github-flavored-markdown)
@@ -55,7 +56,9 @@ marked:
 - **external_link**
   * **enable** - Open external links in a new tab.
   * **exclude** - Exclude hostname. Specify subdomain when applicable, including `www`.
-  * Example: `[foo](http://bar.com)` becomes `<a href="http://bar.com" target="_blank" rel="noopener">foo</a>`
+    - Example: `[foo](http://bar.com)` becomes `<a href="http://bar.com" target="_blank" rel="noopener">foo</a>`
+  * **nofollow** - Add `rel="noopener external nofollow noreferrer"` to all external links for security, privacy and SEO. [Read more](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types). _This can be enabled regardless of `external_link.enable`_
+    - Example: `[foo](http://bar.com)` becomes `<a href="http://bar.com" rel="noopener external nofollow noreferrer">foo</a>`
 
 ## Extras
 
