@@ -274,6 +274,7 @@ describe('Marked renderer', () => {
         marked: {
           prependRoot: false
         },
+        url: 'http://example.com',
         root: '/blog/',
         relative_link: false
       }
