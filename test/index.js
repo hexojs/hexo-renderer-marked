@@ -52,6 +52,31 @@ describe('Marked renderer', () => {
     ].join(''));
   });
 
+  it('should render headings with links - parentheses', () => {
+    const body = '## [hexo-server](https://github.com/hexojs/hexo-server)';
+
+    const result = r({text: body});
+
+    result.should.eql([
+      '<h2 id="hexo-server"><a href="#hexo-server" class="headerlink" title="hexo-server"></a>',
+      '<a href="https://github.com/hexojs/hexo-server">hexo-server</a></h2>'
+    ].join(''));
+  });
+
+  it('should handle duplicate headings properly', () => {
+    const body = [
+      '## foo',
+      '## foo'
+    ].join('\n');
+
+    const result = r({text: body});
+
+    result.should.eql([
+      '<h2 id="foo"><a href="#foo" class="headerlink" title="foo"></a>foo</h2>',
+      '<h2 id="foo-1"><a href="#foo-1" class="headerlink" title="foo"></a>foo</h2>'
+    ].join(''));
+  });
+
   it('should handle chinese headers properly', () => {
     const body = '# 中文';
     const result = r({text: body});
