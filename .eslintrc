@@ -1,7 +1,4 @@
 {
   "extends": "hexo",
-  "root": true,
-  "rules": {
-    "indent": ["error",2,{ "MemberExpression": 2 }]
-  }
+  "root": true
 }

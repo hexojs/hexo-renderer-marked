@@ -1,7 +1,3 @@
 {
-  "extends": "hexo/test",
-  "rules": {
-    "indent": ["error", 2, { "ArrayExpression": 1 }],
-    "no-useless-escape": 0
-  }
+  "extends": "hexo/test"
 }
