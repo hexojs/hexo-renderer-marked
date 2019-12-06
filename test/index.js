@@ -228,9 +228,9 @@ describe('Marked renderer', () => {
 
       result.should.eql([
         '<ul>',
-        '<li><a href=\"#example\">Example</a></li>',
+        '<li><a href="#example">Example</a></li>',
         '</ul>',
-        '<h1 id=\"Example\"><a href=\"#Example\" class=\"headerlink\" title=\"Example\"></a>Example</h1>'
+        '<h1 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h1>'
       ].join('\n'));
     });
 
@@ -241,9 +241,9 @@ describe('Marked renderer', () => {
 
       result.should.eql([
         '<ul>',
-        '<li><a href=\"#example\">Example</a></li>',
+        '<li><a href="#example">Example</a></li>',
         '</ul>',
-        '<h1 id=\"EXAMPLE\"><a href=\"#EXAMPLE\" class=\"headerlink\" title=\"Example\"></a>Example</h1>'
+        '<h1 id="EXAMPLE"><a href="#EXAMPLE" class="headerlink" title="Example"></a>Example</h1>'
       ].join('\n'));
     });
 
@@ -254,9 +254,9 @@ describe('Marked renderer', () => {
 
       result.should.eql([
         '<ul>',
-        '<li><a href=\"#example\">Example</a></li>',
+        '<li><a href="#example">Example</a></li>',
         '</ul>',
-        '<h1 id=\"example\"><a href=\"#example\" class=\"headerlink\" title=\"Example\"></a>Example</h1>'
+        '<h1 id="example"><a href="#example" class="headerlink" title="Example"></a>Example</h1>'
       ].join('\n'));
     });
   });
