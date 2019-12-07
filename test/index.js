@@ -310,7 +310,7 @@ describe('Marked renderer', () => {
       const result = r({text: body});
 
       result.should.eql([
-        '<p><img src="/bar/baz.jpg" alt="">',
+        '<p><img src="/bar/baz.jpg">',
         '<img src="/aaa/bbb.jpg" alt="foo"></p>\n'
       ].join('\n'));
     });
@@ -321,7 +321,7 @@ describe('Marked renderer', () => {
       const result = r({text: body});
 
       result.should.eql([
-        '<p><img src="/bar/baz.jpg" alt="">',
+        '<p><img src="/bar/baz.jpg">',
         '<img src="/aaa/bbb.jpg" alt="foo"></p>\n'
       ].join('\n'));
 
@@ -334,7 +334,7 @@ describe('Marked renderer', () => {
       const result = r({text: body});
 
       result.should.eql([
-        '<p><img src="/blog/bar/baz.jpg" alt="">',
+        '<p><img src="/blog/bar/baz.jpg">',
         '<img src="/blog/aaa/bbb.jpg" alt="foo"></p>\n'
       ].join('\n'));
       ctx.config.marked.prependRoot = false;
@@ -537,8 +537,27 @@ describe('Marked renderer', () => {
     const result = r({text: body});
 
     result.should.eql([
-      `<p><img src="${encodeURL(urlA)}" alt="">`,
-      `<img src="${encodeURL(urlB)}" alt=""></p>\n`
+      `<p><img src="${encodeURL(urlA)}">`,
+      `<img src="${encodeURL(urlB)}"></p>\n`
+    ].join('\n'));
+  });
+
+  it('should include image caption & title', () => {
+    const body = [
+      '![caption](http://foo.com/a.jpg)',
+      '![caption](http://bar.com/b.jpg "a-title")',
+      '![a"b](http://bar.com/b.jpg "c>d")'
+    ].join('\n');
+
+    const renderer = require('../lib/renderer');
+    const r = renderer.bind(ctx);
+
+    const result = r({text: body});
+
+    result.should.eql([
+      '<p><img src="http://foo.com/a.jpg" alt="caption">',
+      '<img src="http://bar.com/b.jpg" alt="caption" title="a-title">',
+      '<img src="http://bar.com/b.jpg" alt="a&quot;b" title="c&gt;d"></p>\n'
     ].join('\n'));
   });
 });
