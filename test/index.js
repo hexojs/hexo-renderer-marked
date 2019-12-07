@@ -242,7 +242,7 @@ describe('Marked renderer', () => {
     const ctx = {
       config: {
         marked: {
-          modifyAnchors: ''
+          modifyAnchors: 0
         }
       }
     };
