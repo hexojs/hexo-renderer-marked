@@ -7,7 +7,8 @@ describe('Marked renderer', () => {
   const ctx = {
     config: {
       marked: {}
-    }
+    },
+    execFilterSync: function() {}
   };
 
   const r = require('../lib/renderer').bind(ctx);
@@ -145,7 +146,8 @@ describe('Marked renderer', () => {
         marked: {
           autolink: true
         }
-      }
+      },
+      execFilterSync: function() {}
     };
 
     const renderer = require('../lib/renderer');
@@ -197,7 +199,8 @@ describe('Marked renderer', () => {
         marked: {
           sanitizeUrl: true
         }
-      }
+      },
+      execFilterSync: function() {}
     };
 
     const renderer = require('../lib/renderer');
@@ -244,7 +247,8 @@ describe('Marked renderer', () => {
         marked: {
           modifyAnchors: ''
         }
-      }
+      },
+      execFilterSync: function() {}
     };
 
     it('should not modify anchors with default options', () => {
@@ -302,7 +306,8 @@ describe('Marked renderer', () => {
         url: 'http://example.com',
         root: '/blog/',
         relative_link: false
-      }
+      },
+      execFilterSync: function() {}
     };
 
     it('should not modify image path with default option', () => {
@@ -352,7 +357,8 @@ describe('Marked renderer', () => {
           }
         },
         url: 'http://example.com'
-      }
+      },
+      execFilterSync: function() {}
     };
 
     it('disable', () => {
@@ -432,7 +438,8 @@ describe('Marked renderer', () => {
           }
         },
         url: 'http://example.com'
-      }
+      },
+      execFilterSync: function() {}
     };
 
     const body = [
@@ -559,5 +566,38 @@ describe('Marked renderer', () => {
       '<img src="http://bar.com/b.jpg" alt="caption" title="a-title">',
       '<img src="http://bar.com/b.jpg" alt="a&quot;b" title="c&gt;d"></p>\n'
     ].join('\n'));
+  });
+
+  describe('exec filter to extend', () => {
+    it('should render image url to data-src', () => {
+      const ctx = {
+        config: {
+          marked: {}
+        },
+        execFilterSync: (type, filterRenderer) => {
+          filterRenderer.image = function(href) {
+            return `<img data-src="${encodeURL(href)}">`;
+          };
+        }
+      };
+
+      const urlA = '/foo/bár.jpg';
+      const urlB = 'http://fóo.com/bar.jpg';
+  
+      const body = [
+        `![](${urlA})`,
+        `![](${urlB})`
+      ].join('\n');
+  
+      const renderer = require('../lib/renderer');
+      const r = renderer.bind(ctx);
+  
+      const result = r({text: body});
+  
+      result.should.eql([
+        `<p><img data-src="${encodeURL(urlA)}">`,
+        `<img data-src="${encodeURL(urlB)}"></p>\n`
+      ].join('\n'));
+    });
   });
 });
