@@ -2,16 +2,17 @@
 
 require('chai').should();
 const { highlight, encodeURL } = require('hexo-util');
+const Hexo = require('hexo');
 
 describe('Marked renderer', () => {
-  const ctx = {
+  const hexo = new Hexo(__dirname, {silent: true});
+  const ctx = Object.assign(hexo, {
     config: {
       marked: {}
-    },
-    execFilterSync: function() {}
-  };
+    }
+  });
 
-  const r = require('../lib/renderer').bind(ctx);
+  const r = require('../lib/renderer').bind(hexo);
 
   it('default', () => {
     const code = 'console.log("Hello world");';
@@ -141,14 +142,14 @@ describe('Marked renderer', () => {
   });
 
   describe('autolink option tests', () => {
-    const ctx = {
+    const hexo = new Hexo(__dirname, {silent: true});
+    const ctx = Object.assign(hexo, {
       config: {
         marked: {
           autolink: true
         }
-      },
-      execFilterSync: function() {}
-    };
+      }
+    });
 
     const renderer = require('../lib/renderer');
 
@@ -194,14 +195,14 @@ describe('Marked renderer', () => {
   });
 
   describe('sanitizeUrl option tests', () => {
-    const ctx = {
+    const hexo = new Hexo(__dirname, {silent: true});
+    const ctx = Object.assign(hexo, {
       config: {
         marked: {
           sanitizeUrl: true
         }
-      },
-      execFilterSync: function() {}
-    };
+      }
+    });
 
     const renderer = require('../lib/renderer');
 
@@ -242,14 +243,14 @@ describe('Marked renderer', () => {
 
     const renderer = require('../lib/renderer');
 
-    const ctx = {
+    const hexo = new Hexo(__dirname, {silent: true});
+    const ctx = Object.assign(hexo, {
       config: {
         marked: {
           modifyAnchors: ''
         }
-      },
-      execFilterSync: function() {}
-    };
+      }
+    });
 
     it('should not modify anchors with default options', () => {
       const r = renderer.bind(ctx);
@@ -298,7 +299,8 @@ describe('Marked renderer', () => {
 
     const renderer = require('../lib/renderer');
 
-    const ctx = {
+    const hexo = new Hexo(__dirname, {silent: true});
+    const ctx = Object.assign(hexo, {
       config: {
         marked: {
           prependRoot: false
@@ -306,9 +308,8 @@ describe('Marked renderer', () => {
         url: 'http://example.com',
         root: '/blog/',
         relative_link: false
-      },
-      execFilterSync: function() {}
-    };
+      }
+    });
 
     it('should not modify image path with default option', () => {
       const r = renderer.bind(ctx);
@@ -349,7 +350,8 @@ describe('Marked renderer', () => {
   describe('external_link', () => {
     const renderer = require('../lib/renderer');
 
-    const ctx = {
+    const hexo = new Hexo(__dirname, {silent: true});
+    const ctx = Object.assign(hexo, {
       config: {
         marked: {
           external_link: {
@@ -357,9 +359,8 @@ describe('Marked renderer', () => {
           }
         },
         url: 'http://example.com'
-      },
-      execFilterSync: function() {}
-    };
+      }
+    });
 
     it('disable', () => {
       const body = '[foo](http://bar.com/)';
@@ -428,7 +429,8 @@ describe('Marked renderer', () => {
   describe('nofollow', () => {
     const renderer = require('../lib/renderer');
 
-    const ctx = {
+    const hexo = new Hexo(__dirname, {silent: true});
+    const ctx = Object.assign(hexo, {
       config: {
         marked: {
           external_link: {
@@ -438,9 +440,8 @@ describe('Marked renderer', () => {
           }
         },
         url: 'http://example.com'
-      },
-      execFilterSync: function() {}
-    };
+      }
+    });
 
     const body = [
       '[foo](http://foo.com/)',
@@ -570,16 +571,12 @@ describe('Marked renderer', () => {
 
   describe('exec filter to extend', () => {
     it('should render image url to data-src', () => {
-      const ctx = {
-        config: {
-          marked: {}
-        },
-        execFilterSync: (type, filterRenderer) => {
-          filterRenderer.image = function(href) {
-            return `<img data-src="${encodeURL(href)}">`;
-          };
-        }
-      };
+      const hexo = new Hexo(__dirname, {silent: true});
+      hexo.extend.filter.register('marked:renderer', function(renderer) {
+        renderer.image = function(href, title, text) {
+          return `<img data-src="${encodeURL(href)}">`;
+        };
+      });
 
       const urlA = '/foo/bár.jpg';
       const urlB = 'http://fóo.com/bar.jpg';
@@ -590,7 +587,7 @@ describe('Marked renderer', () => {
       ].join('\n');
 
       const renderer = require('../lib/renderer');
-      const r = renderer.bind(ctx);
+      const r = renderer.bind(hexo);
 
       const result = r({text: body});
 
