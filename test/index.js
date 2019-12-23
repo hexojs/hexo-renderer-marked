@@ -2,15 +2,17 @@
 
 require('chai').should();
 const { highlight, encodeURL } = require('hexo-util');
+const Hexo = require('hexo');
 
 describe('Marked renderer', () => {
-  const ctx = {
+  const hexo = new Hexo(__dirname, {silent: true});
+  const ctx = Object.assign(hexo, {
     config: {
       marked: {}
     }
-  };
+  });
 
-  const r = require('../lib/renderer').bind(ctx);
+  const r = require('../lib/renderer').bind(hexo);
 
   it('default', () => {
     const code = 'console.log("Hello world");';
@@ -140,13 +142,14 @@ describe('Marked renderer', () => {
   });
 
   describe('autolink option tests', () => {
-    const ctx = {
+    const hexo = new Hexo(__dirname, {silent: true});
+    const ctx = Object.assign(hexo, {
       config: {
         marked: {
           autolink: true
         }
       }
-    };
+    });
 
     const renderer = require('../lib/renderer');
 
@@ -192,13 +195,14 @@ describe('Marked renderer', () => {
   });
 
   describe('sanitizeUrl option tests', () => {
-    const ctx = {
+    const hexo = new Hexo(__dirname, {silent: true});
+    const ctx = Object.assign(hexo, {
       config: {
         marked: {
           sanitizeUrl: true
         }
       }
-    };
+    });
 
     const renderer = require('../lib/renderer');
 
@@ -239,13 +243,14 @@ describe('Marked renderer', () => {
 
     const renderer = require('../lib/renderer');
 
-    const ctx = {
+    const hexo = new Hexo(__dirname, {silent: true});
+    const ctx = Object.assign(hexo, {
       config: {
         marked: {
           modifyAnchors: ''
         }
       }
-    };
+    });
 
     it('should not modify anchors with default options', () => {
       const r = renderer.bind(ctx);
@@ -294,7 +299,8 @@ describe('Marked renderer', () => {
 
     const renderer = require('../lib/renderer');
 
-    const ctx = {
+    const hexo = new Hexo(__dirname, {silent: true});
+    const ctx = Object.assign(hexo, {
       config: {
         marked: {
           prependRoot: false
@@ -303,7 +309,7 @@ describe('Marked renderer', () => {
         root: '/blog/',
         relative_link: false
       }
-    };
+    });
 
     it('should not modify image path with default option', () => {
       const r = renderer.bind(ctx);
@@ -344,7 +350,8 @@ describe('Marked renderer', () => {
   describe('external_link', () => {
     const renderer = require('../lib/renderer');
 
-    const ctx = {
+    const hexo = new Hexo(__dirname, {silent: true});
+    const ctx = Object.assign(hexo, {
       config: {
         marked: {
           external_link: {
@@ -353,7 +360,7 @@ describe('Marked renderer', () => {
         },
         url: 'http://example.com'
       }
-    };
+    });
 
     it('disable', () => {
       const body = '[foo](http://bar.com/)';
@@ -422,7 +429,8 @@ describe('Marked renderer', () => {
   describe('nofollow', () => {
     const renderer = require('../lib/renderer');
 
-    const ctx = {
+    const hexo = new Hexo(__dirname, {silent: true});
+    const ctx = Object.assign(hexo, {
       config: {
         marked: {
           external_link: {
@@ -433,7 +441,7 @@ describe('Marked renderer', () => {
         },
         url: 'http://example.com'
       }
-    };
+    });
 
     const body = [
       '[foo](http://foo.com/)',
@@ -559,5 +567,34 @@ describe('Marked renderer', () => {
       '<img src="http://bar.com/b.jpg" alt="caption" title="a-title">',
       '<img src="http://bar.com/b.jpg" alt="a&quot;b" title="c&gt;d"></p>\n'
     ].join('\n'));
+  });
+
+  describe('exec filter to extend', () => {
+    it('should execute filter registered to marked:renderer', () => {
+      const hexo = new Hexo(__dirname, {silent: true});
+      hexo.extend.filter.register('marked:renderer', renderer => {
+        renderer.image = function(href, title, text) {
+          return `<img data-src="${encodeURL(href)}">`;
+        };
+      });
+
+      const urlA = '/foo/bár.jpg';
+      const urlB = 'http://fóo.com/bar.jpg';
+
+      const body = [
+        `![](${urlA})`,
+        `![](${urlB})`
+      ].join('\n');
+
+      const renderer = require('../lib/renderer');
+      const r = renderer.bind(hexo);
+
+      const result = r({text: body});
+
+      result.should.eql([
+        `<p><img data-src="${encodeURL(urlA)}">`,
+        `<img data-src="${encodeURL(urlB)}"></p>\n`
+      ].join('\n'));
+    });
   });
 });
