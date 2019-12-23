@@ -4,7 +4,7 @@ require('chai').should();
 const { highlight, encodeURL } = require('hexo-util');
 const Hexo = require('hexo');
 
-describe('Marked renderer', async () => {
+describe('Marked renderer', () => {
   const hexo = new Hexo(__dirname, {silent: true});
   const ctx = Object.assign(hexo, {
     config: {
@@ -141,7 +141,7 @@ describe('Marked renderer', async () => {
     ].join('\n'));
   });
 
-  describe('autolink option tests', async () => {
+  describe('autolink option tests', () => {
     const hexo = new Hexo(__dirname, {silent: true});
     const ctx = Object.assign(hexo, {
       config: {
@@ -151,7 +151,7 @@ describe('Marked renderer', async () => {
       }
     });
 
-    const renderer = require('../lib/renderer');
+    const r = require('../lib/renderer').bind(ctx);
 
     const body = [
       'Great website http://hexo.io',
@@ -160,7 +160,6 @@ describe('Marked renderer', async () => {
     ].join('\n');
 
     it('autolink enabled', async () => {
-      const r = renderer.bind(ctx);
       const result = await r({text: body});
 
       result.should.eql([
@@ -171,7 +170,6 @@ describe('Marked renderer', async () => {
 
     it('autolink disabled', async () => {
       ctx.config.marked.autolink = false;
-      const r = renderer.bind(ctx);
       const result = await r({text: body});
 
       result.should.eql([
@@ -194,7 +192,7 @@ describe('Marked renderer', async () => {
     ].join('\n'));
   });
 
-  describe('sanitizeUrl option tests', async () => {
+  describe('sanitizeUrl option tests', () => {
     const hexo = new Hexo(__dirname, {silent: true});
     const ctx = Object.assign(hexo, {
       config: {
@@ -234,7 +232,7 @@ describe('Marked renderer', async () => {
     });
   });
 
-  describe('modifyAnchors option tests', async () => {
+  describe('modifyAnchors option tests', () => {
     const body = [
       '- [Example](#example)',
       '',
@@ -291,7 +289,7 @@ describe('Marked renderer', async () => {
     });
   });
 
-  describe('prependRoot option tests', async () => {
+  describe('prependRoot option tests', () => {
     const body = [
       '![](/bar/baz.jpg)',
       '![foo](/aaa/bbb.jpg)'
@@ -309,6 +307,17 @@ describe('Marked renderer', async () => {
         root: '/blog/',
         relative_link: false
       }
+    });
+
+    afterEach(() => {
+      ctx.config = {
+        marked: {
+          prependRoot: false
+        },
+        url: 'http://example.com',
+        root: '/blog/',
+        relative_link: false
+      };
     });
 
     it('should not modify image path with default option', async () => {
@@ -330,8 +339,6 @@ describe('Marked renderer', async () => {
         '<p><img src="/bar/baz.jpg">',
         '<img src="/aaa/bbb.jpg" alt="foo"></p>\n'
       ].join('\n'));
-
-      ctx.config.relative_link = false;
     });
 
     it('should prepend image path with root', async () => {
@@ -343,13 +350,10 @@ describe('Marked renderer', async () => {
         '<p><img src="/blog/bar/baz.jpg">',
         '<img src="/blog/aaa/bbb.jpg" alt="foo"></p>\n'
       ].join('\n'));
-      ctx.config.marked.prependRoot = false;
     });
   });
 
-  describe('external_link', async () => {
-    const renderer = require('../lib/renderer');
-
+  describe('external_link', () => {
     const hexo = new Hexo(__dirname, {silent: true});
     const ctx = Object.assign(hexo, {
       config: {
@@ -361,11 +365,11 @@ describe('Marked renderer', async () => {
         url: 'http://example.com'
       }
     });
+    const r = require('../lib/renderer').bind(ctx);
 
     it('disable', async () => {
       const body = '[foo](http://bar.com/)';
 
-      const r = renderer.bind(ctx);
       const result = await r({text: body});
 
       result.should.eql('<p><a href="http://bar.com/">foo</a></p>\n');
@@ -379,7 +383,6 @@ describe('Marked renderer', async () => {
         '[baz](/foo/bar)'
       ].join('\n');
 
-      const r = renderer.bind(ctx);
       const result = await r({text: body});
 
       result.should.eql([
@@ -397,7 +400,6 @@ describe('Marked renderer', async () => {
         '[baz](http://baz.com/)'
       ].join('\n');
 
-      const r = renderer.bind(ctx);
       const result = await r({text: body});
 
       result.should.eql([
@@ -415,7 +417,6 @@ describe('Marked renderer', async () => {
         '[baz](http://baz.com/)'
       ].join('\n');
 
-      const r = renderer.bind(ctx);
       const result = await r({text: body});
 
       result.should.eql([
@@ -426,9 +427,7 @@ describe('Marked renderer', async () => {
     });
   });
 
-  describe('nofollow', async () => {
-    const renderer = require('../lib/renderer');
-
+  describe('nofollow', () => {
     const hexo = new Hexo(__dirname, {silent: true});
     const ctx = Object.assign(hexo, {
       config: {
@@ -442,6 +441,20 @@ describe('Marked renderer', async () => {
         url: 'http://example.com'
       }
     });
+    const r = require('../lib/renderer').bind(ctx);
+
+    afterEach(() => {
+      ctx.config = {
+        marked: {
+          external_link: {
+            enable: false,
+            exclude: [],
+            nofollow: false
+          }
+        },
+        url: 'http://example.com'
+      };
+    });
 
     const body = [
       '[foo](http://foo.com/)',
@@ -452,7 +465,6 @@ describe('Marked renderer', async () => {
     ].join('\n');
 
     it('disable', async () => {
-      const r = renderer.bind(ctx);
       const result = await r({text: body});
 
       result.should.eql([
@@ -467,7 +479,6 @@ describe('Marked renderer', async () => {
     it('enable', async () => {
       ctx.config.marked.external_link.nofollow = true;
 
-      const r = renderer.bind(ctx);
       const result = await r({text: body});
 
       result.should.eql([
@@ -480,9 +491,9 @@ describe('Marked renderer', async () => {
     });
 
     it('exclude - string', async () => {
+      ctx.config.marked.external_link.nofollow = true;
       ctx.config.marked.external_link.exclude = 'bar.com';
 
-      const r = renderer.bind(ctx);
       const result = await r({text: body});
 
       result.should.eql([
@@ -492,14 +503,12 @@ describe('Marked renderer', async () => {
         '<a href="http://example.com/">internal</a>',
         '<a href="/foo/bar">relative</a></p>\n'
       ].join('\n'));
-
-      ctx.config.marked.external_link.exclude = [];
     });
 
     it('exclude - array', async () => {
+      ctx.config.marked.external_link.nofollow = true;
       ctx.config.marked.external_link.exclude = ['bar.com', 'baz.com'];
 
-      const r = renderer.bind(ctx);
       const result = await r({text: body});
 
       result.should.eql([
@@ -509,15 +518,12 @@ describe('Marked renderer', async () => {
         '<a href="http://example.com/">internal</a>',
         '<a href="/foo/bar">relative</a></p>\n'
       ].join('\n'));
-
-      ctx.config.marked.external_link.exclude = [];
     });
 
     it('nofollow + external_link', async () => {
       ctx.config.marked.external_link.nofollow = true;
       ctx.config.marked.external_link.enable = true;
 
-      const r = renderer.bind(ctx);
       const result = await r({text: body});
 
       result.should.eql([
@@ -539,8 +545,7 @@ describe('Marked renderer', async () => {
       `![](${urlB})`
     ].join('\n');
 
-    const renderer = require('../lib/renderer');
-    const r = renderer.bind(ctx);
+    const r = require('../lib/renderer').bind(ctx);
 
     const result = await r({text: body});
 
@@ -557,8 +562,7 @@ describe('Marked renderer', async () => {
       '![a"b](http://bar.com/b.jpg "c>d")'
     ].join('\n');
 
-    const renderer = require('../lib/renderer');
-    const r = renderer.bind(ctx);
+    const r = require('../lib/renderer').bind(ctx);
 
     const result = await r({text: body});
 
@@ -569,7 +573,7 @@ describe('Marked renderer', async () => {
     ].join('\n'));
   });
 
-  describe('exec filter to extend', async () => {
+  describe('exec filter to extend', () => {
     it('should execute filter registered to marked:renderer', async () => {
       const hexo = new Hexo(__dirname, {silent: true});
       hexo.extend.filter.register('marked:renderer', renderer => {
