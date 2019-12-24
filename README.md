@@ -103,6 +103,31 @@ will generate this HTML:
 
 If you've got ideas on how to support multiple definitions, please provide a pull request. We'd love to support it.
 
+### Extensibility
+
+This plugin overrides some default behaviours of how [marked] plugin renders the markdown into html, to integrate with the Hexo ecosystem. It is possible to override this plugin too, without resorting to forking the whole thing.
+
+For example, to override how heading like `# heading text` is rendered:
+
+``` js
+hexo.extend.filter.register('marked:renderer', function(renderer) {
+  const { config } = this; // Skip this line if you don't need user config from _config.yml
+  renderer.heading = function(text, level) {
+    // Default behaviour
+    // return `<h${level}>${text}</h${level}>`;
+    // outputs <h1>heading text</h1>
+
+    // If you want to insert custom class name
+    return `<h${level} class="headerlink">${text}</h${level}>`;
+    // outputs <h1 class="headerlink">heading text</h1>
+  }
+})
+```
+
+Save the file in "scripts/" folder and run Hexo as usual.
+
+Notice `renderer.heading = function (text, level) {` corresponds to [this line](https://github.com/hexojs/hexo-renderer-marked/blob/a93ebeb1e8cc11e754630c0a1506da9a1489b2b0/lib/renderer.js#L21). Refer to [renderer.js](https://github.com/hexojs/hexo-renderer-marked/blob/master/lib/renderer.js) on how this plugin overrides the default methods. For other methods not covered by this plugin, refer to marked's [documentation](https://marked.js.org/#/USING_PRO.md).
+
 [Markdown]: https://daringfireball.net/projects/markdown/
 [marked]: https://github.com/chjj/marked
 [PHP Markdown Extra]: https://michelf.ca/projects/php-markdown/extra/#def-list
