@@ -245,7 +245,7 @@ describe('Marked renderer', () => {
     const ctx = Object.assign(hexo, {
       config: {
         marked: {
-          modifyAnchors: ''
+          modifyAnchors: 0
         }
       }
     });

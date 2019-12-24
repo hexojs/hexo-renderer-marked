@@ -10,7 +10,7 @@ hexo.config.marked = Object.assign({
   breaks: true,
   smartLists: true,
   smartypants: true,
-  modifyAnchors: '',
+  modifyAnchors: 0,
   autolink: true,
   sanitizeUrl: false,
   headerIds: true,

@@ -27,7 +27,7 @@ marked:
   breaks: true
   smartLists: true
   smartypants: true
-  modifyAnchors: ''
+  modifyAnchors: 0
   autolink: true
   sanitizeUrl: false
   headerIds: true
@@ -43,7 +43,7 @@ marked:
 - **breaks** - Enable GFM [line breaks](https://help.github.com/articles/github-flavored-markdown#newlines). This option requires the `gfm` option to be true.
 - **smartLists** - Use smarter list behavior than the original markdown.
 - **smartypants** - Use "smart" typograhic punctuation for things like quotes and dashes.
-- **modifyAnchors** - Use for transform anchorIds. if `1` to lowerCase and if `2` to upperCase. **Must be integer**.
+- **modifyAnchors** - Transform the anchorIds into lower case (`1`) or upper case (`2`).
 - **autolink** - Enable autolink for URLs. E.g. `https://hexo.io` will become `<a href="https://hexo.io">https://hexo.io</a>`.
 - **sanitizeUrl** - Remove URLs that start with `javascript:`, `vbscript:` and `data:`.
 - **headerIds** - Insert header id, e.g. `<h1 id="value">text</h1>`. Useful for inserting anchor link to each paragraph with a heading.
