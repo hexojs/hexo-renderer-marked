@@ -105,7 +105,7 @@ If you've got ideas on how to support multiple definitions, please provide a pul
 
 ### Extensibility
 
-This plugin overrides some default behaviours of how [marked] plugin renders the markdown into html , to integrate with the Hexo ecosystem. It is possible to override this plugin too, without resorting to forking the whole thing.
+This plugin overrides some default behaviours of how [marked] plugin renders the markdown into html, to integrate with the Hexo ecosystem. It is possible to override this plugin too, without resorting to forking the whole thing.
 
 For example, to override how heading like `# heading text` is rendered:
 
