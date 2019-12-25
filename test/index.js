@@ -1,7 +1,7 @@
 'use strict';
 
 require('chai').should();
-const { highlight, encodeURL } = require('hexo-util');
+const { encodeURL, escapeHTML } = require('hexo-util');
 const Hexo = require('hexo');
 
 describe('Marked renderer', () => {
@@ -33,7 +33,7 @@ describe('Marked renderer', () => {
 
     result.should.eql([
       '<h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1>',
-      '<pre><code>' + highlight(code, {gutter: false, wrap: false}) + '</code></pre>',
+      '<pre><code>' + escapeHTML(code) + '</code></pre>',
       '<h2 id="Hello-world-1"><a href="#Hello-world-1" class="headerlink" title="Hello world"></a>Hello world</h2>',
       '<p>hello</p>'
     ].join('') + '\n');
