@@ -28,7 +28,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "hexo-util": "^1.6.1",
+    "hexo-util": "^2.0.0",
     "marked": "^1.0.0"
   },
   "devDependencies": {
