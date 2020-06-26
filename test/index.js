@@ -33,7 +33,7 @@ describe('Marked renderer', () => {
 
     result.should.eql([
       '<h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1>',
-      '<pre><code>' + escapeHTML(code) + '</code></pre>',
+      '<pre><code>' + escapeHTML(code) + '</code></pre>\n',
       '<h2 id="Hello-world-1"><a href="#Hello-world-1" class="headerlink" title="Hello world"></a>Hello world</h2>',
       '<p>hello</p>'
     ].join('') + '\n');
