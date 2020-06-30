@@ -573,6 +573,24 @@ describe('Marked renderer', () => {
     ].join('\n'));
   });
 
+  it('lazyload image', () => {
+    const body = [
+      '![](/bar/baz.jpg)',
+      '![foo](/aaa/bbb.jpg)'
+    ].join('\n');
+
+    ctx.config.marked.lazyload = true;
+
+    const r = require('../lib/renderer').bind(ctx);
+
+    const result = r({ text: body });
+
+    result.should.eql([
+      '<p><img src="/bar/baz.jpg" loading="lazy">',
+      '<img src="/aaa/bbb.jpg" alt="foo" loading="lazy"></p>\n'
+    ].join('\n'));
+  });
+
   describe('exec filter to extend', () => {
     it('should execute filter registered to marked:renderer', () => {
       const hexo = new Hexo(__dirname, {silent: true});
