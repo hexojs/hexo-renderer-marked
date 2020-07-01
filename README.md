@@ -31,6 +31,7 @@ marked:
   autolink: true
   sanitizeUrl: false
   headerIds: true
+  lazyload: false
   prependRoot: false
   external_link:
     enable: false
@@ -47,6 +48,7 @@ marked:
 - **autolink** - Enable autolink for URLs. E.g. `https://hexo.io` will become `<a href="https://hexo.io">https://hexo.io</a>`.
 - **sanitizeUrl** - Remove URLs that start with `javascript:`, `vbscript:` and `data:`.
 - **headerIds** - Insert header id, e.g. `<h1 id="value">text</h1>`. Useful for inserting anchor link to each paragraph with a heading.
+- **lazyload** - Lazy loading images via `loading="lazy"` attribute.
 - **prependRoot** - Prepend root value to (internal) image path.
   * Example `_config.yml`:
   ``` yml
