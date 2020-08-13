@@ -1,15 +1,23 @@
 'use strict';
 
 require('chai').should();
-const { encodeURL, escapeHTML } = require('hexo-util');
+const { encodeURL, escapeHTML, url_for } = require('hexo-util');
 const Hexo = require('hexo');
+const { join } = require('path').posix;
 
 describe('Marked renderer', () => {
   const hexo = new Hexo(__dirname, {silent: true});
-  const ctx = Object.assign(hexo, {
-    config: {
-      marked: {}
-    }
+  const defaultCfg = JSON.parse(JSON.stringify(Object.assign(hexo.config, {
+    marked: {}
+  })));
+
+  before(async () => {
+    hexo.config.permalink = ':title';
+    await hexo.init();
+  });
+
+  beforeEach(() => {
+    hexo.config = JSON.parse(JSON.stringify(defaultCfg));
   });
 
   const r = require('../lib/renderer').bind(hexo);
@@ -88,7 +96,7 @@ describe('Marked renderer', () => {
 
   it('should render headings without headerIds when disabled', () => {
     const body = '## hexo-server';
-    ctx.config.marked.headerIds = false;
+    hexo.config.marked.headerIds = false;
 
     const result = r({text: body});
 
@@ -545,7 +553,7 @@ describe('Marked renderer', () => {
       `![](${urlB})`
     ].join('\n');
 
-    const r = require('../lib/renderer').bind(ctx);
+    const r = require('../lib/renderer').bind(hexo);
 
     const result = r({text: body});
 
@@ -562,7 +570,7 @@ describe('Marked renderer', () => {
       '![a"b](http://bar.com/b.jpg "c>d")'
     ].join('\n');
 
-    const r = require('../lib/renderer').bind(ctx);
+    const r = require('../lib/renderer').bind(hexo);
 
     const result = r({text: body});
 
@@ -579,9 +587,9 @@ describe('Marked renderer', () => {
       '![foo](/aaa/bbb.jpg)'
     ].join('\n');
 
-    ctx.config.marked.lazyload = true;
+    hexo.config.marked.lazyload = true;
 
-    const r = require('../lib/renderer').bind(ctx);
+    const r = require('../lib/renderer').bind(hexo);
 
     const result = r({ text: body });
 
@@ -589,6 +597,72 @@ describe('Marked renderer', () => {
       '<p><img src="/bar/baz.jpg" loading="lazy">',
       '<img src="/aaa/bbb.jpg" alt="foo" loading="lazy"></p>\n'
     ].join('\n'));
+  });
+
+  it('postAsset', async () => {
+    hexo.config.post_asset_folder = true;
+    hexo.config.marked = {
+      prependRoot: true,
+      postAsset: true
+    };
+    const content = '![](foo.svg)';
+    const path = join(__dirname, '_posts', 'foo.md');
+    const post = {
+      title: 'foo',
+      slug: 'foo',
+      content
+    };
+    await hexo.post.create(post);
+
+    const result = r({ text: content, path });
+
+    console.log(result);
+  });
+
+  describe('postAsset', () => {
+    const Post = hexo.model('Post');
+
+    it('should prepend post path', async () => {
+      hexo.config.post_asset_folder = true;
+      hexo.config.marked = {
+        prependRoot: true,
+        postAsset: true
+      };
+
+      const asset = 'bar.svg';
+      const content = `![](${asset})`;
+      const post = {
+        source: '_posts/foo.md',
+        slug: 'foo'
+      };
+      const data = await Post.insert(post);
+
+      const result = r({ text: content, path: data.full_source });
+      result.should.eql(`<p><img src="${url_for.call(hexo, join(data.path, asset))}"></p>\n`);
+
+      await Post.removeById(data._id);
+    });
+
+    it('should handle slash prefix', async () => {
+      hexo.config.post_asset_folder = true;
+      hexo.config.marked = {
+        prependRoot: true,
+        postAsset: true
+      };
+
+      const asset = '/bar.svg';
+      const content = `![](${asset})`;
+      const post = {
+        source: '_posts/foo.md',
+        slug: 'foo'
+      };
+      const data = await Post.insert(post);
+
+      const result = r({ text: content, path: data.full_source });
+      result.should.eql(`<p><img src="${url_for.call(hexo, join(data.path, asset))}"></p>\n`);
+
+      await Post.removeById(data._id);
+    });
   });
 
   describe('exec filter to extend', () => {
