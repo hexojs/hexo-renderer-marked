@@ -638,6 +638,8 @@ describe('Marked renderer', () => {
   describe('exec filter to extend', () => {
     it('should execute filter registered to marked:renderer', () => {
       const hexo = new Hexo(__dirname, {silent: true});
+      hexo.config.marked = {};
+
       hexo.extend.filter.register('marked:renderer', renderer => {
         renderer.image = function(href, title, text) {
           return `<img data-src="${encodeURL(href)}">`;
