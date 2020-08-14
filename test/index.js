@@ -4,6 +4,7 @@ require('chai').should();
 const { encodeURL, escapeHTML, url_for } = require('hexo-util');
 const Hexo = require('hexo');
 const { join } = require('path').posix;
+const { sep } = require('path');
 
 describe('Marked renderer', () => {
   const hexo = new Hexo(__dirname, {silent: true});
@@ -599,69 +600,38 @@ describe('Marked renderer', () => {
     ].join('\n'));
   });
 
-  it('postAsset', async () => {
-    hexo.config.post_asset_folder = true;
-    hexo.config.marked = {
-      prependRoot: true,
-      postAsset: true
-    };
-    const content = '![](foo.svg)';
-    const path = join(__dirname, '_posts', 'foo.md');
-    const post = {
-      title: 'foo',
-      slug: 'foo',
-      content
-    };
-    await hexo.post.create(post);
-
-    const result = r({ text: content, path });
-
-    console.log(result);
-  });
-
   describe('postAsset', () => {
     const Post = hexo.model('Post');
+    const PostAsset = hexo.model('PostAsset');
 
-    it('should prepend post path', async () => {
+    beforeEach(() => {
       hexo.config.post_asset_folder = true;
       hexo.config.marked = {
         prependRoot: true,
         postAsset: true
       };
-
-      const asset = 'bar.svg';
-      const content = `![](${asset})`;
-      const post = {
-        source: '_posts/foo.md',
-        slug: 'foo'
-      };
-      const data = await Post.insert(post);
-
-      const result = r({ text: content, path: data.full_source });
-      result.should.eql(`<p><img src="${url_for.call(hexo, join(data.path, asset))}"></p>\n`);
-
-      await Post.removeById(data._id);
     });
 
-    it('should handle slash prefix', async () => {
-      hexo.config.post_asset_folder = true;
-      hexo.config.marked = {
-        prependRoot: true,
-        postAsset: true
-      };
-
-      const asset = '/bar.svg';
+    it('should prepend post path', async () => {
+      const asset = 'img/bar.svg';
+      const slug = asset.replace(/\//g, sep);
       const content = `![](${asset})`;
-      const post = {
+      const post = await Post.insert({
         source: '_posts/foo.md',
         slug: 'foo'
-      };
-      const data = await Post.insert(post);
+      });
+      const postasset = await PostAsset.insert({
+        _id: `source/_posts/foo/${asset}`,
+        slug,
+        post: post._id
+      });
 
-      const result = r({ text: content, path: data.full_source });
-      result.should.eql(`<p><img src="${url_for.call(hexo, join(data.path, asset))}"></p>\n`);
+      const expected = url_for.call(hexo, join(post.path, asset));
+      const result = r({ text: content, path: post.full_source });
+      result.should.eql(`<p><img src="${expected}"></p>\n`);
 
-      await Post.removeById(data._id);
+      await PostAsset.removeById(postasset._id);
+      await Post.removeById(post._id);
     });
   });
 
