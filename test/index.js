@@ -630,6 +630,35 @@ describe('Marked renderer', () => {
       const result = r({ text: content, path: post.full_source });
       result.should.eql(`<p><img src="${expected}"></p>\n`);
 
+      // should not be Windows path
+      expected.includes('\\').should.eql(false);
+
+      await PostAsset.removeById(postasset._id);
+      await Post.removeById(post._id);
+    });
+
+    it('should not modify non-post asset', async () => {
+      const asset = 'bar.svg';
+      const siteasset = '/logo/brand.png';
+      const site = 'http://lorem.ipsum/dolor/huri.bun';
+      const content = `![](${asset})\n![](${siteasset})\n![](${site})`;
+      const post = await Post.insert({
+        source: '_posts/foo.md',
+        slug: 'foo'
+      });
+      const postasset = await PostAsset.insert({
+        _id: `source/_posts/foo/${asset}`,
+        slug: asset,
+        post: post._id
+      });
+
+      const result = r({ text: content, path: post.full_source });
+      result.should.eql([
+        `<p><img src="${url_for.call(hexo, join(post.path, asset))}">`,
+        `<img src="${siteasset}">`,
+        `<img src="${site}"></p>`
+      ].join('\n') + '\n');
+
       await PostAsset.removeById(postasset._id);
       await Post.removeById(post._id);
     });
