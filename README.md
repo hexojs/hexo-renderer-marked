@@ -60,7 +60,6 @@ marked:
   * "image.jpg" is located at "/2020/01/02/foo/image.jpg", which is a post asset of "/2020/01/02/foo/".
   * `![](image.jpg)` becomes `<img src="/2020/01/02/foo/image.jpg">`
   * Requires `prependRoot:` to be enabled.
-  * This may reduce performance due to additional processing.
 - **external_link**
   * **enable** - Open external links in a new tab.
   * **exclude** - Exclude hostname. Specify subdomain when applicable, including `www`.
