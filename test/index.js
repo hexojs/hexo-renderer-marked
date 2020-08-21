@@ -160,6 +160,42 @@ describe('Marked renderer', () => {
     result.should.eql(`<p><a href="${url}">foo</a></p>\n`);
   });
 
+  describe('quotes', () => {
+    beforeEach(() => {
+      hexo.config.marked.smartypants = true;
+    });
+
+    it('default', () => {
+      const body = '"foo" \'bar\'';
+      const quotes = '«»“”';
+      hexo.config.marked.quotes = quotes;
+
+      const result = r({text: body});
+
+      result.should.eql('<p>«foo» “bar”</p>\n');
+    });
+
+    it('invalid option', () => {
+      const body = '"foo" \'bar\'';
+      const quotes = '«»';
+      hexo.config.marked.quotes = quotes;
+
+      const result = r({text: body});
+
+      result.should.eql('<p>“foo” ‘bar’</p>\n');
+    });
+
+    it('smartypants disabled', () => {
+      const body = '"foo" \'bar\'';
+      const quotes = '«»“”';
+      hexo.config.marked = { quotes, smartypants: false };
+
+      const result = r({text: body});
+
+      result.should.eql(`<p>${escapeHTML(body)}</p>\n`);
+    });
+  });
+
   describe('autolink option tests', () => {
     const hexo = new Hexo(__dirname, {silent: true});
     const ctx = Object.assign(hexo, {
@@ -191,7 +227,7 @@ describe('Marked renderer', () => {
         '<p>Great website <a href="http://hexo.io/">http://hexo.io</a></p>',
         '<p>A webpage <a href="http://www.example.com/">www.example.com</a></p>',
         '<p><a href="http://hexo.io/">Hexo</a></p>',
-        '<p><a href="http://lorem.com/foo/">http://lorem.com/foo/</a></p>',
+        '<p><a href="http://lorem.com/foo/">http:&#x2F;&#x2F;lorem.com&#x2F;foo&#x2F;</a></p>',
         '<p><a href="http://dolor.com/">http://dolor.com</a></p>'
       ].join('\n') + '\n');
     });
@@ -201,10 +237,10 @@ describe('Marked renderer', () => {
       const result = r({text: body});
 
       result.should.eql([
-        '<p>Great website http://hexo.io</p>',
+        '<p>Great website http:&#x2F;&#x2F;hexo.io</p>',
         '<p>A webpage www.example.com</p>',
         '<p><a href="http://hexo.io/">Hexo</a></p>',
-        '<p><a href="http://lorem.com/foo/">http://lorem.com/foo/</a></p>',
+        '<p><a href="http://lorem.com/foo/">http:&#x2F;&#x2F;lorem.com&#x2F;foo&#x2F;</a></p>',
         '<p><a href="http://dolor.com/">http://dolor.com</a></p>'
       ].join('\n') + '\n');
     });
