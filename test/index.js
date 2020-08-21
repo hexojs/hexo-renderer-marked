@@ -194,19 +194,80 @@ describe('Marked renderer', () => {
 
       result.should.eql(`<p>${escapeHTML(body)}</p>\n`);
     });
+
+    it('should render other markdown syntax - quotes disabled', () => {
+      const body = '"[\'foo\'](bar)"\n["foo"](bar)\n ## "foo"\n!["joe"](bar)\n"foo---bar"';
+      const result = r({text: body});
+
+      const expected = [
+        '<p>',
+        '“<a href="bar">‘foo’</a>“\n',
+        '<a href="bar">“foo”</a></p>\n',
+        '<h2 id="“foo”"><a href="#“foo”" class="headerlink" title="“foo”"></a>“foo”</h2>',
+        '<p>',
+        '<img src="bar" alt="&quot;joe&quot;">\n',
+        '“foo—bar”',
+        '</p>\n'
+      ].join('');
+
+      result.should.eql(expected);
+    });
+
+    it('should render other markdown syntax', () => {
+      const body = '"[\'foo\'](bar)"\n["foo"](bar)\n ## "foo"\n!["joe"](bar)\n"foo---bar"';
+      const quotes = '«»“”';
+      hexo.config.marked.quotes = quotes;
+      const result = r({text: body});
+
+      const expected = [
+        '<p>',
+        '«<a href="bar">“foo”</a>«\n',
+        '<a href="bar">«foo»</a></p>\n',
+        '<h2 id="«foo»"><a href="#«foo»" class="headerlink" title="«foo»"></a>«foo»</h2>',
+        '<p>',
+        '<img src="bar" alt="&quot;joe&quot;">\n',
+        '«foo—bar»',
+        '</p>\n'
+      ].join('');
+
+      result.should.eql(expected);
+    });
+
+    it('inRawBlock - quotes disabled', () => {
+      const body = '<kbd class="foo">ctrl</kbd>"bar"';
+      const result = r({text: body});
+
+      result.should.eql('<p><kbd class="foo">ctrl</kbd>“bar”</p>\n');
+    });
+
+    it('inRawBlock - quotes disabled + wrapped', () => {
+      const body = '"<kbd class="foo">ctrl</kbd>"';
+      const result = r({text: body});
+
+      result.should.eql('<p>“<kbd class="foo">ctrl</kbd>“</p>\n');
+    });
+
+    it('inRawBlock ', () => {
+      const quotes = '«»“”';
+      hexo.config.marked.quotes = quotes;
+      const body = '<kbd class="foo">ctrl</kbd>"bar"';
+      const result = r({text: body});
+
+      result.should.eql('<p><kbd class="foo">ctrl</kbd>«bar»</p>\n');
+    });
+
+    it('inRawBlock - wrapped', () => {
+      const quotes = '«»“”';
+      hexo.config.marked.quotes = quotes;
+      const body = '"<kbd class="foo">ctrl</kbd>"';
+      const result = r({text: body});
+
+      result.should.eql('<p>«<kbd class="foo">ctrl</kbd>«</p>\n');
+    });
   });
 
   describe('autolink option tests', () => {
-    const hexo = new Hexo(__dirname, {silent: true});
-    const ctx = Object.assign(hexo, {
-      config: {
-        marked: {
-          autolink: true
-        }
-      }
-    });
-
-    const r = require('../lib/renderer').bind(ctx);
+    beforeEach(() => { hexo.config.marked.autolink = true; });
 
     const body = [
       'Great website http://hexo.io',
@@ -227,20 +288,20 @@ describe('Marked renderer', () => {
         '<p>Great website <a href="http://hexo.io/">http://hexo.io</a></p>',
         '<p>A webpage <a href="http://www.example.com/">www.example.com</a></p>',
         '<p><a href="http://hexo.io/">Hexo</a></p>',
-        '<p><a href="http://lorem.com/foo/">http:&#x2F;&#x2F;lorem.com&#x2F;foo&#x2F;</a></p>',
+        '<p><a href="http://lorem.com/foo/">http://lorem.com/foo/</a></p>',
         '<p><a href="http://dolor.com/">http://dolor.com</a></p>'
       ].join('\n') + '\n');
     });
 
     it('autolink disabled', () => {
-      ctx.config.marked.autolink = false;
+      hexo.config.marked.autolink = false;
       const result = r({text: body});
 
       result.should.eql([
-        '<p>Great website http:&#x2F;&#x2F;hexo.io</p>',
+        '<p>Great website http://hexo.io</p>',
         '<p>A webpage www.example.com</p>',
         '<p><a href="http://hexo.io/">Hexo</a></p>',
-        '<p><a href="http://lorem.com/foo/">http:&#x2F;&#x2F;lorem.com&#x2F;foo&#x2F;</a></p>',
+        '<p><a href="http://lorem.com/foo/">http://lorem.com/foo/</a></p>',
         '<p><a href="http://dolor.com/">http://dolor.com</a></p>'
       ].join('\n') + '\n');
     });
