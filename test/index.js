@@ -1,15 +1,24 @@
 'use strict';
 
 require('chai').should();
-const { encodeURL, escapeHTML } = require('hexo-util');
+const { encodeURL, escapeHTML, url_for } = require('hexo-util');
 const Hexo = require('hexo');
+const { join } = require('path').posix;
+const { sep } = require('path');
 
 describe('Marked renderer', () => {
   const hexo = new Hexo(__dirname, {silent: true});
-  const ctx = Object.assign(hexo, {
-    config: {
-      marked: {}
-    }
+  const defaultCfg = JSON.parse(JSON.stringify(Object.assign(hexo.config, {
+    marked: {}
+  })));
+
+  before(async () => {
+    hexo.config.permalink = ':title';
+    await hexo.init();
+  });
+
+  beforeEach(() => {
+    hexo.config = JSON.parse(JSON.stringify(defaultCfg));
   });
 
   const r = require('../lib/renderer').bind(hexo);
@@ -88,7 +97,7 @@ describe('Marked renderer', () => {
 
   it('should render headings without headerIds when disabled', () => {
     const body = '## hexo-server';
-    ctx.config.marked.headerIds = false;
+    hexo.config.marked.headerIds = false;
 
     const result = r({text: body});
 
@@ -545,7 +554,7 @@ describe('Marked renderer', () => {
       `![](${urlB})`
     ].join('\n');
 
-    const r = require('../lib/renderer').bind(ctx);
+    const r = require('../lib/renderer').bind(hexo);
 
     const result = r({text: body});
 
@@ -562,7 +571,7 @@ describe('Marked renderer', () => {
       '![a"b](http://bar.com/b.jpg "c>d")'
     ].join('\n');
 
-    const r = require('../lib/renderer').bind(ctx);
+    const r = require('../lib/renderer').bind(hexo);
 
     const result = r({text: body});
 
@@ -579,9 +588,9 @@ describe('Marked renderer', () => {
       '![foo](/aaa/bbb.jpg)'
     ].join('\n');
 
-    ctx.config.marked.lazyload = true;
+    hexo.config.marked.lazyload = true;
 
-    const r = require('../lib/renderer').bind(ctx);
+    const r = require('../lib/renderer').bind(hexo);
 
     const result = r({ text: body });
 
@@ -591,9 +600,75 @@ describe('Marked renderer', () => {
     ].join('\n'));
   });
 
+  describe('postAsset', () => {
+    const Post = hexo.model('Post');
+    const PostAsset = hexo.model('PostAsset');
+
+    beforeEach(() => {
+      hexo.config.post_asset_folder = true;
+      hexo.config.marked = {
+        prependRoot: true,
+        postAsset: true
+      };
+    });
+
+    it('should prepend post path', async () => {
+      const asset = 'img/bar.svg';
+      const slug = asset.replace(/\//g, sep);
+      const content = `![](${asset})`;
+      const post = await Post.insert({
+        source: '_posts/foo.md',
+        slug: 'foo'
+      });
+      const postasset = await PostAsset.insert({
+        _id: `source/_posts/foo/${asset}`,
+        slug,
+        post: post._id
+      });
+
+      const expected = url_for.call(hexo, join(post.path, asset));
+      const result = r({ text: content, path: post.full_source });
+      result.should.eql(`<p><img src="${expected}"></p>\n`);
+
+      // should not be Windows path
+      expected.includes('\\').should.eql(false);
+
+      await PostAsset.removeById(postasset._id);
+      await Post.removeById(post._id);
+    });
+
+    it('should not modify non-post asset', async () => {
+      const asset = 'bar.svg';
+      const siteasset = '/logo/brand.png';
+      const site = 'http://lorem.ipsum/dolor/huri.bun';
+      const content = `![](${asset})\n![](${siteasset})\n![](${site})`;
+      const post = await Post.insert({
+        source: '_posts/foo.md',
+        slug: 'foo'
+      });
+      const postasset = await PostAsset.insert({
+        _id: `source/_posts/foo/${asset}`,
+        slug: asset,
+        post: post._id
+      });
+
+      const result = r({ text: content, path: post.full_source });
+      result.should.eql([
+        `<p><img src="${url_for.call(hexo, join(post.path, asset))}">`,
+        `<img src="${siteasset}">`,
+        `<img src="${site}"></p>`
+      ].join('\n') + '\n');
+
+      await PostAsset.removeById(postasset._id);
+      await Post.removeById(post._id);
+    });
+  });
+
   describe('exec filter to extend', () => {
     it('should execute filter registered to marked:renderer', () => {
       const hexo = new Hexo(__dirname, {silent: true});
+      hexo.config.marked = {};
+
       hexo.extend.filter.register('marked:renderer', renderer => {
         renderer.image = function(href, title, text) {
           return `<img data-src="${encodeURL(href)}">`;
