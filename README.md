@@ -56,7 +56,7 @@ marked:
   root: /blog/
   ```
   * `![text](/path/to/image.jpg)` becomes `<img src="/blog/path/to/image.jpg" alt="text">`
-- **postAsset** - Resolve post asset's image path to relative path and prepend root valuewhen [`post_asset_folder`](https://hexo.io/docs/asset-folders) is enabled.
+- **postAsset** - Resolve post asset's image path to relative path and prepend root value when [`post_asset_folder`](https://hexo.io/docs/asset-folders) is enabled.
   * "image.jpg" is located at "/2020/01/02/foo/image.jpg", which is a post asset of "/2020/01/02/foo/".
   * `![](image.jpg)` becomes `<img src="/2020/01/02/foo/image.jpg">`
   * Requires `prependRoot:` to be enabled.
