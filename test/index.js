@@ -150,6 +150,16 @@ describe('Marked renderer', () => {
     ].join('\n'));
   });
 
+  it('shouldn\'t encode when not a valid URL', () => {
+    const url = 'http://localhost:4000你好';
+
+    const body = `[foo](${url})`;
+
+    const result = r({text: body});
+
+    result.should.eql(`<p><a href="${url}">foo</a></p>\n`);
+  });
+
   describe('autolink option tests', () => {
     const hexo = new Hexo(__dirname, {silent: true});
     const ctx = Object.assign(hexo, {
