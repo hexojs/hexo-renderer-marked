@@ -165,16 +165,25 @@ describe('Marked renderer', () => {
     const body = [
       'Great website http://hexo.io',
       '',
-      '[Hexo](http://hexo.io)'
+      'A webpage www.example.com',
+      '',
+      '[Hexo](http://hexo.io)',
+      '',
+      '[http://lorem.com/foo/](http://lorem.com/foo/)',
+      '',
+      '<http://dolor.com>'
     ].join('\n');
 
     it('autolink enabled', () => {
       const result = r({text: body});
 
       result.should.eql([
-        '<p>Great website <a href="http://hexo.io/">http://hexo.io</a></p>\n',
-        '<p><a href="http://hexo.io/">Hexo</a></p>\n'
-      ].join(''));
+        '<p>Great website <a href="http://hexo.io/">http://hexo.io</a></p>',
+        '<p>A webpage <a href="http://www.example.com/">www.example.com</a></p>',
+        '<p><a href="http://hexo.io/">Hexo</a></p>',
+        '<p><a href="http://lorem.com/foo/">http://lorem.com/foo/</a></p>',
+        '<p><a href="http://dolor.com/">http://dolor.com</a></p>'
+      ].join('\n') + '\n');
     });
 
     it('autolink disabled', () => {
@@ -182,9 +191,12 @@ describe('Marked renderer', () => {
       const result = r({text: body});
 
       result.should.eql([
-        '<p>Great website http://hexo.io</p>\n',
-        '<p><a href="http://hexo.io/">Hexo</a></p>\n'
-      ].join(''));
+        '<p>Great website http://hexo.io</p>',
+        '<p>A webpage www.example.com</p>',
+        '<p><a href="http://hexo.io/">Hexo</a></p>',
+        '<p><a href="http://lorem.com/foo/">http://lorem.com/foo/</a></p>',
+        '<p><a href="http://dolor.com/">http://dolor.com</a></p>'
+      ].join('\n') + '\n');
     });
   });
 
