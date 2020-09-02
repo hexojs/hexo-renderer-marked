@@ -307,6 +307,43 @@ describe('Marked renderer', () => {
     });
   });
 
+  describe('mangle', () => {
+    const body = 'Contact: hi@example.com';
+    const expected = '<p>Contact: <a href="mailto:hi@example.com">hi@example.com</a></p>\n';
+    // https://stackoverflow.com/a/39243641
+    const unescape = str => {
+      return str.replace(/&([^;]+);/g, (entity, entityCode) => {
+        const hex = entityCode.match(/^#x([\da-fA-F]+)$/);
+        const digit = entityCode.match(/^#(\d+)$/);
+
+        if (hex) {
+          return String.fromCharCode(parseInt(hex[1], 16));
+        } else if (digit) {
+          return String.fromCharCode(~~digit[1]);
+        }
+        return entity;
+
+      });
+    };
+
+    // mangle option only applies to autolinked email address
+    beforeEach(() => { hexo.config.marked.autolink = true; });
+
+    it('default', () => {
+      const result = r({text: body});
+
+      result.should.include('&#');
+      unescape(result).should.eql(expected);
+    });
+
+    it('disabled', () => {
+      hexo.config.marked.mangle = false;
+      const result = r({text: body});
+
+      result.should.eql(expected);
+    });
+  });
+
   it('should render link with title', () => {
     const body = [
       '[text](http://link.com/ "a-title")',

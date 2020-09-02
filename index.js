@@ -12,6 +12,7 @@ hexo.config.marked = Object.assign({
   smartypants: true,
   modifyAnchors: 0,
   autolink: true,
+  mangle: true,
   sanitizeUrl: false,
   headerIds: true,
   lazyload: false,
