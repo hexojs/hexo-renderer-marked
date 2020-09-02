@@ -784,10 +784,10 @@ describe('Marked renderer', () => {
   });
 
   describe('exec filter to extend', () => {
-    it('should execute filter registered to marked:renderer', () => {
-      const hexo = new Hexo(__dirname, {silent: true});
-      hexo.config.marked = {};
+    const hexo = new Hexo(__dirname, {silent: true});
+    hexo.config.marked = {};
 
+    it('should execute filter registered to marked:renderer', () => {
       hexo.extend.filter.register('marked:renderer', renderer => {
         renderer.image = function(href, title, text) {
           return `<img data-src="${encodeURL(href)}">`;
@@ -810,6 +810,29 @@ describe('Marked renderer', () => {
         `<p><img data-src="${encodeURL(urlA)}">`,
         `<img data-src="${encodeURL(urlB)}"></p>\n`
       ].join('\n'));
+    });
+
+    it('should execute filter registered to marked:renderer', () => {
+      const smartypants = str => {
+        return str.replace(/---/g, '\u2014');
+      };
+
+      hexo.extend.filter.register('marked:tokenizer', tokenizer => {
+        tokenizer.inlineText = function(src) {
+          return {
+            type: 'text',
+            raw: src,
+            text: smartypants(src)
+          };
+        };
+      });
+
+      const body = '"---"';
+
+      const r = require('../lib/renderer').bind(hexo);
+
+      const result = r({text: body});
+      result.should.eql(`<p>${smartypants(body)}</p>\n`);
     });
   });
 });
