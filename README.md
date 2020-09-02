@@ -139,7 +139,50 @@ hexo.extend.filter.register('marked:renderer', function(renderer) {
 
 Save the file in "scripts/" folder and run Hexo as usual.
 
-Notice `renderer.heading = function (text, level) {` corresponds to [this line](https://github.com/hexojs/hexo-renderer-marked/blob/a93ebeb1e8cc11e754630c0a1506da9a1489b2b0/lib/renderer.js#L21). Refer to [renderer.js](https://github.com/hexojs/hexo-renderer-marked/blob/master/lib/renderer.js) on how this plugin overrides the default methods. For other methods not covered by this plugin, refer to marked's [documentation](https://marked.js.org/#/USING_PRO.md).
+Notice `renderer.heading = function (text, level) {` corresponds to [this line](https://github.com/hexojs/hexo-renderer-marked/blob/a93ebeb1e8cc11e754630c0a1506da9a1489b2b0/lib/renderer.js#L21). Refer to [renderer.js](https://github.com/hexojs/hexo-renderer-marked/blob/master/lib/renderer.js) on how this plugin overrides the default methods. For other methods not covered by this plugin, refer to marked's [documentation](https://marked.js.org/using_pro#renderer).
+
+#### Tokenizer
+
+It is also possible to customize the [tokenizer](https://marked.js.org/using_pro#tokenizer).
+
+``` js
+const { escape } = require('marked/src/helpers');
+
+// https://github.com/markedjs/marked/blob/b6773fca412c339e0cedd56b63f9fa1583cfd372/src/Lexer.js#L8-L24
+// Replace dashes only
+const smartypants = (str) => {
+  return str
+    // em-dashes
+    .replace(/---/g, '\u2014')
+    // en-dashes
+    .replace(/--/g, '\u2013')
+};
+
+hexo.extend.filter.register('marked:tokenizer', function(tokenizer) {
+  const { smartypants: isSmarty } = this.config.marked;
+  tokenizer.inlineText = function(src, inRawBlock) {
+    const { rules } = this;
+
+    // https://github.com/markedjs/marked/blob/b6773fca412c339e0cedd56b63f9fa1583cfd372/src/Tokenizer.js#L643-L658
+    const cap = rules.inline.text.exec(src);
+    if (cap) {
+      let text;
+      if (inRawBlock) {
+        text = cap[0];
+      } else {
+        text = escape(isSmarty ? smartypants(cap[0], quotes) : cap[0]);
+      }
+      return {
+        // `type` value is a corresponding renderer method
+        // https://marked.js.org/using_pro#inline-level-renderer-methods
+        type: 'text',
+        raw: cap[0],
+        text
+      };
+    }
+  }
+});
+```
 
 [Markdown]: https://daringfireball.net/projects/markdown/
 [marked]: https://github.com/chjj/marked
