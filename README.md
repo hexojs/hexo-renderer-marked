@@ -27,6 +27,7 @@ marked:
   breaks: true
   smartLists: true
   smartypants: true
+  quotes: '“”‘’'
   modifyAnchors: 0
   autolink: true
   sanitizeUrl: false
@@ -45,6 +46,11 @@ marked:
 - **breaks** - Enable GFM [line breaks](https://help.github.com/articles/github-flavored-markdown#newlines). This option requires the `gfm` option to be true.
 - **smartLists** - Use smarter list behavior than the original markdown.
 - **smartypants** - Use "smart" typograhic punctuation for things like quotes and dashes.
+- **quotes** - Defines the double and single quotes used for substituting regular quotes if **smartypants** is enabled.
+  * Example: '«»“”'
+    * "double" will be turned into «single»
+    * 'single' will be turned into “single”
+  * Both double and single quotes substitution must be specified, otherwise it will be silently ignored.
 - **modifyAnchors** - Transform the anchorIds into lower case (`1`) or upper case (`2`).
 - **autolink** - Enable autolink for URLs. E.g. `https://hexo.io` will become `<a href="https://hexo.io">https://hexo.io</a>`.
 - **sanitizeUrl** - Remove URLs that start with `javascript:`, `vbscript:` and `data:`.
@@ -59,7 +65,7 @@ marked:
 - **postAsset** - Resolve post asset's image path to relative path and prepend root value when [`post_asset_folder`](https://hexo.io/docs/asset-folders) is enabled.
   * "image.jpg" is located at "/2020/01/02/foo/image.jpg", which is a post asset of "/2020/01/02/foo/".
   * `![](image.jpg)` becomes `<img src="/2020/01/02/foo/image.jpg">`
-  * Requires `prependRoot:` to be enabled.
+  * Requires **prependRoot** to be enabled.
 - **external_link**
   * **enable** - Open external links in a new tab.
   * **exclude** - Exclude hostname. Specify subdomain when applicable, including `www`.
