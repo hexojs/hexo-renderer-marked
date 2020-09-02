@@ -321,17 +321,6 @@ describe('Marked renderer', () => {
   });
 
   describe('sanitizeUrl option tests', () => {
-    const hexo = new Hexo(__dirname, {silent: true});
-    const ctx = Object.assign(hexo, {
-      config: {
-        marked: {
-          sanitizeUrl: true
-        }
-      }
-    });
-
-    const renderer = require('../lib/renderer');
-
     const body = [
       '[script](javascript:foo)',
       '',
@@ -339,7 +328,7 @@ describe('Marked renderer', () => {
     ].join('\n');
 
     it('sanitizeUrl enabled', () => {
-      const r = renderer.bind(ctx);
+      hexo.config.marked.sanitizeUrl = true;
       const result = r({text: body});
 
       result.should.eql([
@@ -349,8 +338,7 @@ describe('Marked renderer', () => {
     });
 
     it('sanitizeUrl disabled', () => {
-      ctx.config.marked.sanitizeUrl = false;
-      const r = renderer.bind(ctx);
+      hexo.config.marked.sanitizeUrl = false;
       const result = r({text: body});
 
       result.should.eql([
