@@ -823,4 +823,31 @@ describe('Marked renderer', () => {
       result.should.eql(`<p>${smartypants(body)}</p>\n`);
     });
   });
+
+  describe('nunjucks', () => {
+    const hexo = new Hexo(__dirname, { silent: true });
+    const loremFn = () => { return 'ipsum'; };
+    const engine = 'md';
+
+    before(async () => {
+      await hexo.init();
+      hexo.extend.tag.register('lorem', loremFn);
+      hexo.extend.renderer.register('md', 'html', require('../lib/renderer'));
+    });
+
+    beforeEach(() => { hexo.config.marked = {}; });
+
+    it('default', async () => {
+      const result = await hexo.post.render(null, { content: '**foo** {% lorem %}', engine });
+      result.content.should.eql('<p><strong>foo</strong> ipsum</p>\n');
+    });
+
+    it('enable disableNunjucks', async () => {
+      const renderer = hexo.render.renderer.get('md');
+      renderer.disableNunjucks = true;
+      hexo.extend.renderer.register('md', 'html', renderer);
+      const result = await hexo.post.render(null, { content: '**foo** {% lorem %}', engine });
+      result.content.should.eql('<p><strong>foo</strong> {% lorem %}</p>\n');
+    });
+  });
 });

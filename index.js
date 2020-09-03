@@ -24,6 +24,8 @@ hexo.config.marked = Object.assign({
   }
 }, hexo.config.marked);
 
+renderer.disableNunjucks = Boolean(hexo.config.marked.disableNunjucks);
+
 hexo.extend.renderer.register('md', 'html', renderer, true);
 hexo.extend.renderer.register('markdown', 'html', renderer, true);
 hexo.extend.renderer.register('mkd', 'html', renderer, true);

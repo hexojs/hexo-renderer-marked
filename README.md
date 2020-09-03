@@ -39,6 +39,7 @@ marked:
     enable: false
     exclude: []
     nofollow: false
+  disableNunjucks: false
 ```
 
 - **gfm** - Enables [GitHub flavored markdown](https://help.github.com/articles/github-flavored-markdown)
@@ -72,6 +73,7 @@ marked:
     - Example: `[foo](http://bar.com)` becomes `<a href="http://bar.com" target="_blank" rel="noopener">foo</a>`
   * **nofollow** - Add `rel="noopener external nofollow noreferrer"` to all external links for security, privacy and SEO. [Read more](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types). _This can be enabled regardless of `external_link.enable`_
     - Example: `[foo](http://bar.com)` becomes `<a href="http://bar.com" rel="noopener external nofollow noreferrer">foo</a>`
+- **disableNunjucks**: If true, Nunjucks tags `{{ }}` or `{% %}` (usually used by [tag plugins](https://hexo.io/docs/tag-plugins)) will not be rendered.
 
 ## Extras
 
