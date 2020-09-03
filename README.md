@@ -30,6 +30,7 @@ marked:
   quotes: '“”‘’'
   modifyAnchors: 0
   autolink: true
+  mangle: true
   sanitizeUrl: false
   headerIds: true
   lazyload: false
@@ -54,6 +55,8 @@ marked:
   * Both double and single quotes substitution must be specified, otherwise it will be silently ignored.
 - **modifyAnchors** - Transform the anchorIds into lower case (`1`) or upper case (`2`).
 - **autolink** - Enable autolink for URLs. E.g. `https://hexo.io` will become `<a href="https://hexo.io">https://hexo.io</a>`.
+- **mangle** - Escape autolinked email address with HTML character references.
+  * This is to obscure email address from _basic_ crawler used by spam bot, while still readable to web browsers.
 - **sanitizeUrl** - Remove URLs that start with `javascript:`, `vbscript:` and `data:`.
 - **headerIds** - Insert header id, e.g. `<h1 id="value">text</h1>`. Useful for inserting anchor link to each paragraph with a heading.
 - **lazyload** - Lazy loading images via `loading="lazy"` attribute.
@@ -74,6 +77,8 @@ marked:
   * **nofollow** - Add `rel="noopener external nofollow noreferrer"` to all external links for security, privacy and SEO. [Read more](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types). _This can be enabled regardless of `external_link.enable`_
     - Example: `[foo](http://bar.com)` becomes `<a href="http://bar.com" rel="noopener external nofollow noreferrer">foo</a>`
 - **disableNunjucks**: If true, Nunjucks tags `{{ }}` or `{% %}` (usually used by [tag plugins](https://hexo.io/docs/tag-plugins)) will not be rendered.
+
+For more options, see [Marked](https://marked.js.org/using_advanced#options). Due to the customizations implemented by this plugin, some of the Marked's options may not work as expected. Feel free to raise an [issue](https://github.com/hexojs/hexo-renderer-marked/issues) to us for clarification.
 
 ## Extras
 
