@@ -29,6 +29,7 @@ marked:
   smartypants: true
   quotes: '“”‘’'
   modifyAnchors: 0
+  anchorAlias: false
   autolink: true
   mangle: true
   sanitizeUrl: false
@@ -59,6 +60,9 @@ marked:
   * This is to obscure email address from _basic_ crawler used by spam bot, while still readable to web browsers.
 - **sanitizeUrl** - Remove URLs that start with `javascript:`, `vbscript:` and `data:`.
 - **headerIds** - Insert header id, e.g. `<h1 id="value">text</h1>`. Useful for inserting anchor link to each paragraph with a heading.
+- **anchorAlias** - Enables custom header id
+  * Example: `## [foo](#bar)`, id will be set as "bar".
+  * Requires **headerIds** to be enabled.
 - **lazyload** - Lazy loading images via `loading="lazy"` attribute.
 - **prependRoot** - Prepend root value to (internal) image path.
   * Example `_config.yml`:
