@@ -756,7 +756,7 @@ describe('Marked renderer', () => {
       };
     });
 
-    it('should prepend post path', async () => {
+    it('default', async () => {
       const asset = 'img/bar.svg';
       const slug = asset.replace(/\//g, sep);
       const content = `![](${asset})`;
@@ -802,6 +802,29 @@ describe('Marked renderer', () => {
         `<img src="${siteasset}">`,
         `<img src="${site}"></p>`
       ].join('\n') + '\n');
+
+      await PostAsset.removeById(postasset._id);
+      await Post.removeById(post._id);
+    });
+
+    // #170
+    it('post located in subfolder', async () => {
+      const asset = 'img/bar.svg';
+      const slug = asset.replace(/\//g, sep);
+      const content = `![](${asset})`;
+      const post = await Post.insert({
+        source: '_posts/lorem/foo.md',
+        slug: 'foo'
+      });
+      const postasset = await PostAsset.insert({
+        _id: `source/_posts/lorem/foo/${asset}`,
+        slug,
+        post: post._id
+      });
+
+      const expected = url_for.call(hexo, join(post.path, asset));
+      const result = r({ text: content, path: post.full_source });
+      result.should.eql(`<p><img src="${expected}"></p>\n`);
 
       await PostAsset.removeById(postasset._id);
       await Post.removeById(post._id);
