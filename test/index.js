@@ -74,6 +74,39 @@ describe('Marked renderer', () => {
     ].join(''));
   });
 
+  describe('anchorAlias', () => {
+    beforeEach(() => { hexo.config.marked.anchorAlias = true; });
+
+    it('default', () => {
+      const body = '## [foo](#alias)';
+
+      const result = r({text: body});
+      result.should.eql('<h2 id="alias"><a href="#alias" class="headerlink" title="foo"></a><a href="#alias">foo</a></h2>');
+    });
+
+    it('duplicate anchors', () => {
+      const body = [
+        '## [foo](#alias)',
+        '## [bar](#alias)'
+      ].join('\n');
+
+      const result = r({text: body});
+      result.should.eql([
+        '<h2 id="alias"><a href="#alias" class="headerlink" title="foo"></a><a href="#alias">foo</a></h2>',
+        '<h2 id="alias-1"><a href="#alias-1" class="headerlink" title="bar"></a><a href="#alias-1">bar</a></h2>'
+      ].join(''));
+    });
+
+    it('modifyAnchors', () => {
+      hexo.config.marked.modifyAnchors = 2;
+      const body = '## [foo](#alias)';
+
+      const result = r({text: body});
+      result.should.eql('<h2 id="ALIAS"><a href="#ALIAS" class="headerlink" title="foo"></a><a href="#ALIAS">foo</a></h2>');
+    });
+  });
+
+
   it('should handle duplicate headings properly', () => {
     const body = [
       '## foo',
