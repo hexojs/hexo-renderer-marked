@@ -17,8 +17,9 @@ hexo.config.marked = Object.assign({
   headerIds: true,
   anchorAlias: false,
   lazyload: false,
-  // TODO: enable prependRoot by default in v3
+  // TODO: enable prependRoot by default in v4
   prependRoot: false,
+  postAsset: false,
   external_link: {
     enable: false,
     exclude: [],
