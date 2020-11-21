@@ -182,7 +182,7 @@ hexo.extend.filter.register('marked:tokenizer', function(tokenizer) {
       if (inRawBlock) {
         text = cap[0];
       } else {
-        text = escape(isSmarty ? smartypants(cap[0], quotes) : cap[0]);
+        text = escape(isSmarty ? smartypants(cap[0]) : cap[0]);
       }
       return {
         // `type` value is a corresponding renderer method
