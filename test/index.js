@@ -140,6 +140,12 @@ describe('Marked renderer', () => {
   });
 
   // Description List tests
+  it('shouldn\'t render description lists when options.descriptionLists is disabled', () => {
+    hexo.config.marked.descriptionLists = false;
+
+    const result = r({text: 'Description Term<br>: This is the Description'});
+    result.should.eql('<p>Description Term<br>: This is the Description</p>\n');
+  });
 
   it('should render description lists with a single space after the colon', () => {
     const result = r({text: 'Description Term<br>: This is the Description'});

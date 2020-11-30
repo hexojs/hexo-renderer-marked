@@ -24,7 +24,8 @@ hexo.config.marked = Object.assign({
     enable: false,
     exclude: [],
     nofollow: false
-  }
+  },
+  descriptionLists: true
 }, hexo.config.marked);
 
 renderer.disableNunjucks = Boolean(hexo.config.marked.disableNunjucks);
