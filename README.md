@@ -50,7 +50,7 @@ marked:
 - **pedantic** - Conform to obscure parts of `markdown.pl` as much as possible. Don't fix any of the original markdown bugs or poor behavior.
 - **breaks** - Enable GFM [line breaks](https://help.github.com/articles/github-flavored-markdown#newlines). This option requires the `gfm` option to be true.
 - **smartLists** - Use smarter list behavior than the original markdown.
-- **smartypants** - Use "smart" typograhic punctuation for things like quotes and dashes.
+- **smartypants** - Use "smart" typographic punctuation for things like quotes and dashes.
 - **quotes** - Defines the double and single quotes used for substituting regular quotes if **smartypants** is enabled.
   * Example: '«»“”'
     * "double" will be turned into «single»
