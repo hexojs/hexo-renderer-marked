@@ -1,6 +1,6 @@
 # hexo-renderer-marked
 
-[![Build Status](https://travis-ci.org/hexojs/hexo-renderer-marked.svg?branch=master)](https://travis-ci.org/hexojs/hexo-renderer-marked)
+[![Build Status](https://github.com/hexojs/hexo-renderer-marked/workflows/Tester/badge.svg?branch=master)](https://github.com/hexojs/hexo-renderer-marked/actions?query=workflow%3ATester)
 [![NPM version](https://badge.fury.io/js/hexo-renderer-marked.svg)](https://www.npmjs.com/package/hexo-renderer-marked)
 [![Coverage Status](https://img.shields.io/coveralls/hexojs/hexo-renderer-marked.svg)](https://coveralls.io/r/hexojs/hexo-renderer-marked?branch=master)
 [![NPM Dependencies](https://img.shields.io/librariesio/release/npm/hexo-renderer-marked.svg)](https://libraries.io/npm/hexo-renderer-marked)
