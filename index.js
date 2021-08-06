@@ -14,7 +14,7 @@ hexo.config.marked = Object.assign({
   autolink: true,
   mangle: true,
   sanitizeUrl: false,
-  sanitize: false,
+  dompurify: false,
   headerIds: true,
   anchorAlias: false,
   lazyload: false,
