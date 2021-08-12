@@ -949,4 +949,37 @@ describe('Marked renderer', () => {
       result.content.should.eql('<p><strong>foo</strong> {% lorem %}</p>\n');
     });
   });
+
+  describe('sanitize HTML with DOMPurify', () => {
+    const body = [
+      '**safe markdown**',
+      '',
+      '<a onclick="alert(1)">unsafe link</a>',
+      '',
+      '[Hexo](http://hexo.io)'
+    ].join('\n');
+
+    it('sanitize enabled, default options', () => {
+      hexo.config.marked.dompurify = true;
+      const result = r({text: body});
+
+      result.should.eql([
+        '<p><strong>safe markdown</strong></p>\n',
+        '<p><a>unsafe link</a></p>\n',
+        '<p><a href="http://hexo.io/">Hexo</a></p>\n'
+      ].join(''));
+    });
+
+    it('sanitize enabled, with options', () => {
+      hexo.config.marked.dompurify = { FORBID_TAGS: ['strong'] };
+      const result = r({text: body});
+
+      result.should.eql([
+        '<p>safe markdown</p>\n',
+        '<p><a>unsafe link</a></p>\n',
+        '<p><a href="http://hexo.io/">Hexo</a></p>\n'
+      ].join(''));
+    });
+
+  });
 });

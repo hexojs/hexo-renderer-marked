@@ -34,6 +34,7 @@ marked:
   autolink: true
   mangle: true
   sanitizeUrl: false
+  dompurify: false,
   headerIds: true
   lazyload: false
   prependRoot: false
@@ -61,6 +62,7 @@ marked:
 - **mangle** - Escape autolinked email address with HTML character references.
   * This is to obscure email address from _basic_ crawler used by spam bot, while still readable to web browsers.
 - **sanitizeUrl** - Remove URLs that start with `javascript:`, `vbscript:` and `data:`.
+- **dompurify** - Enable [DOMPurify](https://github.com/cure53/DOMPurify) to be run on the rendered Markdown. See below for configuration
 - **headerIds** - Insert header id, e.g. `<h1 id="value">text</h1>`. Useful for inserting anchor link to each paragraph with a heading.
 - **anchorAlias** - Enables custom header id
   * Example: `## [foo](#bar)`, id will be set as "bar".
@@ -90,6 +92,26 @@ marked:
 For more options, see [Marked](https://marked.js.org/using_advanced#options). Due to the customizations implemented by this plugin, some of the Marked's options may not work as expected. Feel free to raise an [issue](https://github.com/hexojs/hexo-renderer-marked/issues) to us for clarification.
 
 ## Extras
+
+### Sanitize HTML with DOMPurify
+
+[DOMPurify](https://github.com/cure53/DOMPurify) can be enabled to sanitize the rendered HTML.
+
+To enable it, pass an object containing the DOMPurify options:
+
+```json
+dompurify: true
+```
+
+Or you can enable specific DOMPurify options (but according to DOMPurify authors, the default options are safe):
+
+```yml
+dompurify: 
+  FORBID_TAGS:
+  - "style"
+```
+
+See https://github.com/cure53/DOMPurify#can-i-configure-dompurify for a full reference of available options
 
 ### Definition/Description Lists
 
