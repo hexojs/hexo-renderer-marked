@@ -970,6 +970,17 @@ describe('Marked renderer', () => {
       ].join(''));
     });
 
+    it('sanitize disabled', () => {
+      hexo.config.marked.dompurify = false;
+      const result = r({text: body});
+
+      result.should.eql([
+        '<p><strong>safe markdown</strong></p>\n',
+        '<p><a onclick="alert(1)">unsafe link</a></p>\n',
+        '<p><a href="http://hexo.io/">Hexo</a></p>\n'
+      ].join(''));
+    });
+
     it('sanitize enabled, with options', () => {
       hexo.config.marked.dompurify = { FORBID_TAGS: ['strong'] };
       const result = r({text: body});

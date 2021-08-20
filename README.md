@@ -34,7 +34,7 @@ marked:
   autolink: true
   mangle: true
   sanitizeUrl: false
-  dompurify: false,
+  dompurify: {},
   headerIds: true
   lazyload: false
   prependRoot: false
@@ -62,7 +62,7 @@ marked:
 - **mangle** - Escape autolinked email address with HTML character references.
   * This is to obscure email address from _basic_ crawler used by spam bot, while still readable to web browsers.
 - **sanitizeUrl** - Remove URLs that start with `javascript:`, `vbscript:` and `data:`.
-- **dompurify** - Enable [DOMPurify](https://github.com/cure53/DOMPurify) to be run on the rendered Markdown. See below for configuration
+- **dompurify** - Enable [DOMPurify](https://github.com/cure53/DOMPurify) to be run on the rendered Markdown. Set ``false`` to disable. See below for configuration
 - **headerIds** - Insert header id, e.g. `<h1 id="value">text</h1>`. Useful for inserting anchor link to each paragraph with a heading.
 - **anchorAlias** - Enables custom header id
   * Example: `## [foo](#bar)`, id will be set as "bar".
