@@ -37,7 +37,7 @@ marked:
   dompurify: false,
   headerIds: true
   lazyload: false
-  prependRoot: false
+  prependRoot: true
   postAsset: false
   external_link:
     enable: false
