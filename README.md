@@ -54,7 +54,7 @@ marked:
 - **smartypants** - Use "smart" typographic punctuation for things like quotes and dashes.
 - **quotes** - Defines the double and single quotes used for substituting regular quotes if **smartypants** is enabled.
   * Example: '«»“”'
-    * "double" will be turned into «single»
+    * "double" will be turned into «double»
     * 'single' will be turned into “single”
   * Both double and single quotes substitution must be specified, otherwise it will be silently ignored.
 - **modifyAnchors** - Transform the anchorIds into lower case (`1`) or upper case (`2`).
