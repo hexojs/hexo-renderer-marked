@@ -7,6 +7,17 @@
 
 Add support for [Markdown]. This plugin uses [marked] as its render engine.
 
+## Important note on security
+
+By default, this plugin contains a potential security issue: **It is possible to inject Markdown containing Unsafe HTML that will not be sanitized**
+
+This issue might not affect you because you checked the content of the markdown before using this plugin, but it's still a risk
+
+There are two solutions to avoid those issues:
+
+1. First solution is to enable option `dompurify: true`, which will sanitize the rendered HTML. The side effect of this solution is that it will break any [tag plugin](https://hexo.io/docs/tag-plugins) (aka `{% codeblock %}`). This explains why the safer option has not been enabled by default
+2. Second solution is to migrate to [hexo-renderer-markdown-it](https://github.com/hexojs/hexo-renderer-markdown-it/) which is safe by default and does not suffer from the same limitations
+
 ## Installation
 
 ``` bash
@@ -34,7 +45,7 @@ marked:
   autolink: true
   mangle: true
   sanitizeUrl: false
-  dompurify: false,
+  dompurify: false
   headerIds: true
   lazyload: false
   prependRoot: true
