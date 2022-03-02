@@ -117,7 +117,7 @@ dompurify: true
 Or you can enable specific DOMPurify options (but according to DOMPurify authors, the default options are safe):
 
 ```yml
-dompurify: 
+dompurify:
   FORBID_TAGS:
   - "style"
 ```
@@ -195,7 +195,7 @@ Notice `renderer.heading = function (text, level) {` corresponds to [this line](
 It is also possible to customize the [tokenizer](https://marked.js.org/using_pro#tokenizer).
 
 ``` js
-const { escape } = require('marked/src/helpers');
+const { escapeHTML: escape } = require('hexo-util');
 
 // https://github.com/markedjs/marked/blob/b6773fca412c339e0cedd56b63f9fa1583cfd372/src/Lexer.js#L8-L24
 // Replace dashes only
