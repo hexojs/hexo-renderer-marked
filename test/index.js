@@ -899,7 +899,7 @@ describe('Marked renderer', () => {
       ].join('\n'));
     });
 
-    it('should execute filter registered to marked:renderer', () => {
+    it('should execute filter registered to marked:tokenizer', () => {
       const smartypants = str => {
         return str.replace(/---/g, '\u2014');
       };
