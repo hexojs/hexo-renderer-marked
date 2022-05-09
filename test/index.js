@@ -921,6 +921,38 @@ describe('Marked renderer', () => {
       const result = r({text: body});
       result.should.eql(`<p>${smartypants(body)}</p>\n`);
     });
+
+    it('should execute filter registered to marked:extensions', () => {
+      hexo.extend.filter.register('marked:extensions', extensions => {
+        extensions.push({
+          name: 'blockMath',
+          level: 'block',
+          tokenizer(src) {
+            const cap = /^\s{0,3}\$\$((?:[^\n]|\n[^\n])+?)\n{0,1}\$\$/.exec(src);
+
+            if (cap !== null) {
+              return {
+                type: 'blockMath',
+                raw: cap[0],
+                math: cap[1]
+              };
+            }
+
+            return undefined;
+          },
+          renderer(token) {
+            return `<p class="math block">${escapeHTML(token.math)}</p>\n`;
+          }
+        });
+      });
+
+      const body = '$$E=mc^2$$';
+
+      const r = require('../lib/renderer').bind(hexo);
+
+      const result = r({text: body});
+      result.should.eql(`<p class="math block">${escapeHTML('E=mc^2')}</p>\n`);
+    });
   });
 
   describe('nunjucks', () => {
