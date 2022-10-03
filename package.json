@@ -31,7 +31,7 @@
     "hexo-util": "^2.5.0",
     "marked": "^4.0.1",
     "dompurify": "^2.3.0",
-    "jsdom": "^19.0.0"
+    "jsdom": "^20.0.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
