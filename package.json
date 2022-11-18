@@ -29,7 +29,7 @@
   "license": "MIT",
   "dependencies": {
     "dompurify": "^2.4.0",
-    "hexo-util": "^2.7.0",
+    "hexo-util": "^3.0.1",
     "jsdom": "^20.0.1",
     "marked": "^4.1.1"
   },
