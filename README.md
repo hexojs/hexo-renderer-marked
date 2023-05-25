@@ -92,12 +92,12 @@ marked:
 - **external_link**
   * **enable** - Open external links in a new tab.
   * **exclude** - Exclude hostname. Specify subdomain when applicable, including `www`.
-    - Example: `[foo](http://bar.com)` becomes `<a href="http://bar.com" target="_blank" rel="noopener">foo</a>`
+    - Example: `[foo](https://example.com)` becomes `<a href="https://example.com" target="_blank" rel="noopener">foo</a>`
   * **nofollow** - Add `rel="noopener external nofollow noreferrer"` to all external links for security, privacy and SEO. [Read more](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types). _This can be enabled regardless of `external_link.enable`_
-    - Example: `[foo](http://bar.com)` becomes `<a href="http://bar.com" rel="noopener external nofollow noreferrer">foo</a>`
+    - Example: `[foo](https://example.com)` becomes `<a href="https://example.com" rel="noopener external nofollow noreferrer">foo</a>`
 - **disableNunjucks**: If true, Nunjucks tags `{{ }}` or `{% %}` (usually used by [tag plugins](https://hexo.io/docs/tag-plugins)) will not be rendered.
 - **descriptionLists**: Enable support for [description lists syntax](https://kramdown.gettalong.org/syntax.html#definition-lists).
-  * Currently description lists syntax is not in neither [CommonMark](http://commonmark.org/) or [GFM](https://github.github.com/gfm/#task-list-items-extension-), `hexo-renderer-marked` only provides the option for backward compatibility.
+  * Currently description lists syntax is not in neither [CommonMark](https://commonmark.org/) or [GFM](https://github.github.com/gfm/#task-list-items-extension-), `hexo-renderer-marked` only provides the option for backward compatibility.
   * By disabling the `descriptionLists`, markdown rendering performance will be improved by **a lot**.
 
 For more options, see [Marked](https://marked.js.org/using_advanced#options). Due to the customizations implemented by this plugin, some of the Marked's options may not work as expected. Feel free to raise an [issue](https://github.com/hexojs/hexo-renderer-marked/issues) to us for clarification.
