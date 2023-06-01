@@ -30,7 +30,7 @@
   "dependencies": {
     "dompurify": "^3.0.3",
     "hexo-util": "^3.0.1",
-    "jsdom": "^20.0.1",
+    "jsdom": "^22.1.0",
     "marked": "^4.3.0"
   },
   "devDependencies": {
