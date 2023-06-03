@@ -31,7 +31,7 @@
     "dompurify": "^3.0.3",
     "hexo-util": "^3.0.1",
     "jsdom": "^20.0.1",
-    "marked": "^4.3.0"
+    "marked": "^5.0.4"
   },
   "devDependencies": {
     "c8": "^7.13.0",
