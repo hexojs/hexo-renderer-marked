@@ -74,6 +74,14 @@ describe('Marked renderer', () => {
     ].join(''));
   });
 
+  it('should use unescaped heading text https://github.com/hexojs/hexo-renderer-marked/issues/246', () => {
+    const body = '## 1.1 aaa/bbb';
+
+    const result = r({ text: body });
+
+    result.should.eql('<h2 id="1-1-aaa-bbb"><a href="#1-1-aaa-bbb" class="headerlink" title="1.1 aaa&#x2F;bbb"></a>1.1 aaa&#x2F;bbb</h2>');
+  });
+
   describe('anchorAlias', () => {
     beforeEach(() => { hexo.config.marked.anchorAlias = true; });
 
