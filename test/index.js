@@ -791,6 +791,26 @@ describe('Marked renderer', () => {
     ].join('\n'));
   });
 
+  it('figcaption', () => {
+    const body = [
+      '![](/bar/baz.jpg)',
+      '![](/bar/baz.jpg "foo")',
+      '![foo](/aaa/bbb.jpg)'
+    ].join('\n');
+
+    hexo.config.marked.figcaption = true;
+
+    const r = require('../lib/renderer').bind(hexo);
+
+    const result = r({ text: body });
+
+    result.should.eql([
+      '<p><img src="/bar/baz.jpg">',
+      '<img src="/bar/baz.jpg" title="foo"><figcaption aria-hidden="true">foo</figcaption>',
+      '<img src="/aaa/bbb.jpg" alt="foo"><figcaption aria-hidden="true">foo</figcaption></p>\n'
+    ].join('\n'));
+  });
+
   describe('postAsset', () => {
     const Post = hexo.model('Post');
     const PostAsset = hexo.model('PostAsset');

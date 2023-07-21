@@ -48,6 +48,7 @@ marked:
   dompurify: false
   headerIds: true
   lazyload: false
+  figcaption: false
   prependRoot: true
   postAsset: false
   external_link:
@@ -79,6 +80,7 @@ marked:
   * Example: `## [foo](#bar)`, id will be set as "bar".
   * Requires **headerIds** to be enabled.
 - **lazyload** - Lazy loading images via `loading="lazy"` attribute.
+- **figcaption** - Append `figcaption` element after each image.
 - **prependRoot** - Prepend root value to (internal) image path.
   * Example `_config.yml`:
   ``` yml
