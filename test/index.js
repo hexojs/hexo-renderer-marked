@@ -793,8 +793,8 @@ describe('Marked renderer', () => {
 
   it('figcaption', () => {
     const body = [
-      '![](/bar/baz.jpg)',
-      '![](/bar/baz.jpg "foo")',
+      '![](/bar/baz.jpg "bar")',
+      '![foo](/bar/baz.jpg "bar")',
       '![foo](/aaa/bbb.jpg)'
     ].join('\n');
 
@@ -805,8 +805,8 @@ describe('Marked renderer', () => {
     const result = r({ text: body });
 
     result.should.eql([
-      '<p><img src="/bar/baz.jpg">',
-      '<img src="/bar/baz.jpg" title="foo"><figcaption aria-hidden="true">foo</figcaption>',
+      '<p><img src="/bar/baz.jpg" title="bar">',
+      '<img src="/bar/baz.jpg" alt="foo" title="bar"><figcaption aria-hidden="true">foo</figcaption>',
       '<img src="/aaa/bbb.jpg" alt="foo"><figcaption aria-hidden="true">foo</figcaption></p>\n'
     ].join('\n'));
   });
