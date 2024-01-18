@@ -88,8 +88,10 @@ marked:
   ```
   * `![text](/path/to/image.jpg)` becomes `<img src="/blog/path/to/image.jpg" alt="text">`
 - **postAsset** - Resolve post asset's image path to relative path and prepend root value when [`post_asset_folder`](https://hexo.io/docs/asset-folders) is enabled.
-  * "image.jpg" is located at "/2020/01/02/foo/image.jpg", which is a post asset of "/2020/01/02/foo/".
-  * `![](image.jpg)` becomes `<img src="/2020/01/02/foo/image.jpg">`
+  * Search for assets first in the post asset folder, then the parent folder of the post asset folder. The search process is aborted once the image is found.
+  * "image.jpg" is located at "/2020/01/02/foo/image.jpg" and locally `source/_post/foo/image.jpg` , which is a post asset of "/2020/01/02/foo/".
+  * `![](image.jpg)` becomes `<img src="/2020/01/02/foo/image.jpg">` (asset is found in post asset folder since `source/_post/foo` `/` `image.jpg` exists.)
+  * `![](foo/image.jpg)` also becomes `<img src="/2020/01/02/foo/image.jpg">` (asset is found in the parent folder of post asset folder since `source/_post` `/` `foo/image.jpg` exists.)
   * Requires **prependRoot** to be enabled.
 - **external_link**
   * **enable** - Open external links in a new tab.
