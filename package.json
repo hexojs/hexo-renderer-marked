@@ -15,7 +15,10 @@
     "lib",
     "index.js"
   ],
-  "repository": "hexojs/hexo-renderer-marked",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hexojs/hexo-renderer-marked.git"
+  },
   "keywords": [
     "hexo",
     "markdown",
