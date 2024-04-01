@@ -268,6 +268,17 @@ hexo.extend.filter.register('marked:extensions', function(extensions) {
 });
 ```
 
+You may also get access to `marked.use` function.
+For example to use the [marked-alert](https://github.com/bent10/marked-extensions/tree/main/packages/alert) extention wich also provides a `walkTokens` functions:
+
+```js
+const markedAlert = require('marked-alert');
+
+hexo.extend.filter.register('marked:use', function (markedUse) {
+  markedUse(markedAlert());
+});
+```
+
 [Markdown]: https://daringfireball.net/projects/markdown/
 [marked]: https://github.com/chjj/marked
 [PHP Markdown Extra]: https://michelf.ca/projects/php-markdown/extra/#def-list
