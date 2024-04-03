@@ -9,7 +9,10 @@ const { sep } = require('path');
 describe('Marked renderer', () => {
   const hexo = new Hexo(__dirname, {silent: true});
   const defaultCfg = JSON.parse(JSON.stringify(Object.assign(hexo.config, {
-    marked: {}
+    marked: {
+      headerIds: true,
+      mangle: true
+    }
   })));
 
   before(async () => {
