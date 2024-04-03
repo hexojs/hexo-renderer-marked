@@ -10,7 +10,6 @@ describe('Marked renderer', () => {
   const hexo = new Hexo(__dirname, {silent: true});
   const defaultCfg = JSON.parse(JSON.stringify(Object.assign(hexo.config, {
     marked: {
-      headerIds: true,
       mangle: true
     }
   })));
