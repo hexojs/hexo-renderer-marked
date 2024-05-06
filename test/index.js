@@ -9,7 +9,9 @@ const { sep } = require('path');
 describe('Marked renderer', () => {
   const hexo = new Hexo(__dirname, {silent: true});
   const defaultCfg = JSON.parse(JSON.stringify(Object.assign(hexo.config, {
-    marked: {}
+    marked: {
+      mangle: true
+    }
   })));
 
   before(async () => {
@@ -806,8 +808,8 @@ describe('Marked renderer', () => {
 
     result.should.eql([
       '<p><img src="/bar/baz.jpg" title="bar">',
-      '<img src="/bar/baz.jpg" alt="foo" title="bar"><figcaption aria-hidden="true">foo</figcaption>',
-      '<img src="/aaa/bbb.jpg" alt="foo"><figcaption aria-hidden="true">foo</figcaption></p>\n'
+      '<figure><img src="/bar/baz.jpg" alt="foo" title="bar"><figcaption aria-hidden="true">foo</figcaption></figure>',
+      '<figure><img src="/aaa/bbb.jpg" alt="foo"><figcaption aria-hidden="true">foo</figcaption></figure></p>\n'
     ].join('\n'));
   });
 

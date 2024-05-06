@@ -1,6 +1,6 @@
 {
   "name": "hexo-renderer-marked",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "description": "Markdown renderer plugin for Hexo",
   "main": "index",
   "scripts": {
@@ -15,7 +15,10 @@
     "lib",
     "index.js"
   ],
-  "repository": "hexojs/hexo-renderer-marked",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hexojs/hexo-renderer-marked.git"
+  },
   "keywords": [
     "hexo",
     "markdown",
@@ -31,15 +34,15 @@
     "dompurify": "^3.0.3",
     "hexo-util": "^3.1.0",
     "jsdom": "^20.0.1",
-    "marked": "^4.3.0"
+    "marked": "^12.0.1"
   },
   "devDependencies": {
     "c8": "^8.0.0",
     "chai": "^4.3.7",
-    "eslint": "^8.41.0",
+    "eslint": "^8.57.0",
     "eslint-config-hexo": "^5.0.0",
-    "hexo": "^6.3.0",
-    "mocha": "^10.2.0"
+    "hexo": "^7.1.1",
+    "mocha": "^10.4.0"
   },
   "engines": {
     "node": ">=14"
