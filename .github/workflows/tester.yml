@@ -8,20 +8,25 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: ['14.x', '16.x', '18.x']
+        node-version: ["14.x", "16.x", "18.x"]
+        exclude:
+          # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/running-variations-of-jobs-in-a-workflow#excluding-matrix-configurations
+          - os: macos-latest
+            node-version: 14.x
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - name: Cache NPM dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: node_modules
-          key: ${{ runner.os }}-npm-cache
-          restore-keys: ${{ runner.os }}-npm-cache
+          key: ${{ runner.OS }}-npm-cache
+          restore-keys: |
+            ${{ runner.OS }}-npm-cache
       - name: Install Dependencies
         run: npm i
       - name: Test
@@ -33,19 +38,20 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ['14.x']
+        node-version: ["14.x"]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - name: Cache NPM dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: node_modules
-          key: ${{ runner.os }}-npm-cache
-          restore-keys: ${{ runner.os }}-npm-cache
+          key: ${{ runner.OS }}-npm-cache
+          restore-keys: |
+            ${{ runner.OS }}-npm-cache
       - name: Install Dependencies
         run: npm install
       - name: Coverage
