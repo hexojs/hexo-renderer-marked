@@ -900,91 +900,6 @@ describe('Marked renderer', () => {
     });
   });
 
-  describe('exec filter to extend', () => {
-    const hexo = new Hexo(__dirname, {silent: true});
-    hexo.config.marked = {};
-
-    it('should execute filter registered to marked:renderer', () => {
-      hexo.extend.filter.register('marked:renderer', renderer => {
-        renderer.image = function({ href }) {
-          return `<img data-src="${encodeURL(href)}">`;
-        };
-      });
-
-      const urlA = '/foo/bár.jpg';
-      const urlB = 'http://fóo.com/bar.jpg';
-
-      const body = [
-        `![](${urlA})`,
-        `![](${urlB})`
-      ].join('\n');
-
-      const r = require('../lib/renderer').bind(hexo);
-
-      const result = r({text: body});
-
-      result.should.eql([
-        `<p><img data-src="${encodeURL(urlA)}">`,
-        `<img data-src="${encodeURL(urlB)}"></p>\n`
-      ].join('\n'));
-    });
-
-    it('should execute filter registered to marked:tokenizer', () => {
-      const smartypants = str => {
-        return str.replace(/---/g, '\u2014');
-      };
-
-      hexo.extend.filter.register('marked:tokenizer', tokenizer => {
-        tokenizer.inlineText = function(src) {
-          return {
-            type: 'text',
-            raw: src,
-            text: smartypants(src)
-          };
-        };
-      });
-
-      const body = '"---"';
-
-      const r = require('../lib/renderer').bind(hexo);
-
-      const result = r({text: body});
-      result.should.eql(`<p>${smartypants(body)}</p>\n`);
-    });
-
-    it('should execute filter registered to marked:extensions', () => {
-      hexo.extend.filter.register('marked:extensions', extensions => {
-        extensions.push({
-          name: 'blockMath',
-          level: 'block',
-          tokenizer(src) {
-            const cap = /^\s{0,3}\$\$((?:[^\n]|\n[^\n])+?)\n{0,1}\$\$/.exec(src);
-
-            if (cap !== null) {
-              return {
-                type: 'blockMath',
-                raw: cap[0],
-                math: cap[1]
-              };
-            }
-
-            return undefined;
-          },
-          renderer(token) {
-            return `<p class="math block">${escapeHTML(token.math)}</p>\n`;
-          }
-        });
-      });
-
-      const body = '$$E=mc^2$$';
-
-      const r = require('../lib/renderer').bind(hexo);
-
-      const result = r({text: body});
-      result.should.eql(`<p class="math block">${escapeHTML('E=mc^2')}</p>\n`);
-    });
-  });
-
   describe('nunjucks', () => {
     const hexo = new Hexo(__dirname, { silent: true });
     const loremFn = () => { return 'ipsum'; };
@@ -1042,6 +957,92 @@ describe('Marked renderer', () => {
         '<p><a href="http://hexo.io/">Hexo</a></p>\n'
       ].join(''));
     });
+  });
 
+  // Put this part at the end, as the filter might permanently modify the tokenizer
+  // thereby affecting other test cases
+  describe('exec filter to extend', () => {
+    const hexo = new Hexo(__dirname, {silent: true});
+    hexo.config.marked = {};
+
+    it('should execute filter registered to marked:renderer', () => {
+      hexo.extend.filter.register('marked:renderer', renderer => {
+        renderer.image = function({ href }) {
+          return `<img data-src="${encodeURL(href)}">`;
+        };
+      });
+
+      const urlA = '/foo/bár.jpg';
+      const urlB = 'http://fóo.com/bar.jpg';
+
+      const body = [
+        `![](${urlA})`,
+        `![](${urlB})`
+      ].join('\n');
+
+      const r = require('../lib/renderer').bind(hexo);
+
+      const result = r({text: body});
+
+      result.should.eql([
+        `<p><img data-src="${encodeURL(urlA)}">`,
+        `<img data-src="${encodeURL(urlB)}"></p>\n`
+      ].join('\n'));
+    });
+
+    it('should execute filter registered to marked:tokenizer', () => {
+      const smartypants = str => {
+        return str.replace(/---/g, '\u2014');
+      };
+
+      hexo.extend.filter.register('marked:tokenizer', tokenizer => {
+        tokenizer.inlineText = function(src) {
+          return {
+            type: 'text',
+            raw: src,
+            text: smartypants(src)
+          };
+        };
+      });
+
+      const body = '"---"';
+
+      const r = require('../lib/renderer').bind(hexo);
+
+      const result = r({text: body});
+      result.should.eql(`<p>${escapeHTML(smartypants(body))}</p>\n`);
+    });
+
+    it('should execute filter registered to marked:extensions', () => {
+      hexo.extend.filter.register('marked:extensions', extensions => {
+        extensions.push({
+          name: 'blockMath',
+          level: 'block',
+          tokenizer(src) {
+            const cap = /^\s{0,3}\$\$((?:[^\n]|\n[^\n])+?)\n{0,1}\$\$/.exec(src);
+
+            if (cap !== null) {
+              return {
+                type: 'blockMath',
+                raw: cap[0],
+                math: cap[1]
+              };
+            }
+
+            return undefined;
+          },
+          renderer(token) {
+            return `<p class="math block">${escapeHTML(token.math)}</p>\n`;
+          }
+        });
+      });
+
+      const body = '$$E=mc^2$$';
+
+      const r = require('../lib/renderer').bind(hexo);
+
+      const result = r({text: body});
+      result.should.eql(`<p class="math block">${escapeHTML('E=mc^2')}</p>\n`);
+    });
   });
 });
