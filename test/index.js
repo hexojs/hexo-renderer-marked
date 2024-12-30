@@ -906,7 +906,7 @@ describe('Marked renderer', () => {
 
     it('should execute filter registered to marked:renderer', () => {
       hexo.extend.filter.register('marked:renderer', renderer => {
-        renderer.image = function(href, title, text) {
+        renderer.image = function({ href }) {
           return `<img data-src="${encodeURL(href)}">`;
         };
       });
