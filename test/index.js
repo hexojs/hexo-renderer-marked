@@ -900,68 +900,10 @@ describe('Marked renderer', () => {
     });
   });
 
-  describe('nunjucks', () => {
-    const hexo = new Hexo(__dirname, { silent: true });
-    const loremFn = () => { return 'ipsum'; };
-    const engine = 'md';
-
-    before(async () => {
-      await hexo.init();
-      hexo.extend.tag.register('lorem', loremFn);
-      hexo.extend.renderer.register('md', 'html', require('../lib/renderer'), true);
-    });
-
-    beforeEach(() => { hexo.config.marked = {}; });
-
-    it('default', async () => {
-      const result = await hexo.post.render(null, { content: '**foo** {% lorem %}', engine });
-      result.content.should.eql('<p><strong>foo</strong> ipsum</p>\n');
-    });
-
-    it('enable disableNunjucks', async () => {
-      const renderer = hexo.render.renderer.get('md');
-      renderer.disableNunjucks = true;
-      hexo.extend.renderer.register('md', 'html', renderer, true);
-      const result = await hexo.post.render(null, { content: '**foo** {% lorem %}', engine });
-      result.content.should.eql('<p><strong>foo</strong> {% lorem %}</p>\n');
-    });
-  });
-
-  describe('sanitize HTML with DOMPurify', () => {
-    const body = [
-      '**safe markdown**',
-      '',
-      '<a onclick="alert(1)">unsafe link</a>',
-      '',
-      '[Hexo](http://hexo.io)'
-    ].join('\n');
-
-    it('sanitize enabled, default options', () => {
-      hexo.config.marked.dompurify = true;
-      const result = r({text: body});
-
-      result.should.eql([
-        '<p><strong>safe markdown</strong></p>\n',
-        '<p><a>unsafe link</a></p>\n',
-        '<p><a href="http://hexo.io/">Hexo</a></p>\n'
-      ].join(''));
-    });
-
-    it('sanitize enabled, with options', () => {
-      hexo.config.marked.dompurify = { FORBID_TAGS: ['strong'] };
-      const result = r({text: body});
-
-      result.should.eql([
-        '<p>safe markdown</p>\n',
-        '<p><a>unsafe link</a></p>\n',
-        '<p><a href="http://hexo.io/">Hexo</a></p>\n'
-      ].join(''));
-    });
-  });
-
-  // Put this part at the end, as the filter might permanently modify the tokenizer
-  // thereby affecting other test cases
   describe('exec filter to extend', () => {
+    // Clear the cache, as the filter might permanently modify the tokenizer
+    // thereby affecting other test cases
+    delete require.cache[require.resolve('../lib/renderer')];
     const hexo = new Hexo(__dirname, {silent: true});
     hexo.config.marked = {};
 
@@ -1043,6 +985,65 @@ describe('Marked renderer', () => {
 
       const result = r({text: body});
       result.should.eql(`<p class="math block">${escapeHTML('E=mc^2')}</p>\n`);
+    });
+  });
+
+  describe('nunjucks', () => {
+    const hexo = new Hexo(__dirname, { silent: true });
+    const loremFn = () => { return 'ipsum'; };
+    const engine = 'md';
+
+    before(async () => {
+      await hexo.init();
+      hexo.extend.tag.register('lorem', loremFn);
+      hexo.extend.renderer.register('md', 'html', require('../lib/renderer'), true);
+    });
+
+    beforeEach(() => { hexo.config.marked = {}; });
+
+    it('default', async () => {
+      const result = await hexo.post.render(null, { content: '**foo** {% lorem %}', engine });
+      result.content.should.eql('<p><strong>foo</strong> ipsum</p>\n');
+    });
+
+    it('enable disableNunjucks', async () => {
+      const renderer = hexo.render.renderer.get('md');
+      renderer.disableNunjucks = true;
+      hexo.extend.renderer.register('md', 'html', renderer, true);
+      const result = await hexo.post.render(null, { content: '**foo** {% lorem %}', engine });
+      result.content.should.eql('<p><strong>foo</strong> {% lorem %}</p>\n');
+    });
+  });
+
+  describe('sanitize HTML with DOMPurify', () => {
+    const body = [
+      '**safe markdown**',
+      '',
+      '<a onclick="alert(1)">unsafe link</a>',
+      '',
+      '[Hexo](http://hexo.io)'
+    ].join('\n');
+
+    it('sanitize enabled, default options', () => {
+      hexo.config.marked.dompurify = true;
+      const result = r({text: body});
+
+      result.should.eql([
+        '<p><strong>safe markdown</strong></p>\n',
+        '<p><a>unsafe link</a></p>\n',
+        '<p><a href="http://hexo.io/">Hexo</a></p>\n'
+      ].join(''));
+    });
+
+    it('sanitize enabled, with options', () => {
+      hexo.config.marked.dompurify = { FORBID_TAGS: ['strong'] };
+      const result = r({text: body});
+
+      result.should.eql([
+        '<p>safe markdown</p>\n',
+        '<p><a>unsafe link</a></p>\n',
+        '<p><a href="http://hexo.io/">Hexo</a></p>\n'
+      ].join(''));
     });
   });
 });
