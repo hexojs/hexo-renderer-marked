@@ -8,14 +8,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: ["14.x", "16.x", "18.x"]
-        exclude:
-          # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/running-variations-of-jobs-in-a-workflow#excluding-matrix-configurations
-          - os: macos-latest
-            node-version: 14.x
+        node-version: ["18", "20", "22"]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
@@ -38,9 +34,9 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ["14.x"]
+        node-version: ["22"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
