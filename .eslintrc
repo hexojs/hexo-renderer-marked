@@ -1,4 +1,1 @@
-{
-  "extends": "hexo",
-  "root": true
-}
+const config = require("eslint-config-hexo");  module.exports = config;

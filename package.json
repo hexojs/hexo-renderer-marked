@@ -4,7 +4,7 @@
   "description": "Markdown renderer plugin for Hexo",
   "main": "index",
   "scripts": {
-    "eslint": "eslint .",
+    "eslint": "eslint --flag unstable_config_lookup_from_file lib/ test/ index.js",
     "test": "mocha test/index.js",
     "test-cov": "c8 --reporter=lcovonly npm run test"
   },
@@ -40,7 +40,7 @@
     "c8": "^10.1.2",
     "chai": "^4.3.7",
     "eslint": "^9.17.0",
-    "eslint-config-hexo": "^5.0.0",
+    "eslint-config-hexo": "github:yoshinorin/eslint-config-hexo#chore/migrate-to-flatconfig",
     "hexo": "^7.1.1",
     "mocha": "^10.4.0"
   },
