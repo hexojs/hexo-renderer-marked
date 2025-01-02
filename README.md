@@ -1,6 +1,6 @@
 # hexo-renderer-marked
 
-[![Build Status](https://github.com/hexojs/hexo-renderer-marked/workflows/Tester/badge.svg?branch=master)](https://github.com/hexojs/hexo-renderer-marked/actions?query=workflow%3ATester)
+[![Tester](https://github.com/hexojs/hexo-renderer-marked/actions/workflows/tester.yml/badge.svg?branch=master)](https://github.com/hexojs/hexo-renderer-marked/actions/workflows/tester.yml)
 [![NPM version](https://badge.fury.io/js/hexo-renderer-marked.svg)](https://www.npmjs.com/package/hexo-renderer-marked)
 [![Coverage Status](https://img.shields.io/coveralls/hexojs/hexo-renderer-marked.svg)](https://coveralls.io/r/hexojs/hexo-renderer-marked?branch=master)
 [![NPM Dependencies](https://img.shields.io/librariesio/release/npm/hexo-renderer-marked.svg)](https://libraries.io/npm/hexo-renderer-marked)
@@ -20,7 +20,7 @@ There are two solutions to avoid those issues:
 
 ## Installation
 
-``` bash
+```bash
 $ npm install hexo-renderer-marked --save
 ```
 
@@ -32,7 +32,7 @@ $ npm install hexo-renderer-marked --save
 
 You can configure this plugin in `_config.yml`.
 
-``` yaml
+```yml
 marked:
   gfm: true
   pedantic: false
@@ -83,7 +83,7 @@ marked:
 - **figcaption** - Append `figcaption` element after each image.
 - **prependRoot** - Prepend root value to (internal) image path.
   * Example `_config.yml`:
-  ``` yml
+  ```yml
   root: /blog/
   ```
   * `![text](/path/to/image.jpg)` becomes `<img src="/blog/path/to/image.jpg" alt="text">`
@@ -112,7 +112,7 @@ For more options, see [Marked](https://marked.js.org/using_advanced#options). Du
 
 To enable it, pass an object containing the DOMPurify options:
 
-```json
+```yml
 dompurify: true
 ```
 
@@ -173,10 +173,11 @@ This plugin overrides some default behaviours of how [marked] plugin renders the
 
 For example, to override how heading like `# heading text` is rendered:
 
-``` js
+```js
 hexo.extend.filter.register('marked:renderer', function(renderer) {
   const { config } = this; // Skip this line if you don't need user config from _config.yml
-  renderer.heading = function(text, level) {
+  renderer.heading = function({ tokens, depth: level }) {
+    const text = this.parser.parseInline(tokens);
     // Default behaviour
     // return `<h${level}>${text}</h${level}>`;
     // outputs <h1>heading text</h1>
@@ -196,7 +197,7 @@ Notice `renderer.heading = function (text, level) {` corresponds to [this line](
 
 It is also possible to customize the [tokenizer](https://marked.js.org/using_pro#tokenizer).
 
-``` js
+```js
 const { escapeHTML: escape } = require('hexo-util');
 
 // https://github.com/markedjs/marked/blob/b6773fca412c339e0cedd56b63f9fa1583cfd372/src/Lexer.js#L8-L24
