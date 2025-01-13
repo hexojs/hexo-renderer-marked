@@ -1,6 +1,5 @@
 'use strict';
 
-require('chai').should();
 const { encodeURL, escapeHTML, url_for } = require('hexo-util');
 const Hexo = require('hexo');
 const { join } = require('path').posix;
