@@ -901,12 +901,15 @@ describe('Marked renderer', () => {
   });
 
   describe('exec filter to extend', () => {
+    // Clear the cache, as the filter might permanently modify the tokenizer
+    // thereby affecting other test cases
+    delete require.cache[require.resolve('../lib/renderer')];
     const hexo = new Hexo(__dirname, {silent: true});
     hexo.config.marked = {};
 
     it('should execute filter registered to marked:renderer', () => {
       hexo.extend.filter.register('marked:renderer', renderer => {
-        renderer.image = function(href, title, text) {
+        renderer.image = function({ href }) {
           return `<img data-src="${encodeURL(href)}">`;
         };
       });
@@ -949,7 +952,7 @@ describe('Marked renderer', () => {
       const r = require('../lib/renderer').bind(hexo);
 
       const result = r({text: body});
-      result.should.eql(`<p>${smartypants(body)}</p>\n`);
+      result.should.eql(`<p>${escapeHTML(smartypants(body))}</p>\n`);
     });
 
     it('should execute filter registered to marked:extensions', () => {
@@ -1042,6 +1045,5 @@ describe('Marked renderer', () => {
         '<p><a href="http://hexo.io/">Hexo</a></p>\n'
       ].join(''));
     });
-
   });
 });
