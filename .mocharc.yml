@@ -1,1 +1,3 @@
 color: true
+require:
+  - "chai/register-should.js"
