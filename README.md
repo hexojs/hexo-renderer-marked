@@ -175,7 +175,7 @@ For example, to override how heading like `# heading text` is rendered:
 
 ```js
 hexo.extend.filter.register('marked:renderer', function(renderer) {
-  const { config } = this; // Skip this line if you don't need user config from _config.yml
+  const { config } = this; // Optional if you don't need user config from _config.yml
   renderer.heading = function({ tokens, depth: level }) {
     const text = this.parser.parseInline(tokens);
     // Default behaviour
@@ -191,7 +191,7 @@ hexo.extend.filter.register('marked:renderer', function(renderer) {
 
 Save the file in "scripts/" folder and run Hexo as usual.
 
-Notice `renderer.heading = function (text, level) {` corresponds to [this line](https://github.com/hexojs/hexo-renderer-marked/blob/a93ebeb1e8cc11e754630c0a1506da9a1489b2b0/lib/renderer.js#L21). Refer to [renderer.js](https://github.com/hexojs/hexo-renderer-marked/blob/master/lib/renderer.js) on how this plugin overrides the default methods. For other methods not covered by this plugin, refer to marked's [documentation](https://marked.js.org/using_pro#renderer).
+Refer to [renderer.js](https://github.com/hexojs/hexo-renderer-marked/blob/master/lib/renderer.js) on how this plugin overrides the default methods. For other methods not covered by this plugin, refer to marked's [documentation](https://marked.js.org/using_pro#renderer).
 
 #### Tokenizer
 
