@@ -40,7 +40,7 @@
     "c8": "^10.1.2",
     "chai": "^4.3.7",
     "eslint": "^8.57.0",
-    "eslint-config-hexo": "^5.0.0",
+    "eslint-config-hexo": "^6.0.0",
     "hexo": "^7.1.1",
     "mocha": "^11.0.1"
   },
