@@ -331,7 +331,18 @@ describe('Marked renderer', () => {
     ].join('\n');
 
     it('autolink enabled', () => {
-      const result = r({text: body});
+      let result = r({text: body});
+
+      result.should.eql([
+        '<p>Great website <a href="http://hexo.io/">http://hexo.io</a></p>',
+        '<p>A webpage <a href="http://www.example.com/">www.example.com</a></p>',
+        '<p><a href="http://hexo.io/">Hexo</a></p>',
+        '<p><a href="http://lorem.com/foo/">http://lorem.com/foo/</a></p>',
+        '<p><a href="http://dolor.com/">http://dolor.com</a></p>'
+      ].join('\n') + '\n');
+
+      // try again
+      result = r({text: body});
 
       result.should.eql([
         '<p>Great website <a href="http://hexo.io/">http://hexo.io</a></p>',
@@ -353,6 +364,17 @@ describe('Marked renderer', () => {
         '<p><a href="http://lorem.com/foo/">http://lorem.com/foo/</a></p>',
         '<p><a href="http://dolor.com/">http://dolor.com</a></p>'
       ].join('\n') + '\n');
+    });
+
+    it('should not stack overflow', function() {
+      this.timeout(3000);
+      const body = 'Great website http://hexo.io';
+
+      (() => {
+        for (let i = 0; i < 100000; i++) {
+          r({text: body});
+        }
+      }).should.not.throw();
     });
   });
 
@@ -924,7 +946,14 @@ describe('Marked renderer', () => {
 
       const r = require('../lib/renderer').bind(hexo);
 
-      const result = r({text: body});
+      let result = r({text: body});
+
+      result.should.eql([
+        `<p><img data-src="${encodeURL(urlA)}">`,
+        `<img data-src="${encodeURL(urlB)}"></p>\n`
+      ].join('\n'));
+      // try again
+      result = r({text: body});
 
       result.should.eql([
         `<p><img data-src="${encodeURL(urlA)}">`,
@@ -951,7 +980,10 @@ describe('Marked renderer', () => {
 
       const r = require('../lib/renderer').bind(hexo);
 
-      const result = r({text: body});
+      let result = r({text: body});
+      result.should.eql(`<p>${escapeHTML(smartypants(body))}</p>\n`);
+      // try again
+      result = r({text: body});
       result.should.eql(`<p>${escapeHTML(smartypants(body))}</p>\n`);
     });
 
@@ -983,7 +1015,10 @@ describe('Marked renderer', () => {
 
       const r = require('../lib/renderer').bind(hexo);
 
-      const result = r({text: body});
+      let result = r({text: body});
+      result.should.eql(`<p class="math block">${escapeHTML('E=mc^2')}</p>\n`);
+      // try again
+      result = r({text: body});
       result.should.eql(`<p class="math block">${escapeHTML('E=mc^2')}</p>\n`);
     });
   });
