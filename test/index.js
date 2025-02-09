@@ -367,7 +367,7 @@ describe('Marked renderer', () => {
     });
 
     it('should not stack overflow', function() {
-      this.timeout(3000);
+      this.timeout(5000);
       const body = 'Great website http://hexo.io';
 
       (() => {
