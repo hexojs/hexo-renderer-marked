@@ -332,25 +332,20 @@ describe('Marked renderer', () => {
 
     it('autolink enabled', () => {
       let result = r({text: body});
-
-      result.should.eql([
+      const expected = [
         '<p>Great website <a href="http://hexo.io/">http://hexo.io</a></p>',
         '<p>A webpage <a href="http://www.example.com/">www.example.com</a></p>',
         '<p><a href="http://hexo.io/">Hexo</a></p>',
         '<p><a href="http://lorem.com/foo/">http://lorem.com/foo/</a></p>',
         '<p><a href="http://dolor.com/">http://dolor.com</a></p>'
-      ].join('\n') + '\n');
+      ].join('\n') + '\n';
+
+      result.should.eql(expected);
 
       // try again
       result = r({text: body});
 
-      result.should.eql([
-        '<p>Great website <a href="http://hexo.io/">http://hexo.io</a></p>',
-        '<p>A webpage <a href="http://www.example.com/">www.example.com</a></p>',
-        '<p><a href="http://hexo.io/">Hexo</a></p>',
-        '<p><a href="http://lorem.com/foo/">http://lorem.com/foo/</a></p>',
-        '<p><a href="http://dolor.com/">http://dolor.com</a></p>'
-      ].join('\n') + '\n');
+      result.should.eql(expected);
     });
 
     it('autolink disabled', () => {
@@ -947,18 +942,16 @@ describe('Marked renderer', () => {
       const r = require('../lib/renderer').bind(hexo);
 
       let result = r({text: body});
-
-      result.should.eql([
+      const expected = [
         `<p><img data-src="${encodeURL(urlA)}">`,
         `<img data-src="${encodeURL(urlB)}"></p>\n`
-      ].join('\n'));
+      ].join('\n');
+
+      result.should.eql(expected);
       // try again
       result = r({text: body});
 
-      result.should.eql([
-        `<p><img data-src="${encodeURL(urlA)}">`,
-        `<img data-src="${encodeURL(urlB)}"></p>\n`
-      ].join('\n'));
+      result.should.eql(expected);
     });
 
     it('should execute filter registered to marked:tokenizer', () => {
@@ -981,10 +974,11 @@ describe('Marked renderer', () => {
       const r = require('../lib/renderer').bind(hexo);
 
       let result = r({text: body});
-      result.should.eql(`<p>${escapeHTML(smartypants(body))}</p>\n`);
+      const expected = `<p>${escapeHTML(smartypants(body))}</p>\n`;
+      result.should.eql(expected);
       // try again
       result = r({text: body});
-      result.should.eql(`<p>${escapeHTML(smartypants(body))}</p>\n`);
+      result.should.eql(expected);
     });
 
     it('should execute filter registered to marked:extensions', () => {
@@ -1016,10 +1010,11 @@ describe('Marked renderer', () => {
       const r = require('../lib/renderer').bind(hexo);
 
       let result = r({text: body});
-      result.should.eql(`<p class="math block">${escapeHTML('E=mc^2')}</p>\n`);
+      const expected = `<p class="math block">${escapeHTML('E=mc^2')}</p>\n`;
+      result.should.eql(expected);
       // try again
       result = r({text: body});
-      result.should.eql(`<p class="math block">${escapeHTML('E=mc^2')}</p>\n`);
+      result.should.eql(expected);
     });
   });
 
