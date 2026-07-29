@@ -812,7 +812,9 @@ describe('Marked renderer', () => {
   it('figcaption', () => {
     const body = [
       '![](/bar/baz.jpg "bar")',
+      '',
       '![foo](/bar/baz.jpg "bar")',
+      '',
       '![foo](/aaa/bbb.jpg)'
     ].join('\n');
 
@@ -823,10 +825,21 @@ describe('Marked renderer', () => {
     const result = r({ text: body });
 
     result.should.eql([
-      '<p><img src="/bar/baz.jpg" title="bar">',
-      '<figure><img src="/bar/baz.jpg" alt="foo" title="bar"><figcaption aria-hidden="true">foo</figcaption></figure>',
-      '<figure><img src="/aaa/bbb.jpg" alt="foo"><figcaption aria-hidden="true">foo</figcaption></figure></p>\n'
-    ].join('\n'));
+      '<p><img src="/bar/baz.jpg" title="bar"></p>\n',
+      '<figure><img src="/bar/baz.jpg" alt="foo" title="bar"><figcaption aria-hidden="true">foo</figcaption></figure>\n',
+      '<figure><img src="/aaa/bbb.jpg" alt="foo"><figcaption aria-hidden="true">foo</figcaption></figure>\n'
+    ].join(''));
+  });
+
+  it('should not render inline images as figures', () => {
+    const body = 'before ![foo](/bar/baz.jpg) after';
+
+    hexo.config.marked.figcaption = true;
+
+    const r = require('../lib/renderer').bind(hexo);
+    const result = r({ text: body });
+
+    result.should.eql('<p>before <img src="/bar/baz.jpg" alt="foo"> after</p>\n');
   });
 
   describe('postAsset', () => {
