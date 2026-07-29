@@ -80,7 +80,7 @@ marked:
   * Example: `## [foo](#bar)`, id will be set as "bar".
   * Requires **headerIds** to be enabled.
 - **lazyload** - Lazy loading images via `loading="lazy"` attribute.
-- **figcaption** - Append `figcaption` element after each image.
+- **figcaption** - Render a standalone image with alt text as a `figure` and use the alt text as its `figcaption`.
 - **prependRoot** - Prepend root value to (internal) image path.
   * Example `_config.yml`:
   ```yml
