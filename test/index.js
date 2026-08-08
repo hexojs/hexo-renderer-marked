@@ -422,6 +422,123 @@ describe('Marked renderer', () => {
     ].join('\n'));
   });
 
+  describe('resolveRelativeLinks', () => {
+    const renderer = require('../lib/renderer');
+    const Post = hexo.model('Post');
+    const Page = hexo.model('Page');
+    const insertedDocuments = [];
+
+    const insertDocument = async (model, data) => {
+      const document = await model.insert(data);
+      insertedDocuments.push([model, document._id]);
+      return document;
+    };
+
+    beforeEach(() => {
+      hexo.config.url = 'https://example.com/blog/';
+      hexo.config.root = '/blog/';
+      hexo.config.permalink = ':title/';
+      hexo.config.relative_link = false;
+      hexo.config.marked.resolveRelativeLinks = true;
+      renderer.clearLinkCache(hexo);
+    });
+
+    afterEach(async () => {
+      while (insertedDocuments.length) {
+        const [model, id] = insertedDocuments.pop();
+        await model.removeById(id);
+      }
+      renderer.clearLinkCache(hexo);
+    });
+
+    it('should resolve inline and reference links to a post source', async () => {
+      const current = await insertDocument(Post, {
+        source: '_posts/guide/post-a.md',
+        slug: 'guide/post-a'
+      });
+      const target = await insertDocument(Post, {
+        source: '_posts/guide/post b.md',
+        slug: 'guide/post b'
+      });
+      const suffix = '?from=a#section';
+      const body = [
+        `[inline](post%20b.md${suffix})`,
+        '[reference][target]',
+        '',
+        '[target]: post%20b.md'
+      ].join('\n');
+
+      const result = r({ text: body, path: current.full_source });
+      const context = { config: hexo.config, path: current.path };
+      const inlineUrl = url_for.call(context, target.path + suffix);
+      const referenceUrl = url_for.call(context, target.path);
+
+      result.should.include(`<a href="${encodeURL(inlineUrl)}">inline</a>`);
+      result.should.include(`<a href="${encodeURL(referenceUrl)}">reference</a>`);
+    });
+
+    it('should resolve a nested link to a page with relative_link enabled', async () => {
+      hexo.config.relative_link = true;
+      const current = await insertDocument(Post, {
+        source: '_posts/guide/post-a.md',
+        slug: 'guide/post-a'
+      });
+      const target = await insertDocument(Page, {
+        source: 'about/team.md',
+        path: 'company/team/index.html'
+      });
+
+      const result = r({
+        text: '[Team](../../about/team.md#people)',
+        path: current.full_source
+      });
+      const context = { config: hexo.config, path: current.path };
+      const expected = url_for.call(context, target.path + '#people');
+
+      result.should.eql(`<p><a href="${encodeURL(expected)}">Team</a></p>\n`);
+    });
+
+    it('should leave links without a matching post or page unchanged', async () => {
+      const current = await insertDocument(Post, {
+        source: '_posts/post-a.md',
+        slug: 'post-a'
+      });
+      const body = [
+        '[missing](missing.md)',
+        '[root](/post-b.md)',
+        '[anchor](#section)',
+        '[query](?view=full)',
+        '[external](https://example.com/post-b.md)'
+      ].join('\n');
+
+      const result = r({ text: body, path: current.full_source });
+
+      result.should.eql([
+        '<p><a href="missing.md">missing</a>',
+        '<a href="/post-b.md">root</a>',
+        '<a href="#section">anchor</a>',
+        '<a href="?view=full">query</a>',
+        '<a href="https://example.com/post-b.md">external</a></p>\n'
+      ].join('\n'));
+    });
+
+    it('should allow relative link resolution to be disabled', async () => {
+      hexo.config.marked.resolveRelativeLinks = false;
+      const current = await insertDocument(Post, {
+        source: '_posts/post-a.md',
+        slug: 'post-a'
+      });
+      await insertDocument(Post, {
+        source: '_posts/post-b.md',
+        slug: 'post-b'
+      });
+
+      const result = r({ text: '[post](post-b.md)', path: current.full_source });
+
+      result.should.eql('<p><a href="post-b.md">post</a></p>\n');
+    });
+  });
+
   describe('sanitizeUrl option tests', () => {
     const body = [
       '[script](javascript:foo)',

@@ -20,6 +20,7 @@ hexo.config.marked = Object.assign({
   lazyload: false,
   prependRoot: true,
   postAsset: false,
+  resolveRelativeLinks: true,
   external_link: {
     enable: false,
     exclude: [],
@@ -29,6 +30,10 @@ hexo.config.marked = Object.assign({
 }, hexo.config.marked);
 
 renderer.disableNunjucks = Boolean(hexo.config.marked.disableNunjucks);
+
+// Hexo renders posts in a before_generate filter with the default priority (10).
+// Invalidate the source lookup first so watch mode sees added, removed or renamed documents.
+hexo.extend.filter.register('before_generate', () => renderer.clearLinkCache(hexo), 9);
 
 hexo.extend.renderer.register('md', 'html', renderer, true);
 hexo.extend.renderer.register('markdown', 'html', renderer, true);

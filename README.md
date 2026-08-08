@@ -51,6 +51,7 @@ marked:
   figcaption: false
   prependRoot: true
   postAsset: false
+  resolveRelativeLinks: true
   external_link:
     enable: false
     exclude: []
@@ -91,6 +92,9 @@ marked:
   * "image.jpg" is located at "/2020/01/02/foo/image.jpg", which is a post asset of "/2020/01/02/foo/".
   * `![](image.jpg)` becomes `<img src="/2020/01/02/foo/image.jpg">`
   * Requires **prependRoot** to be enabled.
+- **resolveRelativeLinks** - Resolve relative links to Markdown source files to the generated URL of the matching post or page.
+  * Example: `[Other post](other-post.md)` becomes `<a href="/2020/01/02/other-post/">Other post</a>` when `other-post.md` is another Hexo post.
+  * Links that do not match a Hexo post or page are left unchanged.
 - **external_link**
   * **enable** - Open external links in a new tab.
   * **exclude** - Exclude hostname. Specify subdomain when applicable, including `www`.
